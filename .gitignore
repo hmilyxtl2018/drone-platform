@@ -7,12 +7,13 @@ db.local.json
 *.pem
 *.key
 
-# Databases and transfer archives travel separately from source code
+# Live databases remain local; one reviewed migration snapshot is distributed
 *.sqlite
 *.sqlite-*
 *.db
 *.db-*
 *.zip
+!/data/uav-data-20261120.zip
 /transfer-manifest.json
 
 # Local runtimes, dependencies and caches

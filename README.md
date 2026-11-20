@@ -18,7 +18,17 @@ py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r platform\requirements.txt
 ```
 
-**启动前导入单独提供的迁移数据包**，解压到仓库根目录。仓库包含代码与本体契约；现有档案、原文、候选和审核数据随迁移数据包交付。解压后数据库位于 `ontology/coast-raid-k/`。完整步骤及哈希校验见[迁移说明](docs/uav-git-migration.md)。
+**首次启动前导入仓库自带的数据包**：[data/uav-data-20261120.zip](data/uav-data-20261120.zip)（约 15 MB）。包含 121 个本体、原文材料、候选、审核及运行记录。解压后数据库位于 `ontology/coast-raid-k/`。完整步骤及哈希校验见[迁移说明](docs/uav-git-migration.md)。
+
+仅在新安装、尚无业务数据库时执行：
+
+```powershell
+Get-Content data\uav-data-20261120.zip.sha256
+Get-FileHash data\uav-data-20261120.zip -Algorithm SHA256
+Expand-Archive -LiteralPath data\uav-data-20261120.zip -DestinationPath .
+```
+
+确认两处 SHA-256 一致后解压。已有业务数据的机器先停止服务并备份，更新代码后不要重复覆盖导入。
 
 ```powershell
 $env:CRK_KB_STORE = "sqlite"
@@ -53,4 +63,4 @@ Git 更新代码，不同步两台机器上的业务数据库。服务默认仅�
 py -3 scripts\export-uav-data.py
 ```
 
-输出位于 `.local/transfers/`，包括数据 ZIP 和校验清单。数据、凭据、日志与本机运行环境由 `.gitignore` 排除。
+输出位于 `.local/transfers/`，包括数据 ZIP 和校验清单。仓库只收录 `data/` 中明确指定的初始快照；实时数据库、凭据、日志与本机运行环境由 `.gitignore` 排除。新导出不会自动发布到仓库。

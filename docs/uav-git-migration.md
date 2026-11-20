@@ -1,6 +1,6 @@
 # 无人机本体工作台：通过 Git 迁移
 
-交付分为两部分：Git 仓库存放代码和本体契约；数据压缩包保存现有档案、来源快照、候选、审核记录及运行历史。代码仓库为 <https://github.com/hmilyxtl2018/drone-platform>。第一次使用 `git clone`，以后更新代码使用 `git pull`。单独拉取代码不会获得现有业务数据，也不会自动安装依赖或复制 API key。
+代码仓库为 <https://github.com/hmilyxtl2018/drone-platform>，同时包含服务代码、本体契约和 `data/uav-data-20261120.zip` 初始数据快照。数据包保存 121 个本体及相关来源、候选、审核和运行记录。第一次使用 `git clone`，以后更新代码使用 `git pull`；拉取后仍须安装依赖、首次解压导入数据，并按需配置 API key。
 
 以下命令默认目标机器为 Windows。仓库可以放在任意目录，无须保留原来的 `D:\Ontology_Agents` 路径。
 
@@ -42,7 +42,7 @@ git remote add origin https://github.com/hmilyxtl2018/drone-platform.git
 git push -u origin main
 ```
 
-提交前核对文件清单。`.gitignore` 排除了业务数据库、`.local`、本机密钥、虚拟环境、日志和临时输出。不要把数据 ZIP、`db.local.json`、`.local/agent-secrets.dpapi` 或 API key 加进 Git。根目录的 Firecrawl CLI / `node_modules` 不是本体后端的启动依赖，后端通过 HTTP 调用 Firecrawl 和 DeepSeek。
+提交前核对文件清单。`.gitignore` 排除了实时业务数据库、`.local`、本机密钥、虚拟环境、日志和临时输出，只允许明确指定的 `data/uav-data-20261120.zip` 快照。不要把 `db.local.json`、`.local/agent-secrets.dpapi` 或 API key 加进 Git。根目录的 Firecrawl CLI / `node_modules` 不是本体后端的启动依赖，后端通过 HTTP 调用 Firecrawl 和 DeepSeek。
 
 ## 3. 对方首次安装并导入数据
 
@@ -55,10 +55,12 @@ py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r platform\requirements.txt
 ```
 
-通过约定的文件传输方式拿到数据 ZIP。首次启动前解压到项目根目录，解压后应得到 `ontology/coast-raid-k/` 下的上述数据库，以及根目录的 `transfer-manifest.json`。例如：
+数据 ZIP 已随 Git 拉取，位于 `data/uav-data-20261120.zip`。先确认压缩包 SHA-256 与附带的校验文件一致，然后在首次启动前解压到项目根目录。解压后应得到 `ontology/coast-raid-k/` 下的上述数据库，以及根目录的 `transfer-manifest.json`：
 
 ```powershell
-Expand-Archive -LiteralPath C:\Transfer\uav-data-时间戳.zip -DestinationPath .
+Get-Content data\uav-data-20261120.zip.sha256
+Get-FileHash data\uav-data-20261120.zip -Algorithm SHA256
+Expand-Archive -LiteralPath data\uav-data-20261120.zip -DestinationPath .
 ```
 
 这是新机器首次导入步骤；已有数据库的机器不要直接覆盖，先停止写入并备份原数据。
