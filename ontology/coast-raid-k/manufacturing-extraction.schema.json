@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.ontology/coast-raid-k/manufacturing-extraction.v1.schema.json",
+  "title": "无人机生产制造定向提取契约",
+  "description": "Firecrawl 保存的来源正文经 DeepSeek 提取后的候选数据。所有数组项必须绑定型号、适用范围和逐字证据；本契约不代表已发布事实。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "entity", "observations"],
+  "properties": {
+    "schemaVersion": {"const": "uav-manufacturing-extraction.v1"},
+    "entity": {"$ref": "#/$defs/entity"},
+    "observations": {"type": "array", "items": {"$ref": "#/$defs/observation"}},
+    "gaps": {"type": "array", "items": {"type": "string", "minLength": 1}}
+  },
+  "$defs": {
+    "entity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["entityId", "name"],
+      "properties": {
+        "entityId": {"type": "string", "minLength": 1},
+        "name": {"type": "string", "minLength": 1},
+        "variant": {"type": ["string", "null"]},
+        "aliases": {"type": "array", "items": {"type": "string"}},
+        "manufacturer": {"type": ["string", "null"]}
+      }
+    },
+    "evidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["sourceUri", "quote"],
+      "properties": {
+        "sourceUri": {"type": "string", "minLength": 1},
+        "sourceTitle": {"type": ["string", "null"]},
+        "publishedAt": {"type": ["string", "null"]},
+        "sourceVersion": {"type": ["string", "null"]},
+        "sourceSubject": {"type": ["string", "null"]},
+        "quote": {"type": "string", "minLength": 1},
+        "locator": {"type": ["object", "null"]},
+        "snapshotId": {"type": ["string", "null"]},
+        "contentHash": {"type": ["string", "null"]}
+      }
+    },
+    "observation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["category", "evidence"],
+      "properties": {
+        "category": {"enum": ["composition", "process", "organization", "production", "cost"]},
+        "configuration": {"type": ["string", "null"]},
+        "validFrom": {"type": ["string", "null"]},
+        "validTo": {"type": ["string", "null"]},
+        "evidence": {"$ref": "#/$defs/evidence"},
+        "confidence": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+        "data": {"type": "object"}
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"category": {"const": "composition"}}},
+          "then": {"properties": {"data": {
+            "type": "object", "additionalProperties": false, "required": ["partName", "relation"],
+            "properties": {
+              "partName": {"type": "string", "minLength": 1},
+              "relation": {"enum": ["partOfAircraft", "partOfGroundSegment", "installedOn", "compatibleWith"]},
+              "parentPart": {"type": ["string", "null"]},
+              "quantity": {"type": ["number", "null"], "minimum": 0}
+            }
+          }}}
+        },
+        {
+          "if": {"properties": {"category": {"const": "process"}}},
+          "then": {"properties": {"data": {
+            "type": "object", "additionalProperties": false, "required": ["processName", "processType"],
+            "properties": {
+              "processName": {"type": "string", "minLength": 1},
+              "processType": {"enum": ["design", "fabrication", "assembly", "inspection", "ground-test", "flight-test", "maintenance"]},
+              "sequenceNo": {"type": ["integer", "null"], "minimum": 0},
+              "organizationId": {"type": ["string", "null"]}
+            }
+          }}}
+        },
+        {
+          "if": {"properties": {"category": {"const": "organization"}}},
+          "then": {"properties": {"data": {
+            "type": "object", "additionalProperties": false, "required": ["organizationName", "role"],
+            "properties": {
+              "organizationName": {"type": "string", "minLength": 1},
+              "organizationId": {"type": ["string", "null"]},
+              "role": {"enum": ["designer", "manufacturer", "assembler", "supplier", "integrator", "operator"]},
+              "validFrom": {"type": ["string", "null"]},
+              "validTo": {"type": ["string", "null"]}
+            }
+          }}}
+        },
+        {
+          "if": {"properties": {"category": {"const": "production"}}},
+          "then": {"properties": {"data": {
+            "type": "object", "additionalProperties": false, "required": ["recordType", "quantity"],
+            "properties": {
+              "recordType": {"enum": ["production", "delivery", "order"]},
+              "quantity": {"type": "number", "minimum": 0},
+              "quantityUnit": {"type": "string"},
+              "startDate": {"type": ["string", "null"]},
+              "endDate": {"type": ["string", "null"]},
+              "organizationId": {"type": ["string", "null"]}
+            }
+          }}}
+        },
+        {
+          "if": {"properties": {"category": {"const": "cost"}}},
+          "then": {"properties": {"data": {
+            "type": "object", "additionalProperties": false, "required": ["costType", "amount", "currency"],
+            "properties": {
+              "costType": {"enum": ["unit-production", "flyaway", "system-procurement", "development", "operating", "lifecycle", "other"]},
+              "amount": {"type": "number", "minimum": 0},
+              "currency": {"type": "string", "pattern": "^[A-Z]{3}$"},
+              "priceBasisYear": {"type": ["integer", "null"], "minimum": 1900, "maximum": 2200},
+              "quantity": {"type": ["number", "null"], "minimum": 0},
+              "quantityUnit": {"type": "string"},
+              "includes": {"type": "array", "items": {"type": "string"}},
+              "excludes": {"type": "array", "items": {"type": "string"}},
+              "valueStatus": {"enum": ["reported", "estimated", "calculated", "unknown"]}
+            }
+          }}}
+        }
+      ]
+    }
+  }
+}

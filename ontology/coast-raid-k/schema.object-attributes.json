@@ -1,0 +1,885 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.ontology/coast-raid-k/schema.object-attributes.json",
+  "title": "Source-qualified object attribute extraction drafts",
+  "description": "P0/P1 extraction interchange. Shapes do not verify literal matching or semantic truth; backend snapshot and object attribution checks remain required. Unknown validTime is explicit null. Predicate suggestions are model proposals only; publication still requires human acceptance.",
+  "anyOf": [
+    {
+      "$ref": "#/$defs/RetainedAttributeDraft"
+    },
+    {
+      "$ref": "#/$defs/PerObjectExtractionMetadata"
+    },
+    {
+      "$ref": "#/$defs/ContractEnvelope"
+    }
+  ],
+  "$defs": {
+    "EvidenceReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "itemId",
+        "sourceUri",
+        "sourceVersion",
+        "contentHash",
+        "quote"
+      ],
+      "properties": {
+        "itemId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "sourceUri": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "sourceVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "contentHash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "quote": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1200
+        },
+        "startChar": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "endChar": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "lineStart": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "lineEnd": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "publishedAt": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sourceCategory": {
+          "type": "string"
+        },
+        "sourceRole": {
+          "type": "string"
+        },
+        "publisherDomain": {
+          "type": "string"
+        },
+        "contentNature": {
+          "type": "string"
+        },
+        "verificationStatus": {
+          "type": "string"
+        },
+        "sourceReliability": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "provenance": {
+          "type": "object"
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "startChar",
+            "endChar"
+          ]
+        },
+        {
+          "required": [
+            "lineStart",
+            "lineEnd"
+          ]
+        }
+      ],
+      "description": "Source locator; matching sources or merged citations never establish independence."
+    },
+    "ModelReviewRecommendation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action",
+        "reason",
+        "source",
+        "state",
+        "truthVerified",
+        "humanReviewRequired",
+        "evidenceRefs"
+      ],
+      "properties": {
+        "action": {
+          "enum": [
+            "consider",
+            "more-evidence",
+            "reject"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 600
+        },
+        "source": {
+          "const": "model"
+        },
+        "state": {
+          "const": "model-proposal"
+        },
+        "truthVerified": {
+          "const": false
+        },
+        "humanReviewRequired": {
+          "const": true
+        },
+        "evidenceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "items": {
+            "$ref": "#/$defs/EvidenceReference"
+          }
+        }
+      }
+    },
+    "QuoteRecoveryRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["quoteRecoveryMethod", "originalModelQuote", "originalQuoteLocator", "state", "truthVerified", "humanReviewRequired"],
+      "properties": {
+        "quoteRecoveryMethod": {"const": "explicit-acronym-same-paragraph"},
+        "originalModelQuote": {"type": "string", "minLength": 1, "maxLength": 1200},
+        "originalQuoteLocator": {"$ref": "#/$defs/OriginalQuoteLocator"},
+        "state": {"const": "draft-context-recovery"},
+        "truthVerified": {"const": false},
+        "humanReviewRequired": {"const": true}
+      },
+      "description": "Model quote audit only; evidenceRefs contain the recovered exact original block."
+    },
+    "OriginalQuoteLocator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["itemId", "startChar", "endChar", "sourceVersion", "contentHash"],
+      "properties": {
+        "itemId": {"type": "string", "minLength": 1, "maxLength": 120},
+        "startChar": {"type": "integer", "minimum": 0},
+        "endChar": {"type": "integer", "minimum": 1},
+        "sourceVersion": {"type": "string"},
+        "contentHash": {"type": "string"}
+      }
+    },
+    "QuoteRecoveryDraftMetadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["quoteRecoveryMethod", "originalModelQuote", "originalQuoteLocator", "state", "truthVerified", "humanReviewRequired"],
+      "properties": {
+        "quoteRecoveryMethod": {"const": "explicit-acronym-same-paragraph"},
+        "originalModelQuote": {"type": "string", "minLength": 1, "maxLength": 1200},
+        "originalQuoteLocator": {"$ref": "#/$defs/OriginalQuoteLocator"},
+        "state": {"const": "draft-context-recovery"},
+        "truthVerified": {"const": false},
+        "humanReviewRequired": {"const": true},
+        "additionalQuoteRecoveries": {
+          "type": "array", "maxItems": 29,
+          "items": {"$ref": "#/$defs/QuoteRecoveryRecord"}
+        }
+      }
+    },
+    "RetainedAttributeDraft": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "assertionId",
+        "objectId",
+        "attributeKey",
+        "name",
+        "value",
+        "rawValue",
+        "normalizedValue",
+        "valueType",
+        "ontologyPredicate",
+        "validTime",
+        "normalizationMethod",
+        "normalizationVerified",
+        "claimKind",
+        "claimKindBasis",
+        "claimKindVerified",
+        "state",
+        "reviewStatus",
+        "locatorCheck",
+        "attributionCheck",
+        "independenceStatus",
+        "truthVerified",
+        "evidenceRefs"
+      ],
+      "properties": {
+        "assertionId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "objectId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "attributeKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 600
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "rawValue": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 600
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "normalizedValue": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 600
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "valueType": {
+          "enum": [
+            "string",
+            "number"
+          ]
+        },
+        "ontologyPredicate": {
+          "type": "null"
+        },
+        "ontologyPredicateSuggestion": {
+          "$ref": "#/$defs/OntologyPredicateSuggestion"
+        },
+        "validTime": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "rawUnit": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "normalizedUnit": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "conditions": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "displayValue": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 600
+        },
+        "displayValueBasis": {
+          "const": "model-translation"
+        },
+        "displayValueVerified": {
+          "const": false
+        },
+        "normalizationMethod": {
+          "enum": [
+            "identity",
+            "model-translation"
+          ]
+        },
+        "normalizationVerified": {
+          "const": false
+        },
+        "claimKind": {
+          "enum": [
+            "manufacturer-claim",
+            "project-goal",
+            "public-reported-test",
+            "procurement-record",
+            "source-report"
+          ]
+        },
+        "claimKindBasis": {
+          "enum": [
+            "literal-qualifier",
+            "source-metadata"
+          ]
+        },
+        "claimKindVerified": {
+          "const": false
+        },
+        "state": {
+          "const": "pending-review"
+        },
+        "reviewStatus": {
+          "const": "pending"
+        },
+        "locatorCheck": {
+          "const": "passed"
+        },
+        "attributionCheck": {
+          "const": "lexical-context-passed"
+        },
+        "independenceStatus": {
+          "const": "unknown"
+        },
+        "truthVerified": {
+          "const": false
+        },
+        "evidenceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 30,
+          "items": {
+            "$ref": "#/$defs/EvidenceReference"
+          },
+          "description": "Merged source-qualified quotations supporting the same literal value; independence remains unknown."
+        },
+        "draftMetadata": {"$ref": "#/$defs/QuoteRecoveryDraftMetadata"},
+        "reviewRecommendation": {
+          "$ref": "#/$defs/ModelReviewRecommendation"
+        }
+      }
+    },
+    "OntologyPredicateSuggestion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "label", "confidence", "reason", "alternatives", "source", "humanReviewRequired", "truthVerified"],
+      "properties": {
+        "id": {"type": "string", "minLength": 1, "maxLength": 120},
+        "label": {"type": "string", "minLength": 1, "maxLength": 200},
+        "confidence": {"enum": ["low", "medium", "high"]},
+        "reason": {"type": "string", "maxLength": 600},
+        "alternatives": {"type": "array", "maxItems": 4, "items": {"type": "string", "minLength": 1, "maxLength": 120}},
+        "source": {"const": "model"},
+        "humanReviewRequired": {"const": true},
+        "truthVerified": {"const": false}
+      }
+    },
+    "LegacyCompatibleAttribute": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "name",
+        "value",
+        "evidenceRefs"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 600
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "conditions": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "validTime": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "evidenceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 4,
+          "items": {
+            "$ref": "#/$defs/EvidenceReference"
+          }
+        }
+      },
+      "description": "Compatibility shape for previously saved rows; never claims the new fields were extracted retrospectively."
+    },
+    "SuggestedFieldState": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "attributeKey",
+        "state"
+      ],
+      "properties": {
+        "attributeKey": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "state": {
+          "enum": [
+            "not-extracted",
+            "retained-draft"
+          ]
+        }
+      }
+    },
+    "SourceWindowCoverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "itemId",
+        "sourceVersion",
+        "contentHash",
+        "sourceCharacters",
+        "selectedCharacters",
+        "complete",
+        "ranges"
+      ],
+      "properties": {
+        "itemId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "sourceVersion": {
+          "type": "string"
+        },
+        "contentHash": {
+          "type": "string"
+        },
+        "sourceCharacters": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "selectedCharacters": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "complete": {
+          "type": "boolean"
+        },
+        "ranges": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "startChar",
+              "endChar"
+            ],
+            "properties": {
+              "startChar": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "endChar": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    "ObjectCoverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "scope",
+        "complete",
+        "fieldStates"
+      ],
+      "properties": {
+        "scope": {
+          "enum": [
+            "not-read",
+            "selected-object-context"
+          ]
+        },
+        "complete": {
+          "const": false
+        },
+        "selectionMethod": {
+          "const": "exact-object-identity-windows-v1"
+        },
+        "selectedCharacters": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 5000
+        },
+        "availableSourceCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "selectedSourceCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "maxCharacters": {
+          "const": 5000
+        },
+        "completeWithinStoredSources": {
+          "type": "boolean"
+        },
+        "unreadCharacters": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "notReadSourceIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sourceWindows": {
+          "type": "array",
+          "maxItems": 30,
+          "items": {
+            "$ref": "#/$defs/SourceWindowCoverage"
+          }
+        },
+        "fieldStates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SuggestedFieldState"
+          }
+        },
+        "noDisclosureConfirmed": {
+          "const": false
+        },
+        "storedBodyTruncatedSourceIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "RejectedProposalDiagnostic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "reason",
+        "state",
+        "truthVerified"
+      ],
+      "properties": {
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "state": {
+          "const": "rejected-diagnostic"
+        },
+        "truthVerified": {
+          "const": false
+        },
+        "name": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string",
+              "maxLength": 600
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "displayValue": {
+          "type": "string",
+          "maxLength": 600
+        },
+        "unit": {
+          "type": "string",
+          "maxLength": 60
+        },
+        "conditions": {
+          "type": "string",
+          "maxLength": 300
+        },
+        "validTime": {
+          "type": "string",
+          "maxLength": 200
+        },
+        "itemId": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "quote": {
+          "type": "string",
+          "maxLength": 1200
+        },
+        "attributeKey": {
+          "type": "string",
+          "maxLength": 120
+        },
+        "truncated": {
+          "const": true
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "PerObjectExtractionMetadata": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "objectId",
+        "label",
+        "type",
+        "status",
+        "proposedCount",
+        "retainedCount",
+        "rejectedCount",
+        "duplicateCount",
+        "truthVerified",
+        "gaps",
+        "coverage",
+        "rejectedReasonCounts",
+        "rejectedProposals"
+      ],
+      "properties": {
+        "calls": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2
+        },
+        "outputTruncationRetries": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "objectId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "type": {
+          "enum": [
+            "Organization",
+            "Technology",
+            "EquipmentModel",
+            "Program",
+            "TestEvent",
+            "ProcurementEvent",
+            "ProductionEvent"
+          ]
+        },
+        "status": {
+          "enum": [
+            "pending",
+            "completed",
+            "no-explicit-attributes",
+            "no-supported-attributes",
+            "failed",
+            "budget-skipped",
+            "not-selected",
+            "not-configured",
+            "invalid-identity-evidence",
+            "invalid-existing-attributes",
+            "attribute-limit",
+            "no-object-context"
+          ]
+        },
+        "proposedAttributes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "retainedAttributes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "rejectedAttributes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "duplicateAttributes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "proposedCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "retainedCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "rejectedCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "duplicateCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "modelInputItems": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "selectedCharacters": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "existingAttributes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "totalAttributes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "truthVerified": {
+          "const": false
+        },
+        "gaps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "coverage": {
+          "$ref": "#/$defs/ObjectCoverage"
+        },
+        "rejectedReasonCounts": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "rejectedProposals": {
+          "type": "array",
+          "maxItems": 12,
+          "items": {
+            "$ref": "#/$defs/RejectedProposalDiagnostic"
+          }
+        },
+        "mergedEvidenceRefCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "retainedExistingAttributes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "savedAttributes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "savedAttributesWithEvidence": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "ContractEnvelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "attributes",
+        "perObject",
+        "truthVerified"
+      ],
+      "properties": {
+        "attributes": {
+          "type": "array",
+          "maxItems": 12,
+          "items": {
+            "$ref": "#/$defs/RetainedAttributeDraft"
+          }
+        },
+        "perObject": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PerObjectExtractionMetadata"
+          }
+        },
+        "packageSnapshot": {
+          "$ref": "schema.common.json#/$defs/Snapshot"
+        },
+        "truthVerified": {
+          "const": false
+        }
+      }
+    }
+  }
+}

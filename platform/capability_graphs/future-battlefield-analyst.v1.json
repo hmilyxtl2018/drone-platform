@@ -1,0 +1,29 @@
+{
+  "graphId": "future-battlefield-analyst-capability",
+  "version": "1.0.0",
+  "agentKey": "future-battlefield-analyst",
+  "capabilities": [
+    {
+      "key": "evidence-traceability",
+      "name": "证据可追溯抽取",
+      "requiredActions": ["evidence-extraction-action", "analysis.citation_validate"],
+      "requiredEvidence": ["evidence[].sourceUri", "evidence[].quote", "evidence[].locator", "evidence[].retrievedAt", "evidence[].contentHash"],
+      "acceptance": ["每条事实候选均命中原文", "无法命中时进入 rejected 或 gap"]
+    },
+    {
+      "key": "multi-perspective-judgment",
+      "name": "多视角条件化研判",
+      "requiredActions": ["trend-analysis-action", "scenario-analysis-action"],
+      "requiredEvidence": ["findings[].supportingClaims", "findings[].conditions", "findings[].counterArguments", "findings[].unknowns"],
+      "acceptance": ["事实、判断、假设和未知分层", "启用视角均有结论或缺口"]
+    },
+    {
+      "key": "red-team-governance",
+      "name": "反证与治理审查",
+      "requiredActions": ["red-team-action"],
+      "requiredEvidence": ["redTeam.counterExamples", "redTeam.unsupportedClaims", "redTeam.conflicts"],
+      "acceptance": ["关键结论至少有一项反方检查", "冲突不得静默丢弃"]
+    }
+  ],
+  "forbiddenCapabilities": ["real_time_targeting", "weapon_control", "autonomous_release_decision"]
+}

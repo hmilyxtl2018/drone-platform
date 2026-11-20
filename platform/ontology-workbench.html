@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>装备本体工作台</title>
+  <script>
+    /* The workbench requires the local API. Redirect direct file opens to the
+       running service so the page cannot remain in an endless loading state. */
+    if (location.protocol === "file:") {
+      location.replace("http://127.0.0.1:1933/ontology-workbench.html" + location.search + location.hash);
+    }
+  </script>
+  <link rel="stylesheet" href="./ontology-workbench.css?v=49-one-row-facts">
+  <link rel="stylesheet" href="./ontology-workbench-responsive.css?v=11-dossier-views">
+</head>
+<body>
+  <header class="mast">
+    <div class="brand-block">
+      <img src="./img/logo-mark.jpg" alt="灵云智">
+      <div><p>ONTOLOGY CANDIDATE GOVERNANCE</p><h1>装备本体工作台</h1></div>
+    </div>
+    <div class="mast-metrics" aria-label="候选本体统计">
+      <span><b id="entity-total">--</b> 对象</span>
+      <span><b id="pending-total">--</b> 待审核</span>
+      <span><b id="verification-total">--</b> 核验任务</span>
+      <span id="api-state" class="api-state"><i></i>API 检查中</span>
+    </div>
+    <nav aria-label="主导航">
+      <a href="./kb.html">知识库</a>
+      <a href="./osint.html">趋势研判</a>
+      <a href="./intelligence.html?api">证据审核</a>
+    </nav>
+  </header>
+
+  <main class="workspace">
+    <aside class="entity-pane">
+      <div class="pane-title"><h2>本体树</h2><span id="visible-total">0</span></div>
+      <div class="filters">
+        <label class="search-field">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+          <input id="entity-search" type="search" placeholder="搜索型号、厂商或国家" autocomplete="off">
+        </label>
+        <input id="category-filter" type="hidden" value="">
+      </div>
+      <div id="entity-list" class="entity-list" role="listbox" aria-label="装备对象列表"><p class="loading">正在读取候选对象…</p></div>
+    </aside>
+
+    <section class="detail-pane" id="main-pane">
+      <section id="trend-workspace" class="trend-workspace" aria-label="本体分析工作台">
+        <header class="trend-heading">
+          <div class="trend-heading-left">
+            <div class="trend-heading-title"><h2>本体分析工作台</h2></div>
+          </div>
+          <div class="workbench-commandbar" aria-label="分析运行控制">
+            <span class="command-item"><small>对象</small><b id="trend-entity-count">--</b></span>
+            <span class="command-item"><small>运行状态</small><b id="analysis-run-status" class="command-status">就绪</b></span>
+            <button type="button" class="mini-action" id="analysis-run" title="启动一次本体分析运行">启动分析</button>
+          </div>
+        </header>
+        <div class="trend-main-grid">
+          <section class="agent-conversation" aria-label="本体分析 Agent 对话">
+            <div class="agent-conversation-head"><span class="agent-mark">AI</span><div class="agent-conversation-title"><b>本体分析 Agent</b><span id="agent-session-label">新会话</span></div><div class="agent-conversation-actions"><span class="agent-info"><button type="button" class="agent-info-tip" id="agent-info-tip" aria-label="查看 Agent 工作说明" aria-expanded="false">?</button><div id="agent-info-popover" class="agent-info-popover" role="tooltip" hidden><b>Agent 工作说明</b><span>查询 prompt 直接返回本体分析结果。</span><span>审计或补证 prompt 会创建持久化运行，依次调用 Firecrawl、DeepSeek 和证据校验。</span><span>运行状态保留在顶部，分析结果和执行过程在对话中展开。</span><span>属性、关系和能力都先作为候选进入审核队列，人工审核并发布后才写入正式本体。</span></div></span><button type="button" id="clear-analysis-history" class="agent-session-icon" title="清空当前对话显示；历史审计记录仍保留" aria-label="清空当前对话显示"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M10 11v6M14 11v6M8 7l1-3h6l1 3M7 7l1 14h8l1-14"/></svg></button></div></div>
+            <div id="trend-thread" class="trend-thread"></div>
+            <form id="trend-form" class="trend-form">
+              <input id="trend-input" type="text" autocomplete="off" placeholder="问我：哪些类别数据最完整？哪类无人机公开性能差异最大？哪些对象需要补证？">
+              <button type="submit">分析</button>
+            </form>
+            <div class="trend-suggestions" aria-label="推荐问题">
+              <button type="button" data-trend-prompt="按类别分析无人机本体对象分布和数据缺口">类别结构</button>
+              <button type="button" data-trend-prompt="比较各国无人机型号、厂商和来源偏差">国家/厂商</button>
+              <button type="button" data-trend-prompt="比较公开续航、速度、载荷能力指标">能力指标</button>
+              <button type="button" data-trend-prompt="说明一次分析任务应如何运行并进入审核">任务运行</button>
+            </div>
+            <details class="agent-test-prompts">
+              <summary>验证 prompts <small>填入输入框后提交</small></summary>
+              <div class="agent-test-prompt-list">
+                <button type="button" class="agent-test-prompt" data-test-prompt="按类别分析当前军用无人机本体对象分布、分类结构和数据缺口" title="按类别分析当前军用无人机本体对象分布、分类结构和数据缺口"><b>本体统计</b><span>按类别分析当前军用无人机本体对象分布、分类结构和数据缺口</span><i>填入</i></button>
+                <button type="button" class="agent-test-prompt" data-test-prompt="比较当前本体库中各国无人机型号、厂商和来源覆盖情况" title="比较当前本体库中各国无人机型号、厂商和来源覆盖情况"><b>国别与来源</b><span>比较当前本体库中各国无人机型号、厂商和来源覆盖情况</span><i>填入</i></button>
+                <button type="button" class="agent-test-prompt" data-test-prompt="比较公开续航、速度、载荷、航程和升限指标，并说明哪些数据不可比" title="比较公开续航、速度、载荷、航程和升限指标，并说明哪些数据不可比"><b>能力量化</b><span>比较公开续航、速度、载荷、航程和升限指标，并说明哪些数据不可比</span><i>填入</i></button>
+                <button type="button" class="agent-test-prompt" data-test-prompt="读取当前实体档案，列出属性缺口、来源数量、核验任务和关系候选" title="读取当前实体档案，列出属性缺口、来源数量、核验任务和关系候选"><b>实体档案</b><span>读取当前实体档案，列出属性缺口、来源数量、核验任务和关系候选</span><i>填入</i></button>
+                <button type="button" class="agent-test-prompt" data-test-prompt="为当前无人机生成通信、传感器、协同作战和作战记录的补证计划" title="为当前无人机生成通信、传感器、协同作战和作战记录的补证计划"><b>审计规划</b><span>为当前无人机生成通信、传感器、协同作战和作战记录的补证计划</span><i>填入</i></button>
+                <button type="button" class="agent-test-prompt" data-test-prompt="请审计当前无人机的通信、传感器和协同作战能力，优先采集官方资料、制造商资料、测试报告和公开影像；提取属性值、单位、适用条件、改型或配置、原文引句和来源。" title="请审计当前无人机的通信、传感器和协同作战能力，优先采集官方资料、制造商资料、测试报告和公开影像；提取属性值、单位、适用条件、改型或配置、原文引句和来源。"><b>实体补证</b><span>审计通信、传感器和协同能力，提取属性值与证据引用</span><i>填入</i></button>
+                <button type="button" class="agent-test-prompt" data-test-prompt="列出当前实体所有待审核候选，并按证据完整性、来源可靠性、型号适用性和冲突情况给出采纳、拒绝或补证建议。" title="列出当前实体所有待审核候选，并按证据完整性、来源可靠性、型号适用性和冲突情况给出采纳、拒绝或补证建议。"><b>审核判断</b><span>按证据完整性、来源可靠性和型号适用性给出审核建议</span><i>填入</i></button>
+              </div>
+            </details>
+          </section>
+        </div>
+      </section>
+      <div id="dossier-workspace" class="dossier-workspace" hidden>
+      <header class="object-header">
+        <div class="object-title">
+          <span id="object-icon" class="category-icon category-generic" aria-hidden="true">U</span>
+          <div><div class="title-line"><h2 id="object-name">选择一个装备对象</h2><span id="object-status" class="status pending">pending</span></div><p id="object-context">从左侧对象列表进入属性、证据和核验任务。</p></div>
+        </div>
+        <div class="object-facts" id="object-facts">
+          <span><small>上位类</small><b>--</b></span><span><small>本体类</small><b>--</b></span><span><small>制造商</small><b>--</b></span><span><small>原产国</small><b>--</b></span><span><small>当前版本</small><b>--</b></span>
+        </div>
+        <div class="object-actions">
+          <button id="show-trend" type="button" class="btn btn-secondary" title="返回技术趋势" aria-label="返回技术趋势"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg><span>技术趋势</span></button>
+          <button id="create-plan" type="button" class="icon-btn" title="生成核验计划：按对象缺口创建 Firecrawl 定向检索任务" aria-label="生成核验计划" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h8l3 3v15H7z"/><path d="M15 3v4h4M9.5 12h5M9.5 15h5"/><path d="m9.5 18 1.5 1.5 3-3"/></svg>
+          </button>
+          <button id="refresh-object" type="button" class="icon-btn" title="刷新对象" aria-label="刷新对象" disabled>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M6.1 8A7 7 0 0 1 18 6l2 6M18 16a7 7 0 0 1-11.9 2L4 12"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <section id="object-workflow" class="object-workflow" aria-label="对象属性治理流程"></section>
+
+      <nav class="tabs dossier-tabs" role="tablist" aria-label="实体档案工作区">
+        <button type="button" role="tab" data-tab="overview" aria-selected="true">概览</button>
+        <button type="button" role="tab" data-tab="capabilities" aria-selected="false">能力档案 <b id="capability-count">0</b></button>
+        <button type="button" role="tab" data-tab="attributes" aria-selected="false">属性与指标 <b id="attribute-count">0</b></button>
+        <button type="button" role="tab" data-tab="relations" aria-selected="false">关联关系 <b id="relation-count">0</b></button>
+        <button type="button" role="tab" data-tab="lineage" aria-selected="false">型号沿袭 <b id="lineage-count">0</b></button>
+        <button type="button" role="tab" data-tab="combat" aria-selected="false">事件与实战 <b id="combat-count">0</b></button>
+        <button type="button" role="tab" data-tab="evidence" aria-selected="false">来源证据 <b id="evidence-count">0</b></button>
+        <button type="button" role="tab" data-tab="signals" aria-selected="false">信号与观测 <b id="signal-count">0</b></button>
+        <button type="button" role="tab" data-tab="audit" aria-selected="false">实体审计 <b id="audit-count">0</b></button>
+        <button type="button" role="tab" data-tab="review" aria-selected="false">审核与结果 <b id="review-count">0</b></button>
+        <button type="button" role="tab" data-tab="versions" aria-selected="false">版本与发布 <b id="version-count">0</b></button>
+      </nav>
+
+      <div class="table-toolbar">
+        <label class="search-field compact">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+          <input id="row-search" type="search" placeholder="过滤当前列表" autocomplete="off">
+        </label>
+        <div id="view-summary" class="view-summary">请选择对象</div>
+      </div>
+
+      <div class="content-layout">
+        <div id="workbench-content" class="content"><p class="empty">选择左侧对象后查看候选本体内容。</p></div>
+        <aside id="media-panel" class="media-panel" aria-label="装备图片与三维建模预览">
+          <div class="media-panel-heading"><b>装备可视化</b><span>预览</span></div>
+          <div class="media-view media-image-view"><span class="media-placeholder-icon">◈</span><b>选择对象查看图片</b><small>图片来源会保留原始链接</small></div>
+          <div class="media-view media-model-view"><span class="media-wireframe">◇</span><b>3D 建模视口</b><small>模型接入后在此加载</small></div>
+        </aside>
+      </div>
+      </div>
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    </section>
+  </main>
+  <script type="module" src="./ontology-workbench.js?v=45-model-tab"></script>
+</body>
+</html>
+
+
+
+
+

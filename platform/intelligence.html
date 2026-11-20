@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="zh-CN" class="intelligence-page">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>情报采集 Agent · Agents 工作台</title>
+    <link rel="stylesheet" href="./agents.css?v=1" />
+    <link rel="stylesheet" href="./intelligence.css?v=1" />
+  </head>
+  <body class="agents-page intelligence-page">
+    <header class="agents-mast">
+      <div class="mast-brand">
+        <img src="./img/logo-mark.jpg" alt="灵云智" />
+        <div>
+          <p class="eyebrow">Ontology based Agents Studio</p>
+          <h1>情报采集 Agent</h1>
+        </div>
+      </div>
+      <div class="run-identity" aria-label="情报治理上下文">
+        <span class="run-chip"><i class="status-dot live"></i><span id="service-status">治理链路就绪</span></span>
+        <span class="run-chip">手动提交 · 人工审核</span>
+        <span class="run-chip">coast-raid-k</span>
+        <span class="run-chip">提取模式 <b id="provider-label" aria-live="polite">正在读取状态</b></span>
+      </div>
+      <div class="mast-actions">
+        <a class="nav-link nav-link-accent" href="./agents.html?api">Agents 工作台</a>
+        <a class="nav-link" href="./kb.html">知识库</a>
+      </div>
+    </header>
+
+    <main class="intel-shell">
+      <aside class="intel-sidebar">
+        <section class="panel source-panel">
+          <div class="panel-head">
+            <div><p class="eyebrow">COLLECT / INTAKE</p><h2>提交资料</h2></div>
+            <span class="state-pill approved">只读提取</span>
+          </div>
+          <form id="source-form" class="source-form">
+            <label>资料标题<input id="source-title" name="title" value="知识库运行规范更新" required /></label>
+            <label>来源 URI<input id="source-uri" name="sourceUri" value="demo://governance/runbook-2026-09" required /></label>
+            <div class="form-row">
+              <label>来源版本<input id="source-version" name="sourceVersion" value="2026.09" /></label>
+              <label>访问依据<select id="access-basis" name="accessBasis"><option value="public">公开资料</option><option value="authorized">已授权资料</option></select></label>
+            </div>
+            <div class="form-row">
+              <label>来源可靠性<select id="source-reliability" name="sourceReliability"><option value="primary">一手来源</option><option value="secondary">二手来源</option><option value="unknown">待确认</option></select></label>
+              <label>提取语言<select id="extract-language"><option>中文</option><option>中英混合</option><option>英文</option></select></label>
+            </div>
+            <label>资料正文 <span class="field-note">可粘贴自然语言；也支持 主题 | 谓词 | 值</span><textarea id="source-body" name="body" rows="7" placeholder="粘贴原始资料正文，保留段落和换行，便于逐条核验证据。" required>文档归档 | 保留期限 | 30 天
+运行事件 | 审计方式 | append-only
+人工审核 | 发布条件 | 逐条确认</textarea></label>
+            <div class="form-tip"><span class="tip-icon">i</span><span>提交时按当前提取模式生成候选。规则模式会将未解析正文标为待核验；模型调用失败时回退到规则提取，并在候选详情记录。原文保留哈希、行号和引用片段，候选需人工审核后发布。</span></div>
+            <button class="btn btn-primary submit-source" type="submit"><span>提取候选声明</span><span aria-hidden="true">↗</span></button>
+          </form>
+        </section>
+
+        <section class="panel intake-panel">
+          <div class="panel-head compact"><div><p class="eyebrow">SOURCE LEDGER</p><h2>资料队列 <span id="document-count" class="count-badge">0</span></h2></div><button id="refresh-state" class="icon-btn" type="button" title="刷新治理状态" aria-label="刷新治理状态">↻</button></div>
+          <div id="document-list" class="document-list"></div>
+        </section>
+      </aside>
+
+      <section class="intel-main" aria-label="候选声明审核">
+        <div class="intel-tabs" role="tablist" aria-label="情报治理视图">
+          <button class="intel-tab active" type="button" data-filter="all" role="tab" aria-selected="true">待审核 <span id="pending-count">0</span></button>
+          <button class="intel-tab" type="button" data-filter="conflict" role="tab" aria-selected="false">有冲突 <span id="conflict-count">0</span></button>
+          <button class="intel-tab" type="button" data-filter="reviewed" role="tab" aria-selected="false">已处理 <span id="reviewed-count">0</span></button>
+          <span class="workspace-spacer"></span>
+          <button id="publish-version" class="btn btn-primary" type="button" disabled>发布知识版本</button>
+        </div>
+        <div class="intel-toolbar">
+          <div><p class="eyebrow">CLAIM REVIEW / HUMAN GOVERNANCE</p><h2>候选声明</h2><p>逐条确认 Agent 的提取结果；发布前仍保留原文证据与冲突关系。</p></div>
+          <div class="toolbar-actions"><button id="select-accepted" class="filter-chip" type="button">选择可发布项</button><button id="clear-selection" class="filter-chip" type="button">清空选择</button></div>
+        </div>
+        <div id="candidate-list" class="candidate-list" aria-live="polite"></div>
+        <div id="empty-state" class="empty-state" hidden><div class="empty-mark">✓</div><h3>当前没有需要处理的声明</h3><p>提交一份资料，情报采集 Agent 会先生成候选，再进入人工审核队列。</p></div>
+      </section>
+
+      <aside class="intel-inspector" aria-label="候选声明详情与证据">
+        <section class="panel claim-panel">
+          <div class="panel-head compact"><div><p class="eyebrow">CLAIM DETAIL</p><h2>声明详情</h2></div><span id="claim-status" class="state-pill pending">待选择</span></div>
+          <div id="claim-detail" class="claim-detail"><div class="placeholder">从中间列表选择一条候选声明。</div></div>
+        </section>
+        <section class="panel conflict-panel">
+          <div class="panel-head compact"><div><p class="eyebrow">CONFLICT CHECK</p><h2>冲突与差异</h2></div><span id="conflict-summary" class="mini-summary">—</span></div>
+          <div id="conflict-detail" class="conflict-detail"><div class="placeholder">没有选中的冲突。</div></div>
+        </section>
+        <section class="panel evidence-panel">
+          <div class="panel-head compact"><div><p class="eyebrow">EVIDENCE CHAIN</p><h2>证据链</h2></div><button id="toggle-evidence" class="icon-btn" type="button" title="展开或收起证据" aria-label="展开或收起证据">⌄</button></div>
+          <div id="evidence-detail" class="evidence-detail"><div class="placeholder">选择候选声明后查看来源、行号和哈希。</div></div>
+        </section>
+        <section class="panel version-panel">
+          <div class="panel-head compact"><div><p class="eyebrow">KNOWLEDGE VERSIONS</p><h2>发布记录</h2></div></div>
+          <div id="version-list" class="version-list"></div>
+        </section>
+      </aside>
+    </main>
+
+    <div class="toast-stack" id="toast-stack" aria-live="polite"></div>
+    <script>
+      if (location.protocol === "file:") {
+        document.write("<div class='file-warning'>不要双击本地 html。<br>请打开 <b>http://127.0.0.1:8765/intelligence.html</b></div>");
+      }
+    </script>
+    <script type="module" src="./intelligence.js?v=2"></script>
+  </body>
+</html>

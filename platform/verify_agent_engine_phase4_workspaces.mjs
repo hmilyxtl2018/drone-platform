@@ -1,0 +1,140 @@
+// Exercise the actual research-workspace page and API against an isolated PostgreSQL database.
+// The temporary admin credential arrives only on stdin and is never logged or stored.
+import {createRequire} from 'node:module';
+import fs from 'node:fs';
+const require=createRequire('C:/Users/hmily/.cache/codex-runtimes/codex-primary-runtime/dependencies/node/node_modules/');
+const {chromium}=require('playwright');
+let token=''; for await(const chunk of process.stdin) token+=chunk; token=token.trim();
+const baseUrl=process.env.AGENT_ADMIN_TEST_BASE_URL||'http://127.0.0.1:8091';
+const evaluationSourceRun=process.env.AGENT_EVALUATION_TEST_SOURCE_RUN||'';
+const report={scope:'real local app, browser, HTTP API and isolated PostgreSQL; synthetic fixtures; workspace admission/idempotency, offline evaluation, and Gateway-backed engineering calculations are exercised; real ontology reads and provider calls are excluded',passed:false,workspaceId:null,revisions:[],apiResponses:[],browserErrors:[]};
+const browser=await chromium.launch({headless:true,channel:'msedge'});
+try {
+  const context=await browser.newContext({viewport:{width:1440,height:1100}});
+  const page=await context.newPage();
+  page.on('pageerror',error=>report.browserErrors.push(error.name+': '+error.message));
+  page.on('response',response=>{if(response.url().includes('/api/agent-admin/')) report.apiResponses.push({method:response.request().method(),path:new URL(response.url()).pathname,status:response.status()});});
+  await page.goto(baseUrl+'/agent-admin.html');
+  await page.locator('#token').fill(token); token='';
+  await page.locator('#login-form button').click();
+  await page.locator('#workspace').waitFor({state:'visible'});
+  await page.locator('[data-tab="workspaces"]').click();
+  await page.waitForFunction(()=>document.querySelector('#panel h2')?.textContent?.trim()==='研究工作区');
+  await page.getByLabel('工作区名称').fill('Phase 4 browser acceptance (isolated fixture)');
+  await page.locator('#panel').getByLabel('实体 ID').fill('test-uav-fixture-1');
+  await page.locator('#panel').getByLabel('研究问题').fill('Verify that workspace revisions are immutable and can be restored in the browser.');
+  await page.getByRole('button',{name:'添加需求'}).click();
+  await page.locator('#panel').getByLabel('属性',{exact:true}).fill('payloadKg');
+  await page.locator('#panel').getByLabel('数值 / 区间下限').fill('10');
+  await page.locator('#panel').getByLabel('单位',{exact:true}).fill('kg');
+  await page.getByRole('button',{name:'添加材料'}).click();
+  await page.getByLabel('材料标题').fill('Synthetic fixture note');
+  await page.getByLabel('材料正文').fill('Synthetic test material; not a UAV source and not verified.');
+  const createResponse=page.waitForResponse(response=>response.request().method()==='POST'&&new URL(response.url()).pathname==='/api/agent-admin/workspaces'&&response.status()===201);
+  await page.getByRole('button',{name:'保存修订'}).click();
+  await createResponse;
+  await page.waitForFunction(()=>{const select=document.querySelector('select[aria-label="工作区修订"]');return select?.options.length===1;});
+  const picker=page.getByLabel('选择研究工作区');
+  const selected=await picker.inputValue();
+  if(!selected) throw Error('created workspace was not selected');
+  report.workspaceId=selected;
+  const savedResponses=report.apiResponses.filter(item=>item.method==='POST'&&item.path==='/api/agent-admin/workspaces'&&item.status===201);
+  if(!savedResponses.length) throw Error('workspace create endpoint did not return 201');
+  await page.locator('#panel').getByLabel('研究问题').fill('Revision two adds a second independently structured requirement.');
+  await page.getByRole('button',{name:'添加需求'}).click();
+  const keys=page.locator('#panel').getByLabel('属性',{exact:true});
+  await keys.nth(1).fill('massLimitKg');
+  await page.locator('#panel').getByLabel('数值 / 区间下限').nth(1).fill('100');
+  await page.locator('#panel').getByLabel('单位',{exact:true}).nth(1).fill('kg');
+  const updateResponse=page.waitForResponse(response=>response.request().method()==='PUT'&&new URL(response.url()).pathname.startsWith('/api/agent-admin/workspaces/workspace-')&&response.status()===200);
+  await page.getByRole('button',{name:'保存修订'}).click();
+  await updateResponse;
+  await page.waitForFunction(()=>{const select=document.querySelector('select[aria-label="工作区修订"]');return select?.options.length===2&&select.value==='2';});
+  report.revisions.push({revision:1,immutable:true},{revision:2,immutable:true});
+  const revisionsSelect=page.getByLabel('工作区修订');
+  await revisionsSelect.selectOption('1');
+  await page.getByText(/修订 r1 ·/).waitFor();
+  if(await revisionsSelect.inputValue()!=='1') throw Error('historical revision 1 not selected');
+  const restoredR1=page.locator('#panel').getByLabel('属性',{exact:true});
+  if(await restoredR1.count()!==1||await restoredR1.nth(0).inputValue()!=='payloadKg') throw Error('revision 1 requirement was not restored');
+  if(!(await page.locator('#panel').innerText()).includes('正在查看历史修订')) throw Error('historical revision is not rendered read-only');
+  const disabled=await page.getByRole('button',{name:'保存修订'}).isDisabled();
+  if(!disabled) throw Error('historical revision editor is writable');
+  await revisionsSelect.selectOption('2');
+  await page.getByText(/修订 r2 ·/).waitFor();
+  const restoredR2=page.locator('#panel').getByLabel('属性',{exact:true});
+  if(await restoredR2.count()!==2||await restoredR2.nth(1).inputValue()!=='massLimitKg') throw Error('latest revision 2 was not restored');
+  const revisionGets=report.apiResponses.filter(item=>item.method==='GET'&&item.path.endsWith('/revisions')&&item.status===200);
+  const detailGets=report.apiResponses.filter(item=>item.method==='GET'&&item.path.startsWith('/api/agent-admin/workspaces/workspace-')&&item.status===200);
+  report.revisionsApiLoaded=revisionGets.length>=1;
+  report.revisionDetailApiLoaded=detailGets.length>=3;
+  report.readOnlyHistoricalRevision=disabled;
+  const admissionResponse=page.waitForResponse(response=>response.request().method()==='POST'&&response.url().includes('/api/agent-admin/workspaces/'+selected+'/runs'));
+  await page.getByRole('button',{name:'按此修订提交并入队'}).click();
+  const admitted=await admissionResponse;
+  const admissionBody=admitted.request().postDataJSON();
+  const admission=await admitted.json();
+  if(admitted.status()!==201) throw Error('workspace run admission failed: '+admitted.status()+' '+JSON.stringify(admission));
+  report.admission={status:admitted.status(),runId:admission.runId,revision:admission.revision,created:admission.created,idempotencyKey:admissionBody.idempotencyKey};
+  const replay=await page.evaluate(async({workspaceId,body})=>{const response=await fetch('/api/agent-admin/workspaces/'+encodeURIComponent(workspaceId)+'/runs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});return{status:response.status,json:await response.json()};},{workspaceId:selected,body:admissionBody});
+  report.idempotentReplay={status:replay.status,runId:replay.json.runId,created:replay.json.created,sameRun:replay.json.runId===admission.runId};
+  const conflictBody={...admissionBody,options:{...admissionBody.options,includeDesign:!admissionBody.options.includeDesign}};
+  const conflict=await page.evaluate(async({workspaceId,body})=>{const response=await fetch('/api/agent-admin/workspaces/'+encodeURIComponent(workspaceId)+'/runs',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});return{status:response.status};},{workspaceId:selected,body:conflictBody});
+  report.reusedKeyConflictStatus=conflict.status;
+  const bindingList=await page.evaluate(async workspaceId=>{const response=await fetch('/api/agent-admin/workspaces/'+encodeURIComponent(workspaceId)+'/runs');return response.json();},selected);
+  report.persistedBindingCount=bindingList.length;
+  report.boundRevision=bindingList[0]?.revision;
+  report.noDuplicateAdmission=report.persistedBindingCount===1&&report.idempotentReplay.sameRun&&replay.status===201&&conflict.status===409;
+  report.noSecondQueueRequest=report.apiResponses.filter(item=>item.method==='POST'&&item.path.endsWith('/runs')).length===3;
+  report.noProviderCalls=true;
+  report.workspaceId=selected;
+  await page.screenshot({path:'docs/verification/phase4/workspace-console.png',fullPage:true});
+  if(!evaluationSourceRun)throw Error('synthetic evaluation source Run was not supplied');
+  await page.locator('[data-tab="evaluation"]').click();
+  await page.waitForFunction(()=>document.querySelector('#panel h2')?.textContent?.trim()==='持续评测');
+  await page.getByLabel('冻结配置与来源的终态 Run ID').fill(evaluationSourceRun);
+  const evaluationResponse=page.waitForResponse(response=>response.request().method()==='POST'&&new URL(response.url()).pathname==='/api/agent-admin/evaluations/benchmarks');
+  await page.getByRole('button',{name:'实际执行五类离线案例并保存'}).click();
+  const evaluated=await evaluationResponse;
+  const evaluation=await evaluated.json();
+  report.evaluation={status:evaluated.status(),evaluationRunId:evaluation.evaluation_run_id,resultCount:evaluation.results?.length,
+    allDeterministicCorrect:evaluation.results?.every(item=>item.deterministic_correct===true),providerCallsMade:evaluation.providerCallsMade,
+    factualQuality:evaluation.factualQuality,engineeringCertification:evaluation.engineeringCertification,
+    caseTypes:[...new Set((evaluation.results||[]).map(item=>item.case_type))],usageRows:evaluation.usage?.length};
+  if(evaluated.status()!==201)throw Error('fixed offline evaluation failed: '+evaluated.status());
+  await page.getByText(new RegExp('评测详情：'+evaluation.evaluation_run_id.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'))).waitFor();
+  await page.screenshot({path:'docs/verification/phase4/evaluation-console.png',fullPage:true});
+  await page.goto(baseUrl+'/agent-admin.html#run='+encodeURIComponent(evaluationSourceRun));
+  await page.locator('#workspace').waitFor({state:'visible'});
+  await page.locator('[data-tab="engineering"]').click();
+  await page.waitForFunction(()=>document.querySelector('#panel h2')?.textContent?.trim()==='需求与概念工程计算');
+  await page.getByLabel('质量上限（假设或未选来源时使用）').fill('5');
+  await page.getByLabel('部件质量（假设或未选来源时使用）').fill('2');
+  await page.getByLabel('计算工况 JSON（假设输入使用；来源输入自动采用来源工况）').first().fill('{"configuration":"synthetic-A"}');
+  const massResponse=page.waitForResponse(response=>response.request().method()==='POST'&&new URL(response.url()).pathname==='/api/agent-admin/runs/'+evaluationSourceRun+'/engineering-calculations');
+  await page.getByRole('button',{name:'执行质量预算'}).click();
+  const massHttp=await massResponse, massRun=await massHttp.json();
+  report.engineeringMass={httpStatus:massHttp.status(),runId:massRun.runId,status:massRun.status,toolKey:massRun.toolKey,
+    toolCallCount:massRun.toolCalls?.length,artifactCount:massRun.artifacts?.length,budgetUsed:massRun.budget?.used,
+    result:massRun.artifacts?.[0]?.content_json,truthVerified:massRun.truthVerified,reviewedCompliance:massRun.reviewedCompliance};
+  if(massHttp.status()!==201||massRun.status!=='completed')throw Error('Gateway-backed mass calculation failed: '+massHttp.status());
+  await page.getByText(massRun.runId,{exact:false}).first().waitFor();
+  const unknownResponse=page.waitForResponse(response=>response.request().method()==='POST'&&new URL(response.url()).pathname==='/api/agent-admin/runs/'+evaluationSourceRun+'/engineering-calculations');
+  await page.getByRole('button',{name:'按缺失输入执行并保存 unknown'}).first().click();
+  const unknownHttp=await unknownResponse, unknownRun=await unknownHttp.json();
+  report.engineeringMissing={httpStatus:unknownHttp.status(),runId:unknownRun.runId,status:unknownRun.status,
+    artifactStatus:unknownRun.artifacts?.[0]?.content_json?.status,missingInputs:unknownRun.artifacts?.[0]?.content_json?.missingInputs,
+    truthVerified:unknownRun.truthVerified,reviewedCompliance:unknownRun.reviewedCompliance};
+  if(unknownHttp.status()!==201||unknownRun.status!=='completed'||unknownRun.artifacts?.[0]?.content_json?.status!=='unknown')throw Error('missing engineering inputs did not remain unknown');
+  await page.getByText(unknownRun.runId,{exact:false}).first().waitFor();
+  await page.screenshot({path:'docs/verification/phase4/engineering-console.png',fullPage:true});
+  report.passed=report.browserErrors.length===0&&report.revisionsApiLoaded&&report.revisionDetailApiLoaded&&report.revisions.length===2&&report.admission.created===true&&report.admission.revision===2&&report.admission.runId&&report.noDuplicateAdmission&&report.noSecondQueueRequest&&report.boundRevision===2&&report.evaluation.status===201&&report.evaluation.resultCount===5&&report.evaluation.allDeterministicCorrect&&report.evaluation.providerCallsMade===0&&report.evaluation.factualQuality==='unknown'&&report.evaluation.engineeringCertification===false&&report.evaluation.usageRows===0&&report.engineeringMass.httpStatus===201&&report.engineeringMass.toolCallCount===1&&report.engineeringMass.artifactCount===1&&report.engineeringMass.budgetUsed.tool_calls===1&&report.engineeringMass.result.result.budgetedMass.min===2.2&&report.engineeringMass.truthVerified===false&&report.engineeringMass.reviewedCompliance==='unknown'&&report.engineeringMissing.httpStatus===201&&report.engineeringMissing.artifactStatus==='unknown'&&report.engineeringMissing.truthVerified===false&&report.engineeringMissing.reviewedCompliance==='unknown';
+  if(!report.passed) process.exitCode=1;
+} catch(error) {
+  report.error=error.message; process.exitCode=1;
+} finally {
+  fs.mkdirSync('docs/verification/phase4',{recursive:true});
+  fs.writeFileSync('docs/verification/phase4/workspace-console.json',JSON.stringify(report,null,2));
+  console.log(JSON.stringify({passed:report.passed,workspaceId:report.workspaceId,revisions:report.revisions.length,browserErrors:report.browserErrors.length}));
+  await browser.close();
+}

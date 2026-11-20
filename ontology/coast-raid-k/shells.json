@@ -1,0 +1,38 @@
+{
+  "package": "coast-raid-k",
+  "permitWriter": "monitor.gate",
+  "templates": [
+    {
+      "id": "shell-blue-uav",
+      "type": "ShellTemplate",
+      "bindsPlatformType": "blue_uav",
+      "stages": [
+        {
+          "name": "感知",
+          "reads": ["SEARCH", "B_ship", "C_low"],
+          "writes": ["Track"]
+        },
+        {
+          "name": "推理",
+          "reads": ["Track", "inSam", "threatSam"],
+          "writes": ["Identity"]
+        },
+        {
+          "name": "决策",
+          "reads": ["Identity", "Channel", "m_SAM"],
+          "writes": ["Pair"]
+        },
+        {
+          "name": "交互",
+          "reads": ["GState", "Link"],
+          "writes": ["Track"]
+        },
+        {
+          "name": "行动",
+          "reads": ["Slot", "Pair"],
+          "writes": ["Slot"]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1209 @@
+{
+  "package": "coast-raid-k",
+  "note": "词表只负责外观与用在哪。类层次、对象属性、数据属性、公理在 tbox.json。全部都是实体；不用面向对象方法表说话。",
+  "depict": {
+    "icon": "平面图符，与共同图同一套",
+    "photo": "情报静帧，不是几何网格",
+    "volume": "可行集体积示意，不是占领区网格",
+    "mark": "抽象记号，无外观几何",
+    "none": "不画"
+  },
+  "facets": {
+    "class": "类：rdfs:subClassOf 链。顶是 Entity。个体 rdf:type 某类。",
+    "data": "数据属性：字面量（modality、claims、τ…）",
+    "object": "对象属性：实体到实体（hasState、boundTo、writes…）",
+    "axiom": "公理：Manchester/DL。约束是公理，不是方法。",
+    "state": "状态：Quality。公理 Entity ⊑ hasState some Quality。不是 Agent 才有状态。"
+  },
+  "types": {
+    "Class": {
+      "depict": "mark",
+      "glyph": "class",
+      "what": "owl:Class。概念本身也是可陈述的实体",
+      "usedIn": [
+        {
+          "page": "知识库",
+          "href": "./kb.html",
+          "look": "概念模块"
+        }
+      ],
+      "state": {
+        "kind": "compile",
+        "states": [
+          "defined"
+        ],
+        "illegal": [
+          "mutate TBox at run"
+        ]
+      }
+    },
+    "Package": {
+      "depict": "mark",
+      "glyph": "pack",
+      "has": [
+        "attrs",
+        "state"
+      ],
+      "what": "一包交战本体的封皮。六类：战场、规则、算法、交战、Agent、知识。",
+      "usedIn": [
+        {
+          "page": "知识库",
+          "href": "./kb.html",
+          "look": "本页清单"
+        }
+      ],
+      "state": {
+        "kind": "static",
+        "structure": "sealed",
+        "states": [
+          "sealed"
+        ],
+        "illegal": [
+          "add envelope class at run",
+          "drop Rule or Algorithm from envelope"
+        ]
+      }
+    },
+    "Exclude": {
+      "depict": "mark",
+      "glyph": "ban",
+      "has": [
+        "constraint",
+        "state"
+      ],
+      "what": "禁止项。拦住模型员，不是可启用装备",
+      "usedIn": [
+        {
+          "page": "知识库",
+          "href": "./kb.html",
+          "look": "封皮排除"
+        }
+      ],
+      "state": {
+        "kind": "static",
+        "states": [
+          "listed"
+        ],
+        "illegal": [
+          "enable an exclude"
+        ]
+      }
+    },
+    "Shoreline": {
+      "depict": "volume",
+      "glyph": "shore",
+      "has": [
+        "attrs",
+        "constraint",
+        "state"
+      ],
+      "what": "岸海划分。不自动挪包络",
+      "usedIn": [
+        {
+          "page": "岸海态势",
+          "href": "./space.html",
+          "look": "砂盘岸线"
+        },
+        {
+          "page": "平面图",
+          "href": "./cop.html",
+          "look": "同一条岸"
+        }
+      ],
+      "state": {
+        "kind": "compile",
+        "states": [
+          "valid"
+        ],
+        "events": [
+          "compile"
+        ],
+        "illegal": [
+          "move shoreline to move envelopes"
+        ]
+      }
+    },
+    "Region": {
+      "depict": "mark",
+      "glyph": "region",
+      "has": [
+        "attrs",
+        "constraint",
+        "state"
+      ],
+      "what": "海或陆。运动域和阵地的容器",
+      "usedIn": [
+        {
+          "page": "岸海态势",
+          "href": "./space.html",
+          "look": "海暗陆亮"
+        },
+        {
+          "page": "平面图",
+          "href": "./cop.html",
+          "look": "陆格海无格"
+        }
+      ],
+      "state": {
+        "kind": "compile",
+        "states": [
+          "SEA",
+          "LAND"
+        ],
+        "illegal": [
+          "region neither SEA nor LAND"
+        ]
+      }
+    },
+    "Membership": {
+      "depict": "mark",
+      "glyph": "subset",
+      "has": [
+        "constraint",
+        "state"
+      ],
+      "what": "谁必须落在哪一域。违规拒包",
+      "usedIn": [
+        {
+          "page": "知识库",
+          "href": "./kb.html",
+          "look": "战场GIS隶属"
+        }
+      ],
+      "state": {
+        "kind": "compile",
+        "states": [
+          "holds",
+          "violates"
+        ],
+        "illegal": [
+          "defer membership to tick"
+        ]
+      }
+    },
+    "Envelope": {
+      "depict": "volume",
+      "glyph": "hemi",
+      "has": [
+        "attrs",
+        "state"
+      ],
+      "what": "交战可行集，不是占领区",
+      "usedIn": [
+        {
+          "page": "岸海态势",
+          "href": "./space.html",
+          "look": "BMD/SAM 半球"
+        },
+        {
+          "page": "作战协同",
+          "href": "./field.html",
+          "look": "区内/区沿/过门"
+        }
+      ],
+      "state": {
+        "kind": "compile",
+        "structure": "geometry-frozen",
+        "states": [
+          "valid"
+        ],
+        "illegal": [
+          "paint as occupied",
+          "grow at run"
+        ]
+      }
+    },
+    "Corridor": {
+      "depict": "volume",
+      "glyph": "box",
+      "has": [
+        "attrs",
+        "constraint",
+        "state"
+      ],
+      "what": "贴海突防体积",
+      "usedIn": [
+        {
+          "page": "岸海态势",
+          "href": "./space.html",
+          "look": "红盒子"
+        },
+        {
+          "page": "平面图",
+          "href": "./cop.html",
+          "look": "走廊投影"
+        }
+      ],
+      "state": {
+        "kind": "compile",
+        "states": [
+          "valid"
+        ],
+        "illegal": [
+          "leave C_low as lo"
+        ]
+      }
+    },
+    "SearchSector": {
+      "depict": "volume",
+      "glyph": "sector",
+      "has": [
+        "attrs",
+        "state"
+      ],
+      "what": "岸搜低空空域，不是 SAM 半球",
+      "usedIn": [
+        {
+          "page": "平面图",
+          "href": "./cop.html",
+          "look": "金扇"
+        }
+      ],
+      "state": {
+        "kind": "compile",
+        "states": [
+          "valid"
+        ],
+        "illegal": [
+          "treat SEARCH as B_SAM"
+        ]
+      }
+    },
+    "DetectionDisk": {
+      "depict": "volume",
+      "glyph": "disk",
+      "has": [
+        "attrs",
+        "constraint",
+        "state"
+      ],
+      "what": "舰载探测。跟踪不打",
+      "usedIn": [
+        {
+          "page": "岸海态势",
+          "href": "./space.html",
+          "look": "舰周盘"
+        },
+        {
+          "page": "平面图",
+          "href": "./cop.html",
+          "look": "舰探圆"
+        }
+      ],
+      "state": {
+        "kind": "compile",
+        "states": [
+          "valid"
+        ],
+        "illegal": [
+          "Permit in B_ship"
+        ]
+      }
+    },
+    "JamBloom": {
+      "depict": "volume",
+      "glyph": "bloom",
+      "has": [
+        "attrs",
+        "state"
+      ],
+      "what": "干扰开花，仅开机时",
+      "usedIn": [
+        {
+          "page": "作战协同",
+          "href": "./field.html",
+          "look": "点拒止"
+        }
+      ],
+      "state": {
+        "kind": "runtime",
+        "states": [
+          "off",
+          "on"
+        ],
+        "events": [
+          "jam",
+          "restore"
+        ],
+        "illegal": [
+          "bloom while emitter off"
+        ]
+      }
+    },
+    "CommandPost": {
+      "depict": "icon",
+      "glyph": "c2",
+      "has": [
+        "attrs",
+        "iface",
+        "state"
+      ],
+      "what": "岸上 C2。G(t) 的根",
+      "usedIn": [
+        {
+          "page": "作战协同",
+          "href": "./field.html",
+          "look": "金线根"
+        },
+        {
+          "page": "平面图",
+          "href": "./cop.html",
+          "look": "C2 符号"
+        }
+      ],
+      "state": {
+        "kind": "runtime",
+        "states": [
+          "up",
+          "denied-root"
+        ],
+        "illegal": [
+          "issue team Permit while denied"
+        ]
+      }
+    },
+    "Sensor": {
+      "depict": "icon",
+      "glyph": "radar",
+      "has": [
+        "attrs",
+        "iface",
+        "state"
+      ],
+      "what": "雷达站。覆盖体积，不是发射架",
+      "usedIn": [
+        {
+          "page": "平面图",
+          "href": "./cop.html",
+          "look": "岸搜/制导"
+        }
+      ],
+      "state": {
+        "kind": "runtime",
+        "states": [
+          "idle",
+          "tracking"
+        ],
+        "illegal": [
+          "Sensor kind satellite"
+        ]
+      }
+    },
+    "Shooter": {
+      "depict": "icon",
+      "glyph": "sam",
+      "has": [
+        "attrs",
+        "iface",
+        "state"
+      ],
+      "what": "发射阵地。拥有包络，自己不是 Agent 壳体",
+      "usedIn": [
+        {
+          "page": "岸海态势",
+          "href": "./space.html",
+          "look": "发射/井"
+        }
+      ],
+      "state": {
+        "kind": "runtime",
+        "states": [
+          "idle",
+          "assigned",
+          "saturated"
+        ],
+        "illegal": [
+          "open gate because saturated"
+        ]
+      }
+    },
+    "Platform": {
+      "depict": "icon",
+      "glyph": "ship",
+      "has": [
+        "attrs",
+        "iface",
+        "state"
+      ],
+      "what": "战场里的平台实例型（舰）。无人机见 PlatformType",
+      "usedIn": [
+        {
+          "page": "平面图",
+          "href": "./cop.html",
+          "look": "军舰"
+        }
+      ],
+      "state": {
+        "kind": "runtime",
+        "states": [
+          "idle",
+          "tracking-only"
+        ],
+        "illegal": [
+          "ship disk as shoot envelope"
+        ]
+      }
+    },
+    "Emitter": {
+      "depict": "icon",
+      "glyph": "jammer",
+      "has": [
+        "attrs",
+        "iface",
+        "state"
+      ],
+      "what": "干扰源。掐 G(t)",
+      "usedIn": [
+        {
+          "page": "作战协同",
+          "href": "./field.html",
+          "look": "拒止"
+        }
+      ],
+      "state": {
+        "kind": "runtime",
+        "states": [
+          "off",
+          "on"
+        ],
+        "events": [
+          "jam",
+          "restore"
+        ],
+        "illegal": [
+          "team fusion while on"
+        ]
+      }
+    },
+    "PlatformType": {
+      "depict": "photo",
+      "glyph": "uav",
+      "has": [
+        "attrs",
+        "behavior",
+        "iface",
+        "state"
+      ],
+      "what": "可编成的平台型。本幕 ITEM 仅 inScene=true；型库 OBJECT-TYPE 可先于场景存在。行为在壳体上，不在职能方块上",
+      "usedIn": [
+        {
+          "page": "作战协同",
+          "href": "./field.html",
+          "look": "点平台看写入"
+        },
+        {
+          "page": "球面码",
+          "href": "./swarm.html",
+          "look": "分层槽位"
+        }
+      ],
+      "state": {
+        "kind": "static",
+        "states": [
+          "published"
+        ],
+        "illegal": [
+          "mutate type at run",
+          "spawn inScene=false"
+        ]
+      }
+    },
+    "Needline": {
+      "depict": "mark",
+      "glyph": "link",
+      "has": [
+        "attrs",
+        "iface",
+        "state"
+      ],
+      "what": "岸上数据链 G(t)。不是雷达波，不是 Link-16",
+      "usedIn": [
+        {
+          "page": "作战协同",
+          "href": "./field.html",
+          "look": "金线通断"
+        }
+      ],
+      "state": {
+        "kind": "runtime",
+        "states": [
+          "up",
+          "denied"
+        ],
+        "events": [
+          "jam",
+          "restore"
+        ],
+        "illegal": [
+          "team Permit while denied"
+        ]
+      }
+    },
+    "Link": {
+      "depict": "mark",
+      "glyph": "link",
+      "has": [
+        "attrs",
+        "iface",
+        "state"
+      ],
+      "what": "机站 / 机间 / 舰岸",
+      "usedIn": [
+        {
+          "page": "平面图",
+          "href": "./cop.html",
+          "look": "通信线型"
+        }
+      ],
+      "state": {
+        "kind": "runtime",
+        "states": [
+          "up",
+          "down"
+        ],
+        "illegal": [
+          "cut intra-flight with G(t)"
+        ]
+      }
+    },
+    "Invariant": {
+      "depict": "mark",
+      "glyph": "gate",
+      "has": [
+        "attrs",
+        "constraint",
+        "state"
+      ],
+      "what": "交战侧镜像。与 Rule 同 id 对拍；入库以 Rule 为准，本型不单独成条",
+      "usedIn": [
+        {
+          "page": "作战协同",
+          "href": "./field.html",
+          "look": "过门/规模灯"
+        }
+      ],
+      "state": {
+        "kind": "compile",
+        "structure": "frozen-dual-of-Rule",
+        "states": [
+          "aligned",
+          "drift"
+        ],
+        "illegal": [
+          "id set ≠ Rule id set"
+        ]
+      }
+    },
+    "Rule": {
+      "depict": "mark",
+      "glyph": "rule",
+      "has": [
+        "attrs",
+        "constraint",
+        "state"
+      ],
+      "what": "封皮规则本体。结构冻结；每拍只评估，不得豁免 hard 与 roe",
+      "usedIn": [
+        {
+          "page": "知识库",
+          "href": "./kb.html",
+          "look": "规则模块"
+        },
+        {
+          "page": "作战协同",
+          "href": "./field.html",
+          "look": "过门灯"
+        }
+      ],
+      "state": {
+        "kind": "runtime-eval",
+        "structure": "frozen",
+        "states": [
+          "pass",
+          "fail",
+          "n/a"
+        ],
+        "evalOn": "declared per rule",
+        "illegal": [
+          "waive",
+          "edit frozen_logic at run",
+          "open gate because saturate"
+        ]
+      }
+    },
+    "Algorithm": {
+      "depict": "mark",
+      "glyph": "algo",
+      "has": [
+        "attrs",
+        "iface",
+        "state"
+      ],
+      "what": "封皮算法本体。职能上的工具，claim 永假。MAPPO 不是主张",
+      "usedIn": [
+        {
+          "page": "知识库",
+          "href": "./kb.html",
+          "look": "算法模块"
+        },
+        {
+          "page": "球面码",
+          "href": "./swarm.html",
+          "look": "内环 spherical_code"
+        }
+      ],
+      "state": {
+        "kind": "compile",
+        "structure": "bound",
+        "states": [
+          "bound",
+          "unused"
+        ],
+        "illegal": [
+          "claim true",
+          "MAPPO as recon-strike claim",
+          "weights in 40ms snapshot"
+        ]
+      }
+    },
+    "CloudDef": {
+      "depict": "mark",
+      "glyph": "cloud",
+      "has": [
+        "attrs",
+        "iface",
+        "state"
+      ],
+      "what": "不确定概念 (Ex,En,He)。运算接口是合成，不是飞",
+      "usedIn": [
+        {
+          "page": "岸海态势",
+          "href": "./space.html",
+          "look": "知识层云影"
+        }
+      ],
+      "state": {
+        "kind": "compile",
+        "states": [
+          "defined"
+        ],
+        "illegal": [
+          "SPARQL every tick"
+        ]
+      }
+    },
+    "ShellTemplate": {
+      "depict": "mark",
+      "glyph": "shell",
+      "has": [
+        "attrs",
+        "behavior",
+        "iface",
+        "state"
+      ],
+      "what": "感知→行动五段。可写产品，不可签发 Permit",
+      "usedIn": [
+        {
+          "page": "作战协同",
+          "href": "./field.html",
+          "look": "选中壳体"
+        }
+      ],
+      "state": {
+        "kind": "runtime",
+        "states": [
+          "perceive",
+          "reason",
+          "decide",
+          "intend",
+          "act"
+        ],
+        "illegal": [
+          "write Permit"
+        ]
+      }
+    },
+    "Monitor": {
+      "depict": "mark",
+      "glyph": "gate",
+      "has": [
+        "iface",
+        "constraint",
+        "state"
+      ],
+      "what": "唯一 Permit 写者",
+      "usedIn": [
+        {
+          "page": "作战协同",
+          "href": "./field.html",
+          "look": "授权"
+        }
+      ],
+      "state": {
+        "kind": "runtime",
+        "states": [
+          "idle",
+          "issuing",
+          "denied"
+        ],
+        "illegal": [
+          "shell writes Permit"
+        ]
+      }
+    },
+    "FunctionBind": {
+      "depict": "mark",
+      "glyph": "fn",
+      "has": [
+        "attrs",
+        "iface",
+        "state"
+      ],
+      "what": "指挥职能：吃什么、产出哪种产品。不是 Agent 类",
+      "usedIn": [
+        {
+          "page": "交战本体",
+          "href": "./index.html",
+          "look": "本波影六支"
+        }
+      ],
+      "state": {
+        "kind": "compile",
+        "states": [
+          "bound"
+        ],
+        "illegal": [
+          "treat function as Agent"
+        ]
+      }
+    },
+    "Track": {
+      "depict": "mark",
+      "glyph": "fn",
+      "has": [
+        "attrs",
+        "iface",
+        "state"
+      ],
+      "what": "探测产品。黑板字母，不是平台",
+      "usedIn": [
+        {
+          "page": "作战协同",
+          "href": "./field.html",
+          "look": "黑板 Track"
+        }
+      ],
+      "state": {
+        "kind": "ephemeral",
+        "states": [
+          "live",
+          "aged",
+          "dropped"
+        ],
+        "evalOn": "each tick vis",
+        "illegal": [
+          "persist as Agent"
+        ]
+      }
+    },
+    "Identity": {
+      "depict": "mark",
+      "glyph": "fn",
+      "has": [
+        "attrs",
+        "iface",
+        "state"
+      ],
+      "what": "识别产品。不明不进清单",
+      "usedIn": [
+        {
+          "page": "作战协同",
+          "href": "./field.html",
+          "look": "黑板 Identity"
+        }
+      ],
+      "state": {
+        "kind": "ephemeral",
+        "states": [
+          "敌",
+          "我",
+          "不明"
+        ],
+        "illegal": [
+          "listable true for 不明"
+        ]
+      }
+    },
+    "Pair": {
+      "depict": "mark",
+      "glyph": "fn",
+      "has": [
+        "attrs",
+        "iface",
+        "state"
+      ],
+      "what": "分配产品",
+      "usedIn": [
+        {
+          "page": "作战协同",
+          "href": "./field.html",
+          "look": "黑板 Pair"
+        }
+      ],
+      "state": {
+        "kind": "ephemeral",
+        "states": [
+          "assigned",
+          "released"
+        ],
+        "illegal": [
+          "pair without wave k"
+        ]
+      }
+    },
+    "Slot": {
+      "depict": "mark",
+      "glyph": "fn",
+      "has": [
+        "attrs",
+        "iface",
+        "state"
+      ],
+      "what": "编队槽位产品。内环球面码",
+      "usedIn": [
+        {
+          "page": "球面码",
+          "href": "./swarm.html",
+          "look": "分层槽"
+        }
+      ],
+      "state": {
+        "kind": "ephemeral",
+        "states": [
+          "free",
+          "occupied"
+        ],
+        "illegal": [
+          "N over layer cap"
+        ]
+      }
+    },
+    "Permit": {
+      "depict": "mark",
+      "glyph": "gate",
+      "has": [
+        "attrs",
+        "constraint",
+        "iface",
+        "state"
+      ],
+      "what": "授权产品。仅 monitor.gate 可写",
+      "usedIn": [
+        {
+          "page": "作战协同",
+          "href": "./field.html",
+          "look": "过门"
+        }
+      ],
+      "state": {
+        "kind": "ephemeral",
+        "states": [
+          "denied",
+          "issued",
+          "expired"
+        ],
+        "illegal": [
+          "shell writes Permit",
+          "issue while G denied"
+        ]
+      }
+    },
+    "Wave": {
+      "depict": "mark",
+      "glyph": "fn",
+      "has": [
+        "attrs",
+        "state"
+      ],
+      "what": "有限波次。k=1…K_max",
+      "usedIn": [
+        {
+          "page": "交战本体",
+          "href": "./index.html",
+          "look": "本波"
+        }
+      ],
+      "state": {
+        "kind": "runtime",
+        "states": [
+          "forming",
+          "in",
+          "withdrawn"
+        ],
+        "illegal": [
+          "N_k > N_max"
+        ]
+      }
+    },
+    "Channel": {
+      "depict": "mark",
+      "glyph": "fn",
+      "has": [
+        "attrs",
+        "state"
+      ],
+      "what": "SAM 通道。饱和不是开门理由",
+      "usedIn": [
+        {
+          "page": "作战协同",
+          "href": "./field.html",
+          "look": "m 通道"
+        }
+      ],
+      "state": {
+        "kind": "runtime",
+        "states": [
+          "free",
+          "held",
+          "saturated"
+        ],
+        "illegal": [
+          "m=0 still issue Permit"
+        ]
+      }
+    },
+    "Inject": {
+      "depict": "mark",
+      "glyph": "bloom",
+      "has": [
+        "attrs",
+        "iface",
+        "state"
+      ],
+      "what": "有界注入产品。jam | restore | attrition",
+      "usedIn": [
+        {
+          "page": "作战协同",
+          "href": "./field.html",
+          "look": "敌情注入"
+        }
+      ],
+      "state": {
+        "kind": "ephemeral",
+        "states": [
+          "jam",
+          "restore",
+          "attrition"
+        ],
+        "illegal": [
+          "unbounded inject"
+        ]
+      }
+    },
+    "Event": {
+      "depict": "mark",
+      "glyph": "fn",
+      "has": [
+        "attrs",
+        "state"
+      ],
+      "what": "黑板事件。一次写入，不回放成 Agent",
+      "usedIn": [
+        {
+          "page": "作战协同",
+          "href": "./field.html",
+          "look": "事件条"
+        }
+      ],
+      "state": {
+        "kind": "ephemeral",
+        "states": [
+          "logged"
+        ],
+        "illegal": [
+          "rewrite history"
+        ]
+      }
+    },
+    "AgentInstance": {
+      "depict": "mark",
+      "glyph": "agent",
+      "has": [
+        "attrs",
+        "state"
+      ],
+      "what": "运行中的作战 Agent 实例",
+      "usedIn": [
+        {
+          "page": "作战协同",
+          "href": "./field.html",
+          "look": "Agent 上下文"
+        }
+      ],
+      "state": {
+        "kind": "runtime",
+        "states": [
+          "active"
+        ],
+        "illegal": [
+          "skip provenance"
+        ]
+      }
+    },
+    "Observation": {
+      "depict": "mark",
+      "glyph": "agent",
+      "has": [
+        "attrs",
+        "state"
+      ],
+      "what": "Agent 观测断言",
+      "usedIn": [
+        {
+          "page": "作战协同",
+          "href": "./field.html",
+          "look": "Agent 上下文"
+        }
+      ],
+      "state": {
+        "kind": "runtime",
+        "states": [
+          "live"
+        ],
+        "illegal": [
+          "skip provenance"
+        ]
+      }
+    },
+    "BeliefAssertion": {
+      "depict": "mark",
+      "glyph": "agent",
+      "has": [
+        "attrs",
+        "state"
+      ],
+      "what": "Agent 局部信念断言",
+      "usedIn": [
+        {
+          "page": "作战协同",
+          "href": "./field.html",
+          "look": "Agent 上下文"
+        }
+      ],
+      "state": {
+        "kind": "runtime",
+        "states": [
+          "derived"
+        ],
+        "illegal": [
+          "skip provenance"
+        ]
+      }
+    },
+    "Authorization": {
+      "depict": "mark",
+      "glyph": "agent",
+      "has": [
+        "attrs",
+        "state"
+      ],
+      "what": "授权服务对动作请求的裁决",
+      "usedIn": [
+        {
+          "page": "作战协同",
+          "href": "./field.html",
+          "look": "Agent 上下文"
+        }
+      ],
+      "state": {
+        "kind": "runtime",
+        "states": [
+          "decided"
+        ],
+        "illegal": [
+          "skip provenance"
+        ]
+      }
+    }
+  },
+  "ids": {
+    "B_SAM": {
+      "glyph": "hemi"
+    },
+    "B_BMD": {
+      "glyph": "hemi"
+    },
+    "C_low": {
+      "glyph": "box"
+    },
+    "SEARCH": {
+      "glyph": "sector"
+    },
+    "B_ship": {
+      "glyph": "disk"
+    },
+    "JAM_BLOOM": {
+      "glyph": "bloom"
+    },
+    "SAM_TEL": {
+      "glyph": "sam"
+    },
+    "BMD_SILO": {
+      "glyph": "bmd"
+    },
+    "C2": {
+      "glyph": "c2"
+    },
+    "RADAR_SHORE": {
+      "glyph": "search"
+    },
+    "RADAR_SAM": {
+      "glyph": "radar"
+    },
+    "SHIP": {
+      "glyph": "ship"
+    },
+    "JAMMER": {
+      "glyph": "jammer"
+    },
+    "blue_uav": {
+      "glyph": "uav-blue",
+      "depict": "icon",
+      "photo": null
+    },
+    "host_lo": {
+      "glyph": "uav-red",
+      "depict": "photo",
+      "photo": "./img/intel-host-lo.png?v=2"
+    },
+    "unk_lo": {
+      "glyph": "uav-unk",
+      "depict": "photo",
+      "photo": "./img/intel-unk-lo.png"
+    },
+    "gate": {
+      "glyph": "gate"
+    },
+    "G_t": {
+      "glyph": "link"
+    },
+    "SEA": {
+      "glyph": "sea"
+    },
+    "LAND": {
+      "glyph": "land"
+    },
+    "MAPPO": {
+      "glyph": "algo"
+    },
+    "HAPPO": {
+      "glyph": "algo"
+    },
+    "QMIX": {
+      "glyph": "algo"
+    },
+    "spherical_code": {
+      "glyph": "algo"
+    }
+  }
+}

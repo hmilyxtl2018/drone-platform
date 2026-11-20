@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "agent-skill.v1",
+  "skillKey": "research-hypothesis-method",
+  "version": "1.0.2",
+  "name": "竞争研究假设与交叉一致性",
+  "description": "竞争研究假设与交叉一致性；不足时弃权。",
+  "applicability": {
+    "agentKeys": [
+      "scenario-analysis-action"
+    ],
+    "stepKeys": [
+      "structure-scenario-judgment"
+    ],
+    "stages": [
+      "research-method-proposal"
+    ]
+  },
+  "validatorRefs": [
+    "exact-evidence-id",
+    "immutable-method-input",
+    "no-probability-from-compatibility"
+  ]
+}

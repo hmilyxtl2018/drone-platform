@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-CN" class="kb">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>基于本体Agents工作室</title>
+    <link rel="stylesheet" href="./space.css?v=31" />
+    <link rel="stylesheet" href="./kb.css?v=36" />
+    <link rel="stylesheet" href="./kb-semantic.css?v=2" />
+  </head>
+  <body class="kb">
+    <header class="kb-mast">
+      <img class="brand" src="./img/logo-lingyunzhi.jpg" alt="灵云智 Industry Meta" />
+      <div class="kb-brand-text">
+        <p class="kb-kicker">Ontology based Agents Studio</p>
+        <h1>基于本体Agents工作室</h1>
+      </div>
+      <div class="kb-tools">
+        <span id="pkg-lab" class="tool">coast-raid-k</span>
+        <span id="store-lab" class="tool">postgres</span>
+        <span id="count" class="tool"></span>
+        <a class="tool kb-questions-btn" href="./remediation.html" title="查看本轮21项本体整改与真实验证结果">本体整改 · 21项</a>
+        <button type="button" id="questions-btn" class="tool kb-questions-btn" title="查看10个能力问题及落实证据">10项问题落实</button>
+      </div>
+    </header>
+    <div class="kb-work">
+      <aside class="kb-side">
+        <div class="kb-side-h">
+          <h2>导航</h2>
+          <span class="kb-side-hint">分类概览</span>
+          <div id="nav-views" class="kb-nav-views" role="radiogroup" aria-label="导航视图"></div>
+          <button type="button" id="nav-toggle" class="kb-nav-toggle" aria-expanded="true" title="收起导航" aria-label="收起导航">
+            <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M10 3.2 5.2 8 10 12.8"/>
+            </svg>
+          </button>
+        </div>
+        <div class="kb-search">
+          <input id="q" type="search" placeholder="搜索领域本体名称、编码或定义" autocomplete="off" />
+        </div>
+        <div id="groups" class="kb-groups"></div>
+      </aside>
+      <article id="inspect" class="kb-stage" aria-live="polite"></article>
+    </div>
+    <nav class="bar">
+      <a class="quiet on" href="./kb.html">知识库</a>
+      <a class="quiet" href="./ontology-workbench.html">本体工作台</a>
+      <a class="quiet" href="./agents.html?api">Agents 工作台</a>
+      <a class="quiet" href="./intelligence.html?api">情报采集</a>
+      <a class="quiet" href="./osint.html">开源情报</a>
+      <a class="quiet" href="./space.html">岸海态势</a>
+      <a class="quiet" href="./cop.html">平面图</a>
+      <a class="quiet" href="./swarm.html">球面码</a>
+      <a class="quiet" href="./field.html">Ontology based Agent 作战协同</a>
+      <img class="brand" src="./img/logo-mark.jpg" alt="灵云智" />
+    </nav>
+    <script>
+      if (location.protocol === "file:") {
+        document.write(
+          "<div style='position:fixed;inset:0;z-index:99;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;background:#eef2f1;color:#1c2128;font:16px/1.7 Segoe UI,PingFang SC,sans-serif;text-align:center'>不要双击本地 html。<br>请打开 <b style='color:#2e5efe'>http://127.0.0.1:8765/kb.html</b></div>",
+        );
+      }
+    </script>
+  <script type="module" src="./kb.js?v=38"></script>
+  </body>
+</html>

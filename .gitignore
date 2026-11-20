@@ -1,0 +1,44 @@
+# Machine configuration and credentials
+db.local.json
+.env
+.env.*
+!.env.example
+*.dpapi
+*.pem
+*.key
+
+# Databases and transfer archives travel separately from source code
+*.sqlite
+*.sqlite-*
+*.db
+*.db-*
+*.zip
+/transfer-manifest.json
+
+# Local runtimes, dependencies and caches
+.local/
+.runtime/
+.venv*/
+venv/
+node_modules/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.firecrawl/
+.playwright-cli/
+.workbuddy/
+
+# Generated logs, screenshots, reports and historical release copies
+*.log
+*.err
+*.out
+/.tmp*
+/tmp-*.png
+/page.html
+/reports/
+/renders/
+/audit/
+/releases/
+/*.docx
+/*.xlsx
+/*.xls

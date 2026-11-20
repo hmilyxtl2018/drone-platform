@@ -1,0 +1,1702 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.ontology/coast-raid-k/agent/1.0.0/schema.agent.extension.json",
+  "title": "coast-raid-k Agent extension schemas",
+  "description": "JSON interchange shapes for the additive Agent ontology module. These shapes do not replace schema.agent.json or schema.engagement.json.",
+  "$defs": {
+    "Iri": {
+      "type": "string",
+      "format": "uri"
+    },
+    "Provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source"
+      ],
+      "properties": {
+        "source": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "hashStatus": {
+          "enum": [
+            "not-computed",
+            "computed"
+          ]
+        },
+        "generatedBy": {
+          "$ref": "#/$defs/Iri"
+        },
+        "retrievedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "sha256"
+          ]
+        },
+        {
+          "required": [
+            "hashStatus"
+          ]
+        }
+      ]
+    },
+    "ValidTime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "from"
+      ],
+      "properties": {
+        "from": {
+          "type": "number"
+        },
+        "to": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "clock": {
+          "enum": [
+            "sim",
+            "wall"
+          ]
+        },
+        "unit": {
+          "type": "string"
+        }
+      }
+    },
+    "AgentRef": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://local\\.ontology/coast-raid-k(?:/|#)"
+    },
+    "FunctionDomain": {
+      "type": "string",
+      "enum": [
+        "World",
+        "Self",
+        "Adversary",
+        "Options",
+        "Gate",
+        "Effectors",
+        "Learn"
+      ]
+    },
+    "TimeScale": {
+      "type": "string",
+      "enum": [
+        "Immediate",
+        "Tactical",
+        "Operational",
+        "Strategic"
+      ]
+    },
+    "HumanControlMode": {
+      "type": "string",
+      "enum": [
+        "in-the-loop",
+        "on-the-loop",
+        "out-of-the-loop"
+      ]
+    },
+    "ConnectivityMode": {
+      "type": "string",
+      "enum": [
+        "online",
+        "degraded",
+        "disconnected"
+      ]
+    },
+    "FailureContainment": {
+      "type": "string",
+      "enum": [
+        "local-action",
+        "team",
+        "operational",
+        "strategic"
+      ]
+    },
+    "Reversibility": {
+      "type": "string",
+      "enum": [
+        "reversible",
+        "recoverable",
+        "irreversible"
+      ]
+    },
+    "SafeFallbackPolicy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "AgentInstance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "iri",
+        "agentType",
+        "runId",
+        "lifecycleState",
+        "decisionMode",
+        "autonomyLevel",
+        "modelId",
+        "modelRevision",
+        "functionDomain",
+        "timeScale",
+        "humanControlMode",
+        "connectivityMode",
+        "failureContainment",
+        "safeFallbackPolicy",
+        "reversibility",
+        "provenance"
+      ],
+      "properties": {
+        "type": {
+          "const": "AgentInstance"
+        },
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9._:-]+$"
+        },
+        "iri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "agentType": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "implementedOn": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "organization": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "roles": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AgentRef"
+          },
+          "uniqueItems": true
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AgentRef"
+          },
+          "uniqueItems": true
+        },
+        "runId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "modelId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "modelRevision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "decisionMode": {
+          "enum": [
+            "reactive",
+            "bdi",
+            "rule",
+            "human-in-loop",
+            "hybrid"
+          ]
+        },
+        "autonomyLevel": {
+          "enum": [
+            "supervised",
+            "delegated",
+            "autonomous"
+          ]
+        },
+        "lifecycleState": {
+          "enum": [
+            "initialized",
+            "active",
+            "degraded",
+            "suspended",
+            "destroyed"
+          ]
+        },
+        "authorityScope": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AgentRef"
+          },
+          "uniqueItems": true
+        },
+        "performsFunction": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AgentRef"
+          },
+          "uniqueItems": true
+        },
+        "operatesAtTimeScale": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AgentRef"
+          },
+          "uniqueItems": true
+        },
+        "functionDomain": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/FunctionDomain"
+          },
+          "uniqueItems": true
+        },
+        "timeScale": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/TimeScale"
+          },
+          "uniqueItems": true
+        },
+        "humanControlMode": {
+          "$ref": "#/$defs/HumanControlMode"
+        },
+        "connectivityMode": {
+          "$ref": "#/$defs/ConnectivityMode"
+        },
+        "failureContainment": {
+          "$ref": "#/$defs/FailureContainment"
+        },
+        "safeFallbackPolicy": {
+          "$ref": "#/$defs/SafeFallbackPolicy"
+        },
+        "reversibility": {
+          "$ref": "#/$defs/Reversibility"
+        },
+        "validTime": {
+          "$ref": "#/$defs/ValidTime"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "authorizationTtlSeconds": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "Observation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "iri",
+        "assertedBy",
+        "observedEntity",
+        "observationKind",
+        "observedAt",
+        "sourceIri",
+        "confidence",
+        "runId",
+        "provenance"
+      ],
+      "properties": {
+        "type": {
+          "const": "Observation"
+        },
+        "id": {
+          "type": "string"
+        },
+        "iri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "assertedBy": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "observedEntity": {
+          "type": "string"
+        },
+        "observationKind": {
+          "type": "string"
+        },
+        "sourceIri": {
+          "$ref": "#/$defs/Iri"
+        },
+        "observedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "frame": {
+          "type": "string"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "location": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "items": {
+            "type": "number"
+          }
+        },
+        "measurement": {
+          "type": "object"
+        },
+        "payload": {
+          "type": "object"
+        },
+        "runId": {
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        }
+      }
+    },
+    "BeliefAssertion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "iri",
+        "assertedBy",
+        "aboutIri",
+        "proposition",
+        "derivedFrom",
+        "confidence",
+        "validTime",
+        "runId",
+        "provenance"
+      ],
+      "properties": {
+        "type": {
+          "const": "BeliefAssertion"
+        },
+        "id": {
+          "type": "string"
+        },
+        "iri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "assertedBy": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "aboutIri": {
+          "$ref": "#/$defs/Iri"
+        },
+        "predicate": {
+          "type": "string"
+        },
+        "proposition": {
+          "type": "string"
+        },
+        "objectIri": {
+          "$ref": "#/$defs/Iri"
+        },
+        "objectValue": {},
+        "derivedFrom": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/Iri"
+          }
+        },
+        "derivedBy": {
+          "type": "string"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "probability": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "validTime": {
+          "$ref": "#/$defs/ValidTime"
+        },
+        "runId": {
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        }
+      }
+    },
+    "Authorization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "iri",
+        "requestIri",
+        "decidedBy",
+        "result",
+        "authorizationStatus",
+        "reasonCode",
+        "ruleVersion",
+        "evidenceUris",
+        "issuedAt",
+        "expiresAt",
+        "revocable",
+        "abortConditions",
+        "safeFallbackPolicy",
+        "reversibility",
+        "failureContainment",
+        "requiredHumanControlMode",
+        "runId",
+        "provenance",
+        "decidedByFunctionDomain"
+      ],
+      "properties": {
+        "type": {
+          "const": "Authorization"
+        },
+        "id": {
+          "type": "string"
+        },
+        "iri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "requestIri": {
+          "$ref": "#/$defs/Iri"
+        },
+        "decidedBy": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "result": {
+          "enum": [
+            "allow",
+            "deny",
+            "indeterminate"
+          ]
+        },
+        "authorizationStatus": {
+          "enum": [
+            "active",
+            "expired",
+            "revoked"
+          ]
+        },
+        "reasonCode": {
+          "type": "string"
+        },
+        "checks": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "boolean"
+          }
+        },
+        "decisionTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "issuedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "revocable": {
+          "type": "boolean"
+        },
+        "revokedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "revocationReason": {
+          "type": "string"
+        },
+        "ruleVersion": {
+          "type": "string"
+        },
+        "policyVersion": {
+          "type": "string"
+        },
+        "evidenceUris": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/Iri"
+          }
+        },
+        "scope": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AgentRef"
+          },
+          "uniqueItems": true
+        },
+        "abortConditions": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "safeFallbackPolicy": {
+          "$ref": "#/$defs/SafeFallbackPolicy"
+        },
+        "reversibility": {
+          "$ref": "#/$defs/Reversibility"
+        },
+        "failureContainment": {
+          "$ref": "#/$defs/FailureContainment"
+        },
+        "requiredHumanControlMode": {
+          "$ref": "#/$defs/HumanControlMode"
+        },
+        "runId": {
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "expiresAtTick": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "decidedByFunctionDomain": {
+          "const": "Gate"
+        },
+        "humanDecisionIri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "approvalRequestIri": {
+          "$ref": "#/$defs/AgentRef"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "result": {
+                "const": "allow"
+              }
+            },
+            "required": [
+              "result"
+            ]
+          },
+          "then": {
+            "properties": {
+              "revocable": {
+                "const": true
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "authorizationStatus": {
+                "const": "revoked"
+              }
+            },
+            "required": [
+              "authorizationStatus"
+            ]
+          },
+          "then": {
+            "required": [
+              "revokedAt",
+              "revocationReason"
+            ]
+          }
+        },
+        {
+          "if": {
+            "required": [
+              "revokedAt"
+            ]
+          },
+          "then": {
+            "properties": {
+              "authorizationStatus": {
+                "const": "revoked"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "iri",
+        "decidedBy",
+        "selectedAction",
+        "decisionTime",
+        "runId",
+        "provenance"
+      ],
+      "properties": {
+        "type": {
+          "const": "Decision"
+        },
+        "id": {
+          "type": "string"
+        },
+        "iri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "decidedBy": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "taskIri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "selectedAction": {
+          "type": "string"
+        },
+        "targetIri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "rationale": {
+          "type": "string"
+        },
+        "evidenceUris": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AgentRef"
+          }
+        },
+        "policy": {
+          "type": "string"
+        },
+        "decisionTime": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "runId": {
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        }
+      }
+    },
+    "Recommendation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action"
+      ],
+      "properties": {
+        "action": {
+          "type": "string",
+          "minLength": 1
+        },
+        "targetIri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "parameters": {
+          "type": "object"
+        },
+        "rationale": {
+          "type": "string"
+        },
+        "risk": {
+          "type": "string"
+        },
+        "expectedEffect": {
+          "type": "string"
+        }
+      }
+    },
+    "DecisionDraft": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "iri",
+        "proposedBy",
+        "recommendation",
+        "evidenceUris",
+        "uncertainties",
+        "status",
+        "createdAt",
+        "runId",
+        "provenance"
+      ],
+      "properties": {
+        "type": {
+          "const": "DecisionDraft"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "iri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "proposedBy": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "decisionIri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "actionRequestIri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "recommendation": {
+          "$ref": "#/$defs/Recommendation"
+        },
+        "alternatives": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Recommendation"
+          }
+        },
+        "evidenceUris": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/Iri"
+          }
+        },
+        "uncertainties": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "status": {
+          "enum": [
+            "draft",
+            "submitted",
+            "superseded",
+            "accepted",
+            "rejected",
+            "expired"
+          ]
+        },
+        "humanControlMode": {
+          "$ref": "#/$defs/HumanControlMode"
+        },
+        "modelId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "modelRevision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "promptVersion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "contextHash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "rationale": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "runId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "ApprovalRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "iri",
+        "actionRequestIri",
+        "recommendationIri",
+        "requestedBy",
+        "requiredHumanControlMode",
+        "status",
+        "submittedAt",
+        "evidenceUris",
+        "runId",
+        "provenance"
+      ],
+      "properties": {
+        "type": {
+          "const": "ApprovalRequest"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "iri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "actionRequestIri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "recommendationIri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "requestedBy": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "reviewerIri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "requiredHumanControlMode": {
+          "$ref": "#/$defs/HumanControlMode"
+        },
+        "status": {
+          "enum": [
+            "pending",
+            "approved",
+            "rejected",
+            "deferred",
+            "escalated",
+            "timed-out",
+            "cancelled"
+          ]
+        },
+        "decisionIri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "submittedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "evidenceUris": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Iri"
+          },
+          "uniqueItems": true
+        },
+        "precheck": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "result",
+            "ruleVersion",
+            "evidenceUris"
+          ],
+          "properties": {
+            "result": {
+              "enum": [
+                "allow",
+                "deny",
+                "indeterminate"
+              ]
+            },
+            "ruleVersion": {
+              "type": "string",
+              "minLength": 1
+            },
+            "evidenceUris": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "$ref": "#/$defs/Iri"
+              },
+              "uniqueItems": true
+            },
+            "failedChecks": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "runId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "risk": {
+          "type": "string"
+        },
+        "requestedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expiresAtTick": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "reviewStatus": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "approved",
+                  "rejected",
+                  "deferred",
+                  "escalated",
+                  "timed-out"
+                ]
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "required": [
+              "decisionIri"
+            ]
+          }
+        }
+      ]
+    },
+    "HumanDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "iri",
+        "approvalRequestIri",
+        "decidedBy",
+        "decision",
+        "reason",
+        "decidedAt",
+        "evidenceUris",
+        "runId",
+        "provenance"
+      ],
+      "properties": {
+        "type": {
+          "const": "HumanDecision"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "iri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "approvalRequestIri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "actionRequestIri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "recommendationIri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "decidedBy": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "decision": {
+          "enum": [
+            "approved",
+            "rejected",
+            "request-more-evidence",
+            "deferred",
+            "escalated",
+            "revoked"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "decidedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "evidenceUris": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Iri"
+          },
+          "uniqueItems": true
+        },
+        "changedFields": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "supersedes": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "runId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "sessionIri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "revisedRequestIri": {
+          "$ref": "#/$defs/AgentRef"
+        }
+      }
+    },
+    "TriggerDefinition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "iri",
+        "eventType",
+        "targetAgentIri",
+        "enabled",
+        "status",
+        "onFailure",
+        "runId",
+        "provenance"
+      ],
+      "properties": {
+        "type": {
+          "const": "TriggerDefinition"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "iri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "eventType": {
+          "type": "string",
+          "minLength": 1
+        },
+        "conditionRuleIri": {
+          "$ref": "#/$defs/Iri"
+        },
+        "targetAgentIri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "scope": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AgentRef"
+          },
+          "uniqueItems": true
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "status": {
+          "enum": [
+            "active",
+            "paused",
+            "disabled",
+            "retired"
+          ]
+        },
+        "cooldownSeconds": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "maxConcurrency": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "dedupeKey": {
+          "type": "string",
+          "minLength": 1
+        },
+        "requiresHumanControlMode": {
+          "$ref": "#/$defs/HumanControlMode"
+        },
+        "onFailure": {
+          "enum": [
+            "retry",
+            "dead-letter",
+            "safe-fallback",
+            "pause-trigger"
+          ]
+        },
+        "runId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        }
+      }
+    },
+    "ActionRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "iri",
+        "requestedBy",
+        "action",
+        "requestedAt",
+        "runId",
+        "status",
+        "provenance"
+      ],
+      "properties": {
+        "type": {
+          "const": "ActionRequest"
+        },
+        "id": {
+          "type": "string"
+        },
+        "iri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "requestedBy": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "action": {
+          "type": "string"
+        },
+        "targetIri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "decisionIri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "authorizationIri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "executionIri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "parameters": {
+          "type": "object"
+        },
+        "requiredHumanControlMode": {
+          "$ref": "#/$defs/HumanControlMode"
+        },
+        "reversibility": {
+          "$ref": "#/$defs/Reversibility"
+        },
+        "failureContainment": {
+          "$ref": "#/$defs/FailureContainment"
+        },
+        "safeFallbackPolicy": {
+          "$ref": "#/$defs/SafeFallbackPolicy"
+        },
+        "abortCondition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "requestedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string"
+        },
+        "runId": {
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        }
+      }
+    },
+    "ActionExecution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "iri",
+        "requestIri",
+        "authorizationIri",
+        "realizedBy",
+        "result",
+        "executedAt",
+        "expiresAt",
+        "abortCondition",
+        "safeFallbackPolicy",
+        "reversibility",
+        "failureContainment",
+        "runId",
+        "provenance"
+      ],
+      "properties": {
+        "type": {
+          "const": "ActionExecution"
+        },
+        "id": {
+          "type": "string"
+        },
+        "iri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "requestIri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "authorizationIri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "realizedBy": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "result": {
+          "type": "string"
+        },
+        "effect": {
+          "type": "object"
+        },
+        "executedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "expiresAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "abortCondition": {
+          "type": "string",
+          "minLength": 1
+        },
+        "safeFallbackPolicy": {
+          "$ref": "#/$defs/SafeFallbackPolicy"
+        },
+        "reversibility": {
+          "$ref": "#/$defs/Reversibility"
+        },
+        "failureContainment": {
+          "$ref": "#/$defs/FailureContainment"
+        },
+        "runId": {
+          "type": "string"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "executionStatus": {
+          "enum": [
+            "executed",
+            "aborted"
+          ]
+        }
+      }
+    },
+    "AuditEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "iri",
+        "kind",
+        "subjectIri",
+        "occurredAt",
+        "runId",
+        "provenance"
+      ],
+      "properties": {
+        "type": {
+          "const": "AuditEvent"
+        },
+        "id": {
+          "type": "string"
+        },
+        "iri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "subjectIri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "occurredAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "runId": {
+          "type": "string"
+        },
+        "payload": {
+          "type": "object"
+        },
+        "authorizationStatus": {
+          "enum": [
+            "active",
+            "expired",
+            "revoked"
+          ]
+        },
+        "failureContainment": {
+          "$ref": "#/$defs/FailureContainment"
+        },
+        "safeFallbackPolicy": {
+          "$ref": "#/$defs/SafeFallbackPolicy"
+        },
+        "reversibility": {
+          "$ref": "#/$defs/Reversibility"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        }
+      }
+    },
+    "Run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "iri",
+        "modelId",
+        "modelRevision"
+      ],
+      "properties": {
+        "type": {
+          "const": "Run"
+        },
+        "id": {
+          "type": "string"
+        },
+        "iri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "modelId": {
+          "type": "string"
+        },
+        "modelRevision": {
+          "type": "string"
+        },
+        "tick": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "jammed": {
+          "type": "boolean"
+        },
+        "packageId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "packageVersion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "manifestHash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "rulesVersion": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "RuntimeEnvelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "run",
+        "agents",
+        "observations",
+        "beliefs",
+        "decisions",
+        "actionRequests",
+        "authorizations",
+        "executions",
+        "auditEvents",
+        "decisionDrafts",
+        "approvalRequests",
+        "humanDecisions",
+        "triggers"
+      ],
+      "properties": {
+        "run": {
+          "$ref": "#/$defs/Run"
+        },
+        "agents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AgentInstance"
+          }
+        },
+        "observations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Observation"
+          }
+        },
+        "beliefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BeliefAssertion"
+          }
+        },
+        "decisions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Decision"
+          }
+        },
+        "actionRequests": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ActionRequest"
+          }
+        },
+        "authorizations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Authorization"
+          }
+        },
+        "executions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ActionExecution"
+          }
+        },
+        "auditEvents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AuditEvent"
+          }
+        },
+        "decisionDrafts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/DecisionDraft"
+          }
+        },
+        "approvalRequests": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ApprovalRequest"
+          }
+        },
+        "humanDecisions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/HumanDecision"
+          }
+        },
+        "triggers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/TriggerDefinition"
+          }
+        }
+      }
+    },
+    "AssistantSession": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "iri",
+        "operatorIri",
+        "contextType",
+        "sessionId",
+        "provenance"
+      ],
+      "properties": {
+        "type": {
+          "const": "AssistantSession"
+        },
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "iri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "operatorIri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "representedAgentIri": {
+          "$ref": "#/$defs/AgentRef"
+        },
+        "contextType": {
+          "const": "AssistantSessionContext"
+        },
+        "sessionId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "runId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "retrievalTrace": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "requestIris": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AgentRef"
+          },
+          "uniqueItems": true
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        }
+      }
+    },
+    "AgentInstanceCatalog": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "package",
+        "type",
+        "version",
+        "status",
+        "runId",
+        "instances"
+      ],
+      "properties": {
+        "$schema": {
+          "type": "string",
+          "format": "uri"
+        },
+        "package": {
+          "const": "coast-raid-k"
+        },
+        "type": {
+          "const": "AgentInstanceCatalog"
+        },
+        "version": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "example",
+            "validated",
+            "active"
+          ]
+        },
+        "runId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "instances": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AgentInstance"
+          },
+          "minItems": 1
+        }
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/AgentInstance"
+    },
+    {
+      "$ref": "#/$defs/Observation"
+    },
+    {
+      "$ref": "#/$defs/BeliefAssertion"
+    },
+    {
+      "$ref": "#/$defs/Authorization"
+    },
+    {
+      "$ref": "#/$defs/Decision"
+    },
+    {
+      "$ref": "#/$defs/ActionRequest"
+    },
+    {
+      "$ref": "#/$defs/ActionExecution"
+    },
+    {
+      "$ref": "#/$defs/AuditEvent"
+    },
+    {
+      "$ref": "#/$defs/RuntimeEnvelope"
+    },
+    {
+      "$ref": "#/$defs/AssistantSession"
+    },
+    {
+      "$ref": "#/$defs/DecisionDraft"
+    },
+    {
+      "$ref": "#/$defs/ApprovalRequest"
+    },
+    {
+      "$ref": "#/$defs/HumanDecision"
+    },
+    {
+      "$ref": "#/$defs/TriggerDefinition"
+    },
+    {
+      "$ref": "#/$defs/Run"
+    },
+    {
+      "$ref": "#/$defs/AgentInstanceCatalog"
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "graphId": "ontology-cognitive-analyst-capabilities",
+  "version": "1.0.0",
+  "agentKey": "ontology-cognitive-analyst",
+  "capabilities": [
+    {
+      "key": "conditional-synthesis",
+      "name": "conditional synthesis",
+      "requiredActions": [
+        "situation-assessment-action",
+        "rule-applicability-action",
+        "tactics-research-action",
+        "ontology-consistency-action"
+      ],
+      "requiredEvidence": [
+        "claims",
+        "assessmentArtifactRefs",
+        "decisionSupport"
+      ],
+      "acceptance": [
+        "No evidence-free best option; preserve unknowns and conflicts."
+      ]
+    },
+    {
+      "key": "evidence-traceability",
+      "name": "evidence traceability",
+      "requiredActions": [
+        "evidence-collection-action",
+        "evidence-extraction-action",
+        "analysis.explanation_graph",
+        "analysis.report_contract_validate"
+      ],
+      "requiredEvidence": [
+        "ontologyView",
+        "claims",
+        "checks"
+      ],
+      "acceptance": [
+        "Every supported relationship resolves to authorized immutable evidence."
+      ]
+    },
+    {
+      "key": "delegation-control",
+      "name": "delegation control",
+      "requiredActions": [
+        "situation-assessment-action",
+        "rule-applicability-action"
+      ],
+      "requiredEvidence": [
+        "context",
+        "provenance",
+        "gaps"
+      ],
+      "acceptance": [
+        "Direct-input projections and shared root budgets are verified."
+      ]
+    }
+  ],
+  "forbiddenCapabilities": [
+    "operational-tasking",
+    "target-assignment",
+    "weapon-control",
+    "engagement-authorization",
+    "formal-ontology-write",
+    "self-expand-authority"
+  ]
+}

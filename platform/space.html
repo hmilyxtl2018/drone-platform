@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>岸海态势</title>
+    <link rel="stylesheet" href="./space.css?v=31" />
+  </head>
+  <body>
+    <canvas id="world" aria-label="岸海态势"></canvas>
+
+      <aside class="panel left" aria-label="情报协同航迹成品">
+      <p class="kicker"><a href="./index.html#see">本体</a> · 三维态势</p>
+      <h1>岸海态势</h1>
+      <p class="lead">未来战场的体积读法。情报、协同、航迹挂在场上。包络是交战可行集，不是占领区。平面共同图管清单与档案。</p>
+      <p class="kicker">成品</p>
+      <p><i>情报</i> <b id="k-intel">—</b></p>
+      <p><i>协同</i> <b id="k-coop">—</b></p>
+      <p><i>航迹</i> <b id="k-track">—</b></p>
+    </aside>
+
+    <aside class="panel right" aria-label="态势量">
+      <p><i>k</i> <b id="v-k">—</b></p>
+      <p><i>N</i> <b id="v-n">—</b></p>
+      <p><i>ε</i> <b id="v-e">—</b></p>
+      <p><i>m</i> <b id="v-m">—</b></p>
+      <p><i>门</i> <b id="v-g">—</b></p>
+      <p class="spark-lab"><i>区外</i> · <i>区沿</i> · <i>区内</i> · <i>过门</i></p>
+    </aside>
+
+    <p id="caption" class="caption"></p>
+
+    <nav class="bar">
+      <button id="play" type="button">演</button>
+      <span id="freeze" class="freeze" hidden>冻 · 后台已暂停，点演继续</span>
+      <button id="wave" type="button">下一波</button>
+      <button id="reset" type="button">复位</button>
+      <span class="rule"></span>
+      <button type="button" data-inject="jam">拒止</button>
+      <button type="button" data-inject="restore">复通</button>
+      <button type="button" data-inject="attrition">减员</button>
+      <span class="rule"></span>
+      <a class="quiet" href="./cop.html">平面图</a>
+      <a class="quiet" href="./swarm.html">球面码</a>
+      <a class="quiet" href="./kb.html">知识库</a>
+      <a class="quiet" href="./field.html">Ontology based Agent 作战协同</a>
+      <img class="brand" src="./img/logo-mark.jpg" alt="灵云智" />
+    </nav>
+
+    <script type="module" src="./space.js?v=39"></script>
+  </body>
+</html>

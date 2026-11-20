@@ -1,0 +1,48 @@
+{
+  "type": "object",
+  "properties": {
+    "reviews": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "kind": {
+            "enum": [
+              "assessment",
+              "constraint"
+            ]
+          },
+          "verdict": {
+            "enum": [
+              "supported",
+              "unsupported",
+              "uncertain"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "verdict",
+          "reason"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "reviews"
+  ],
+  "additionalProperties": false
+}

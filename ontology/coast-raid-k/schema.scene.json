@@ -1,0 +1,830 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.ontology/coast-raid-k/schema.scene.json",
+  "title": "coast-raid-k scene $defs",
+  "description": "JC3IEDM TYPE/ITEM/LOCATION/CAPABILITY + ISO 19109 + GeoSPARQL。页签：型谱 · 个体 · 几何 · 位置 · 能力 · 关联 · 约束 · 符号。",
+  "$defs": {
+    "Shoreline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "kind",
+        "params"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "const": "Shoreline"
+        },
+        "kind": {
+          "enum": [
+            "harmonic",
+            "polyline"
+          ]
+        },
+        "params": {
+          "type": "object"
+        },
+        "plane": {
+          "type": "string",
+          "default": "y=0"
+        },
+        "note": {
+          "type": "string"
+        },
+        "crs": {
+          "$ref": "#/$defs/Crs"
+        }
+      }
+    },
+    "Region": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type"
+      ],
+      "properties": {
+        "id": {
+          "enum": [
+            "SEA",
+            "LAND"
+          ]
+        },
+        "type": {
+          "const": "Region"
+        },
+        "predicate": {
+          "type": "string"
+        }
+      }
+    },
+    "Membership": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "of",
+        "region",
+        "rule"
+      ],
+      "properties": {
+        "of": {
+          "type": "string"
+        },
+        "region": {
+          "enum": [
+            "SEA",
+            "LAND"
+          ]
+        },
+        "rule": {
+          "enum": [
+            "in",
+            "subset",
+            "spans"
+          ]
+        }
+      }
+    },
+    "Body": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "shape"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "Envelope",
+            "Corridor",
+            "SearchSector",
+            "DetectionDisk",
+            "JamBloom"
+          ]
+        },
+        "layer": {
+          "$ref": "#/$defs/Layer"
+        },
+        "role": {
+          "type": "string"
+        },
+        "shape": {
+          "enum": [
+            "hemisphere",
+            "aabb",
+            "sector_slab",
+            "disk"
+          ]
+        },
+        "c": {
+          "$ref": "#/$defs/Vec3"
+        },
+        "r": {
+          "type": "number",
+          "minimum": 0
+        },
+        "z0": {
+          "type": "number"
+        },
+        "z1": {
+          "type": "number"
+        },
+        "rim": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "rim_r": {
+          "type": "number",
+          "minimum": 0
+        },
+        "x0": {
+          "type": "number"
+        },
+        "x1": {
+          "type": "number"
+        },
+        "y0": {
+          "type": "number"
+        },
+        "y1": {
+          "type": "number"
+        },
+        "y0_m": {
+          "type": "number"
+        },
+        "y1_m": {
+          "type": "number"
+        },
+        "azimuth": {
+          "type": [
+            "string",
+            "number"
+          ]
+        },
+        "az_rad": {
+          "type": "number"
+        },
+        "az_deg": {
+          "type": "number"
+        },
+        "half_deg": {
+          "type": "number"
+        },
+        "h": {
+          "type": "number"
+        },
+        "region": {
+          "enum": [
+            "SEA",
+            "LAND"
+          ]
+        },
+        "label": {
+          "type": "string"
+        },
+        "inner_label": {
+          "type": "string"
+        },
+        "floor_label": {
+          "type": "string"
+        },
+        "not": {
+          "type": "string"
+        },
+        "sidc": {
+          "$ref": "#/$defs/Sidc"
+        },
+        "wkt": {
+          "type": "string",
+          "description": "Derived GeoSPARQL geo:asWKT. Footprint in CRK:ENG. Not occupation."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "shape": {
+                "const": "hemisphere"
+              }
+            },
+            "required": [
+              "shape"
+            ]
+          },
+          "then": {
+            "required": [
+              "c",
+              "r",
+              "z0"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "shape": {
+                "const": "aabb"
+              }
+            },
+            "required": [
+              "shape"
+            ]
+          },
+          "then": {
+            "required": [
+              "x0",
+              "x1",
+              "z0",
+              "z1",
+              "y0",
+              "y1"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "shape": {
+                "const": "disk"
+              }
+            },
+            "required": [
+              "shape"
+            ]
+          },
+          "then": {
+            "required": [
+              "c",
+              "r"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "shape": {
+                "const": "sector_slab"
+              }
+            },
+            "required": [
+              "shape"
+            ]
+          },
+          "then": {
+            "required": [
+              "c",
+              "r",
+              "az_deg",
+              "half_deg",
+              "h"
+            ]
+          }
+        }
+      ]
+    },
+    "Site": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "p"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "enum": [
+            "CommandPost",
+            "Sensor",
+            "Shooter",
+            "Platform",
+            "Emitter"
+          ]
+        },
+        "kind": {
+          "type": "string"
+        },
+        "p": {
+          "$ref": "#/$defs/Vec3"
+        },
+        "region": {
+          "enum": [
+            "SEA",
+            "LAND"
+          ]
+        },
+        "covers": {
+          "type": "string"
+        },
+        "envelope": {
+          "type": "string"
+        },
+        "beam": {
+          "type": "string"
+        },
+        "channels0": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "heading_deg": {
+          "type": "number"
+        },
+        "heading": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "not": {
+          "type": "string"
+        },
+        "sidc": {
+          "$ref": "#/$defs/Sidc"
+        }
+      }
+    },
+    "PlatformType": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "side": {
+          "$ref": "#/$defs/Side"
+        },
+        "inScene": {
+          "type": "boolean",
+          "description": "true = this raid ITEM may bind the type. false = catalog only."
+        },
+        "uasGroup": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 5,
+          "description": "DoD UAS Group 1–5 (JP 3-30 / CRS IF12797)."
+        },
+        "natoClass": {
+          "enum": [
+            "I-micro",
+            "I-mini",
+            "I-small",
+            "II",
+            "III-MALE",
+            "III-HALE",
+            "III-strike"
+          ]
+        },
+        "airframe": {
+          "enum": [
+            "fixed-wing",
+            "rotary",
+            "vtol",
+            "sea-skimming"
+          ]
+        },
+        "role": {
+          "enum": [
+            "isr",
+            "ew",
+            "decoy",
+            "raid",
+            "cargo",
+            "civilian",
+            "relay"
+          ]
+        },
+        "mtow_kg_min": {
+          "type": "number",
+          "minimum": 0
+        },
+        "mtow_kg_max": {
+          "type": "number",
+          "minimum": 0
+        },
+        "alt_m_max": {
+          "type": "number",
+          "minimum": 0
+        },
+        "alt_ref": {
+          "enum": [
+            "AGL",
+            "MSL"
+          ]
+        },
+        "speed_kt_max": {
+          "type": "number",
+          "minimum": 0
+        },
+        "missionRadius": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        },
+        "layers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Layer"
+          }
+        },
+        "tasks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/BlueTask"
+          }
+        },
+        "src": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        },
+        "klass": {
+          "type": "string"
+        },
+        "speed_kmh": {
+          "type": "number",
+          "minimum": 0
+        },
+        "speed_kmh_byLayer": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "hi": {
+              "type": "number",
+              "minimum": 0
+            },
+            "mid": {
+              "type": "number",
+              "minimum": 0
+            },
+            "lo": {
+              "type": "number",
+              "minimum": 0
+            }
+          }
+        },
+        "form_lo_lat_kmh": {
+          "type": "number",
+          "minimum": 0
+        },
+        "band_m": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": {
+            "type": "number"
+          }
+        },
+        "intent": {
+          "type": "string"
+        },
+        "payload": {
+          "type": "string"
+        },
+        "identity": {
+          "type": "string"
+        },
+        "list": {
+          "type": [
+            "string",
+            "boolean"
+          ]
+        },
+        "sidc": {
+          "$ref": "#/$defs/Sidc"
+        }
+      }
+    },
+    "OwnRel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "site"
+      ],
+      "properties": {
+        "site": {
+          "type": "string"
+        },
+        "body": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "beam": {
+          "type": "string"
+        }
+      }
+    },
+    "CoverRel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sensor"
+      ],
+      "properties": {
+        "sensor": {
+          "type": "string"
+        },
+        "body": {
+          "type": "string"
+        },
+        "mode": {
+          "type": "string"
+        }
+      }
+    },
+    "NeedlineSpoke": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "from",
+        "to"
+      ],
+      "properties": {
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        },
+        "km": {
+          "type": "number"
+        },
+        "role": {
+          "enum": [
+            "feeds",
+            "commands"
+          ]
+        }
+      }
+    },
+    "Needline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "root",
+        "spokes"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "kind": {
+          "const": "needline"
+        },
+        "root": {
+          "type": "string"
+        },
+        "spokes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/NeedlineSpoke"
+          }
+        },
+        "notDrawn": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "deniedBy": {
+          "type": "string"
+        },
+        "onDenied": {
+          "type": "string"
+        }
+      }
+    },
+    "Link": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        },
+        "among": {
+          "type": "string"
+        },
+        "km": {
+          "type": "number"
+        },
+        "survivesJam": {
+          "type": "boolean"
+        },
+        "drawOnCop": {
+          "type": "boolean"
+        }
+      }
+    },
+    "SceneTheater": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "package",
+        "bodies",
+        "sites"
+      ],
+      "properties": {
+        "package": {
+          "const": "coast-raid-k"
+        },
+        "frame": {
+          "type": [
+            "string",
+            "object"
+          ]
+        },
+        "bodies": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/Body"
+          }
+        },
+        "sites": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/Site"
+          }
+        },
+        "platformTypes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PlatformType"
+          }
+        },
+        "intel": {
+          "type": "object"
+        }
+      }
+    },
+    "SceneGis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "package"
+      ],
+      "properties": {
+        "package": {
+          "const": "coast-raid-k"
+        },
+        "incomplete": {
+          "type": "boolean"
+        },
+        "missing": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "frame": {
+          "$ref": "#/$defs/SpatialFrame"
+        },
+        "shoreline": {
+          "$ref": "#/$defs/Shoreline"
+        },
+        "regions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Region"
+          }
+        },
+        "membership": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Membership"
+          }
+        },
+        "grid": {
+          "$ref": "#/$defs/MapGrid"
+        },
+        "presentation": {
+          "$ref": "#/$defs/Presentation"
+        },
+        "crs": {
+          "$ref": "#/$defs/Crs"
+        }
+      },
+      "if": {
+        "properties": {
+          "incomplete": {
+            "const": true
+          }
+        },
+        "required": [
+          "incomplete"
+        ]
+      },
+      "then": {
+        "required": [
+          "package",
+          "incomplete",
+          "missing"
+        ]
+      },
+      "else": {
+        "required": [
+          "package",
+          "frame",
+          "shoreline",
+          "regions",
+          "membership"
+        ]
+      }
+    },
+    "SceneGraph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "package",
+        "owns",
+        "shoreTdl"
+      ],
+      "properties": {
+        "package": {
+          "const": "coast-raid-k"
+        },
+        "note": {
+          "type": "string"
+        },
+        "owns": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OwnRel"
+          }
+        },
+        "notSameAs": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "covers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CoverRel"
+          }
+        },
+        "shoreTdl": {
+          "$ref": "#/$defs/Needline"
+        },
+        "otherLinks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Link"
+          }
+        },
+        "zoneActs": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

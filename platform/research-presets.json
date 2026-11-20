@@ -1,0 +1,101 @@
+{
+  "presets": [
+    {
+      "id": "tactical-uav-cooperation",
+      "title": "全球军用无人机发展与协同能力趋势分析",
+      "question": "以公开军事情报、试验评估、采购预算、厂商披露和公开影像档案为来源，研究未来5年全球军用无人机发展与协同能力趋势。报告必须覆盖：全球发展脉络（代际与技术路线）、主要玩家对比（中美俄以土等，以公开来源能核验的国家/组织为准）、技术趋势（隐身、AI、自主模式、通信与数据链、蜂群/多机协同、高超声速相关平台或拦截研究），以及关键型号深度画像和配套图表。先确认国家/组织、项目、具体装备型号和技术对象身份，再提取公开原文中的平台属性、试验状态、采购/生产阶段和时间条件。平台参数只记录原文明确的续航/飞行时间、飞行航程、载荷容量、通信链路和自主模式，不推断作战效能，不把武器载荷、目标选择、交战距离或战术部署作为属性。全球对比按来源覆盖和证据质量表达，缺失国家或型号明确标为未检索/未核验。所有结论保留逐字引文、来源版本、发布日期/事件日期、单位、条件和证据缺口；图表只展示有来源的数量、时间、阶段或原文指标，不生成未经支持的评分。",
+      "keywords": [
+        "(UAV OR UAS OR 'unmanned aircraft' OR 'military drone')",
+        "(generation OR 'technology roadmap' OR stealth OR AI OR autonomy OR swarm OR 'multi-aircraft cooperation' OR hypersonic OR 'data link' OR interoperability)",
+        "(China OR Chinese OR US OR American OR Russia OR Russian OR Israel OR Israeli OR Turkey OR Turkish OR NATO)"
+      ],
+      "sourceIds": [
+        "defense-official",
+        "test-evaluation",
+        "procurement-budget",
+        "manufacturer-disclosure",
+        "defense-media",
+        "public-imagery"
+      ],
+      "sinceDays": 365,
+      "horizonYears": 5,
+      "maxItems": 25,
+      "searchPlan": [
+        {
+          "id": "lineage",
+          "purpose": "建立全球代际与技术路线时间线",
+          "query": "(UAV OR UAS OR \"military drone\") (generation OR evolution OR \"technology roadmap\" OR program) (defense OR military)"
+        },
+        {
+          "id": "players",
+          "purpose": "按国家/组织检索主要玩家的公开项目与平台",
+          "query": "(China OR US OR Russia OR Israel OR Turkey OR NATO) (UAV OR UAS OR unmanned aircraft) (program OR procurement OR test OR production)"
+        },
+        {
+          "id": "stealth-ai-autonomy",
+          "purpose": "检索隐身、AI、自主模式与公开试验",
+          "query": "(UAV OR UAS) (stealth OR AI OR autonomy OR \"human in the loop\" OR demonstration OR evaluation)"
+        },
+        {
+          "id": "swarm-links",
+          "purpose": "检索蜂群/多机协同、通信与数据链的公开描述",
+          "query": "(UAV OR UAS) (swarm OR \"multi-aircraft\" OR interoperability OR datalink OR \"data link\") (test OR demonstration OR standard)"
+        },
+        {
+          "id": "hypersonic-boundary",
+          "purpose": "只记录与无人平台或相关公开项目明确关联的高超声速材料",
+          "query": "(unmanned OR UAV OR UAS) hypersonic (platform OR test OR program OR interceptor)"
+        },
+        {
+          "id": "model-identity",
+          "purpose": "确认关键型号身份及厂商/使用方归属",
+          "query": "(\"XQ-58A\" OR \"MQ-9\" OR \"Kizilelma\" OR \"Akinci\" OR \"Orion\" OR \"Wing Loong\") (official OR manufacturer OR test OR procurement)"
+        },
+        {
+          "id": "independent-check",
+          "purpose": "补充独立评估、限制和反向证据",
+          "query": "(UAV OR UAS) (evaluation OR audit OR limitations OR reliability OR survivability) (GAO OR DOT&E OR parliament OR independent)"
+        },
+        {
+          "id": "imagery-context",
+          "purpose": "发现已公开历史影像或试验背景图像，不能单独证明能力",
+          "query": "(UAV OR UAS OR drone) (\"satellite imagery\" OR \"satellite image\") (test range OR factory OR airport)"
+        }
+      ],
+      "studyDimensions": [
+        {
+          "id": "development-lineage",
+          "title": "全球发展脉络",
+          "requiredEvidence": "代际/技术路线节点、时间、具体项目或型号、连续原文"
+        },
+        {
+          "id": "player-comparison",
+          "title": "主要玩家对比",
+          "requiredEvidence": "国家/组织、角色、已公开平台/项目、来源覆盖和不确定性"
+        },
+        {
+          "id": "technology-trends",
+          "title": "技术趋势",
+          "requiredEvidence": "隐身、AI/自主、通信数据链、蜂群/多机协同、高超声速相关公开证据及限制"
+        },
+        {
+          "id": "model-dossiers",
+          "title": "关键型号深度画像",
+          "requiredEvidence": "型号身份、厂商/使用方、任务角色、生命周期、可核验平台属性和事件"
+        },
+        {
+          "id": "charts",
+          "title": "配套图表",
+          "requiredEvidence": "每个数据点的来源、单位、时间、条件和图表口径"
+        }
+      ],
+      "scopeRules": [
+        "军方/防务官方、试验评估和采购记录优先；厂商披露单独标记，专业媒体只作线索并回查原始出处。",
+        "国家/玩家比较按已检索来源覆盖表达，不把来源数量当成实力排名。",
+        "图表中的每个点必须关联证据；未知、未检索、未读取、模型拒绝分别显示。",
+        "公开影像仅作为历史背景或公开事件辅助证据，需核对提供方、日期、分辨率、许可和对象相关性；不识别实时位置。",
+        "不研究武器制造参数、目标选择、攻击协同、交战收益或战术部署；所有对象、属性、关系、事件和趋势均待人工审核。"
+      ]
+    }
+  ]
+}

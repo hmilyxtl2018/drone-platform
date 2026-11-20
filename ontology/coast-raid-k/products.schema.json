@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.ontology/coast-raid-k/products.schema.json",
+  "title": "Runtime product envelopes (blackboard letters)",
+  "description": "Instance shapes for Track / Identity / Pair / Slot / Permit / Inject / Wave / Channel / Event. Writers and G(t) visibility are in the type descriptions of schema.json $defs. Permit is monitor-only.",
+  "$ref": "schema.json#/$defs/ProductEnvelope"
+}

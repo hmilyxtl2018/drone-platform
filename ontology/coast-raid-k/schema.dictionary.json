@@ -1,0 +1,277 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.ontology/coast-raid-k/schema.dictionary.json",
+  "title": "coast-raid-k dictionary $defs",
+  "description": "ISO 11179：codes=值域，tables=对象类，fields=特性。nav 七组页签是规范面。",
+  "$defs": {
+    "DictCode": {
+      "type": "object",
+      "required": [
+        "id",
+        "values",
+        "label"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "values": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "label": {
+          "type": "string"
+        }
+      }
+    },
+    "DictField": {
+      "type": "object",
+      "required": [
+        "name",
+        "label",
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "required": {
+          "type": [
+            "boolean",
+            "string"
+          ]
+        },
+        "pk": {
+          "type": "boolean"
+        },
+        "fk": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        },
+        "enum": {
+          "type": "array"
+        },
+        "unit": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        },
+        "facet": {
+          "type": "string",
+          "description": "规范页签名。必须属于该表 nav 的 tabs。"
+        },
+        "example": true,
+        "minimum": {
+          "type": "number"
+        },
+        "maximum": {
+          "type": "number"
+        }
+      }
+    },
+    "DictTable": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "persist",
+        "file",
+        "fields"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "persist": {
+          "enum": [
+            "archive",
+            "derived"
+          ]
+        },
+        "file": {
+          "type": "string"
+        },
+        "pk": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "rows": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        },
+        "nav": {
+          "enum": [
+            "Ontology",
+            "Scene",
+            "Rule",
+            "Algorithm",
+            "Engagement",
+            "Agent",
+            "Knowledge"
+          ]
+        },
+        "fields": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/DictField"
+          }
+        }
+      }
+    },
+    "DictOut": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "why",
+        "keep"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "why": {
+          "type": "string"
+        },
+        "keep": {
+          "type": "string"
+        },
+        "nav": {
+          "enum": [
+            "Ontology",
+            "Scene",
+            "Rule",
+            "Algorithm",
+            "Engagement",
+            "Agent",
+            "Knowledge"
+          ]
+        },
+        "facet": {
+          "type": "string"
+        }
+      }
+    },
+    "DataDictionary": {
+      "type": "object",
+      "required": [
+        "package",
+        "type",
+        "version",
+        "grain",
+        "nav",
+        "codes",
+        "tables",
+        "out"
+      ],
+      "properties": {
+        "package": {
+          "const": "coast-raid-k"
+        },
+        "type": {
+          "const": "DataDictionary"
+        },
+        "version": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        },
+        "grain": {
+          "type": "string"
+        },
+        "store": {
+          "type": "object"
+        },
+        "nav": {
+          "type": "array",
+          "minItems": 7,
+          "maxItems": 7,
+          "items": {
+            "type": "object",
+            "required": ["id", "n", "label", "standard", "tabs"],
+            "additionalProperties": false,
+            "properties": {
+              "id": {
+                "enum": [
+                  "Ontology",
+                  "Scene",
+                  "Rule",
+                  "Algorithm",
+                  "Engagement",
+                  "Agent",
+                  "Knowledge"
+                ]
+              },
+              "n": { "type": "string" },
+              "label": { "type": "string" },
+              "standard": { "type": "string" },
+              "tabs": {
+                "type": "array",
+                "minItems": 1,
+                "items": {
+                  "type": "object",
+                  "required": ["id", "standard"],
+                  "additionalProperties": false,
+                  "properties": {
+                    "id": { "type": "string" },
+                    "standard": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "codes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/DictCode"
+          }
+        },
+        "tables": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/DictTable"
+          }
+        },
+        "out": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/DictOut"
+          }
+        }
+      }
+    }
+  }
+}

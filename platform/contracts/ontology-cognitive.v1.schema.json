@@ -1,0 +1,2879 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ontology-agents.local/design/ontology-cognitive-suite/contracts.schema.json",
+  "title": "Ontology cognitive suite proposed design contracts",
+  "description": "Design-only v1 contracts. This file creates no runtime registration, database write, Agent Run or ontology publication. Scope: public research and simulation cognitive support.",
+  "$comment": "JSON Schema checks structure only. Before dispatch or acceptance, semantic validators must resolve and authorize refs, verify hashes and exact quote locators, validate source/rule authority and validity, freeze snapshots, enforce direct-parent provenance and shared budget lineage, check time ordering, entity/configuration alignment, identifier uniqueness, graph endpoints, cross-claim/check/criterion refs, independent-source lineage and actual executor receipts. New evidence revision is limited to one under the same authorized root owner, goal lineage, shared budget and idempotency scope. completed is not factual or professional validation.",
+  "$ref": "#/$defs/TaskInput",
+  "$defs": {
+    "ArtifactRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "runId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "artifactId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "artifactType": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "contentHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "runId",
+        "artifactId",
+        "artifactType",
+        "contentHash"
+      ],
+      "description": "A persisted, authorized Artifact. References are not authority grants; the semantic validator checks owner, purpose, direct-parent delegation, schema and the bytes matching contentHash."
+    },
+    "SnapshotRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "snapshotId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "contentHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "snapshotId",
+        "version",
+        "contentHash"
+      ],
+      "description": "An immutable versioned snapshot. Runtime freezes and resolves the hash; a version string alone is insufficient."
+    },
+    "ScenarioRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "scenarioId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "kind": {
+          "enum": [
+            "public-research",
+            "simulation"
+          ]
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "contentHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "scenarioId",
+        "kind",
+        "version",
+        "contentHash"
+      ]
+    },
+    "RuleSetRef": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "selection": {
+              "const": "selected"
+            },
+            "snapshot": {
+              "$ref": "#/$defs/SnapshotRef"
+            }
+          },
+          "required": [
+            "selection",
+            "snapshot"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "selection": {
+              "const": "not-applicable"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000
+            }
+          },
+          "required": [
+            "selection",
+            "reason"
+          ]
+        }
+      ],
+      "description": "A rules snapshot is selected explicitly, or applicability is explicitly excluded with a reason. Missing rules cannot be synthesized or treated as permission."
+    },
+    "TimeScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "asOf": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "validFrom": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "validTo": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "asOf",
+        "validFrom",
+        "validTo"
+      ],
+      "description": "The semantic validator enforces validFrom <= asOf <= validTo and source/rule validity. JSON Schema validates date-time syntax when a FormatChecker is enabled."
+    },
+    "BudgetRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "budgetId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "ownerId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "goalLineageId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "contentHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "budgetId",
+        "ownerId",
+        "goalLineageId",
+        "contentHash"
+      ],
+      "description": "References the shared authorized ledger. At most one evidence-revision Run may inherit this same owner, goal lineage and budget; it cannot create a replacement root budget."
+    },
+    "Context": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "researchPurpose": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 12000
+        },
+        "scenarioRef": {
+          "$ref": "#/$defs/ScenarioRef"
+        },
+        "ontologySnapshotRef": {
+          "$ref": "#/$defs/SnapshotRef"
+        },
+        "ruleSetRef": {
+          "$ref": "#/$defs/RuleSetRef"
+        },
+        "timeScope": {
+          "$ref": "#/$defs/TimeScope"
+        },
+        "sourcePolicyRef": {
+          "$ref": "#/$defs/SnapshotRef"
+        },
+        "inputArtifactRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "minItems": 0,
+          "maxItems": 500,
+          "uniqueItems": true
+        },
+        "ontologySchemaRef": {
+          "$ref": "#/$defs/SnapshotRef"
+        }
+      },
+      "required": [
+        "researchPurpose",
+        "scenarioRef",
+        "ontologySnapshotRef",
+        "ruleSetRef",
+        "timeScope",
+        "sourcePolicyRef",
+        "inputArtifactRefs",
+        "ontologySchemaRef"
+      ],
+      "description": "Frozen research context. For delegated Actions, inputArtifactRefs must match the direct-parent invocation input Artifacts and its persisted fingerprint. Matching or empty lists do not bypass authorization."
+    },
+    "TaskInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "question": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "context": {
+          "$ref": "#/$defs/Context"
+        },
+        "budgetRef": {
+          "$ref": "#/$defs/BudgetRef"
+        },
+        "sourceArtifactRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "minItems": 0,
+          "maxItems": 500,
+          "uniqueItems": true
+        },
+        "capabilityArtifactRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "minItems": 0,
+          "maxItems": 500,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "question",
+        "context",
+        "budgetRef",
+        "sourceArtifactRefs",
+        "capabilityArtifactRefs"
+      ],
+      "description": "Design-only typed semantic payload; runtime control fields live in separately sealed admission transport."
+    },
+    "MissingField": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512,
+          "pattern": "^/"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        }
+      },
+      "required": [
+        "path",
+        "reason"
+      ]
+    },
+    "NeedsContext": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "admissionStatus": {
+          "const": "needs-context"
+        },
+        "missingFields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/MissingField"
+          },
+          "minItems": 1,
+          "maxItems": 50
+        },
+        "dispatchAllowed": {
+          "const": false
+        },
+        "runCreated": {
+          "const": false
+        },
+        "resolutionHints": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "minItems": 0,
+          "maxItems": 50,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "admissionStatus",
+        "missingFields",
+        "dispatchAllowed",
+        "runCreated",
+        "resolutionHints"
+      ],
+      "description": "Admission response only. It has no runId, creates no Run and dispatches no Agent."
+    },
+    "AdmissionAccepted": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "admissionStatus": {
+          "const": "accepted"
+        },
+        "inputHash": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "dispatchAllowed": {
+          "const": true
+        },
+        "input": {
+          "$ref": "#/$defs/FrozenTaskInput"
+        }
+      },
+      "required": [
+        "admissionStatus",
+        "inputHash",
+        "dispatchAllowed",
+        "input"
+      ]
+    },
+    "AdmissionRejected": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "admissionStatus": {
+          "const": "rejected"
+        },
+        "code": {
+          "enum": [
+            "out-of-scope",
+            "unauthorized-reference",
+            "invalid-reference",
+            "budget-not-authorized",
+            "question-too-long"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "dispatchAllowed": {
+          "const": false
+        },
+        "runCreated": {
+          "const": false
+        }
+      },
+      "required": [
+        "admissionStatus",
+        "code",
+        "reason",
+        "dispatchAllowed",
+        "runCreated"
+      ]
+    },
+    "AdmissionResult": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/AdmissionAccepted"
+        },
+        {
+          "$ref": "#/$defs/NeedsContext"
+        },
+        {
+          "$ref": "#/$defs/AdmissionRejected"
+        }
+      ]
+    },
+    "RunState": {
+      "enum": [
+        "queued",
+        "running",
+        "completed",
+        "failed",
+        "cancelled"
+      ],
+      "description": "Runtime execution status, distinct from admission, delivery acceptance, professional correctness, factual verification and publication. needs-context is deliberately excluded."
+    },
+    "EvidenceLocator": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "page",
+            "section",
+            "paragraph",
+            "line",
+            "timestamp",
+            "json-pointer",
+            "fragment"
+          ]
+        },
+        "value": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        }
+      },
+      "required": [
+        "kind",
+        "value"
+      ],
+      "description": "A resolvable location inside the referenced Artifact. The semantic validator checks quote containment and locator resolution against its hash-verified content."
+    },
+    "Evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "evidenceId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "sourceArtifactRef": {
+          "$ref": "#/$defs/ArtifactRef"
+        },
+        "quote": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 12000
+        },
+        "locator": {
+          "$ref": "#/$defs/EvidenceLocator"
+        },
+        "retrievedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "evidenceId",
+        "sourceArtifactRef",
+        "quote",
+        "locator",
+        "retrievedAt"
+      ],
+      "description": "An exact source quote and locator. Retrieval time is not a substitute for source publication time or validity, and repeated publication of the same origin is not independent corroboration."
+    },
+    "Claim": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "claimId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 12000
+        },
+        "classification": {
+          "enum": [
+            "fact",
+            "research-judgment",
+            "simulation-assumption"
+          ]
+        },
+        "support": {
+          "enum": [
+            "supported",
+            "disputed",
+            "unknown",
+            "rejected"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "minItems": 0,
+          "maxItems": 100
+        },
+        "subjectId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "predicateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "objectId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "conditions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "minItems": 0,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "assumptions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "minItems": 0,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "validTime": {
+          "$ref": "#/$defs/TimeScope",
+          "description": "Optional narrower validity than the frozen task context; if omitted, context.timeScope is the explicit default. Semantic validation verifies temporal compatibility."
+        }
+      },
+      "required": [
+        "claimId",
+        "statement",
+        "classification",
+        "support",
+        "evidence",
+        "conditions",
+        "assumptions"
+      ],
+      "dependentRequired": {
+        "subjectId": [
+          "predicateId",
+          "objectId"
+        ],
+        "predicateId": [
+          "subjectId",
+          "objectId"
+        ],
+        "objectId": [
+          "subjectId",
+          "predicateId"
+        ]
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "support": {
+                "const": "supported"
+              }
+            },
+            "required": [
+              "support"
+            ]
+          },
+          "then": {
+            "properties": {
+              "evidence": {
+                "minItems": 1
+              }
+            },
+            "required": [
+              "subjectId",
+              "predicateId",
+              "objectId"
+            ]
+          }
+        }
+      ],
+      "description": "Supported means supported by cited evidence within this frozen context; it does not mean independently verified true. Semantic validation checks that evidence actually supports the statement and preserves counterevidence. A supported domain claim requires an explicit subject/predicate/object tuple; the semantic validator verifies every such tuple appears in the report ontology view with matching identifiers and conditions."
+    },
+    "Gap": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "gapId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "kind": {
+          "enum": [
+            "missing-source",
+            "missing-capability-artifact",
+            "unknown-rule-applicability",
+            "version-mismatch",
+            "insufficient-coverage",
+            "budget-exhausted",
+            "unsupported-relation",
+            "other"
+          ]
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 12000
+        },
+        "impact": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "affectedClaimIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^\\S(?:.*\\S)?$"
+          },
+          "minItems": 0,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "suggestedNextStep": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        }
+      },
+      "required": [
+        "gapId",
+        "kind",
+        "description",
+        "impact",
+        "affectedClaimIds",
+        "suggestedNextStep"
+      ],
+      "description": "A research limitation, not a request to pause for human review. Ordinary gaps may yield an honest partial draft; optional public evidence retrieval remains within the shared budget."
+    },
+    "Conflict": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "conflictId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "claimIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^\\S(?:.*\\S)?$"
+          },
+          "minItems": 2,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 12000
+        },
+        "state": {
+          "enum": [
+            "unresolved",
+            "bounded",
+            "reconciled"
+          ]
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "minItems": 1,
+          "maxItems": 100
+        },
+        "effect": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "severity": {
+          "enum": [
+            "info",
+            "warning",
+            "blocking"
+          ]
+        },
+        "kind": {
+          "enum": [
+            "entity",
+            "temporal",
+            "rule",
+            "evidence",
+            "cross-view"
+          ]
+        },
+        "checkIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^\\S(?:.*\\S)?$"
+          },
+          "minItems": 0,
+          "maxItems": 100,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "conflictId",
+        "claimIds",
+        "description",
+        "state",
+        "evidence",
+        "effect",
+        "severity",
+        "kind",
+        "checkIds"
+      ],
+      "description": "Conflicting evidence remains visible. A model explanation alone cannot turn the conflict into factual verification."
+    },
+    "CheckMethod": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "deterministic",
+            "llm",
+            "not-executed"
+          ]
+        },
+        "executor": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        }
+      },
+      "required": [
+        "kind",
+        "executor",
+        "version"
+      ],
+      "description": "Identifies the actual validator/tool or model receipt. A UI executor badge must be grounded in runtime execution evidence."
+    },
+    "Check": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "checkId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "kind": {
+          "enum": [
+            "reference-integrity",
+            "schema",
+            "entity-identity",
+            "relation-domain-range",
+            "unit-dimension",
+            "temporal-validity",
+            "rule-applicability",
+            "source-independence",
+            "claim-evidence",
+            "model-explanation"
+          ]
+        },
+        "applicability": {
+          "enum": [
+            "applicable",
+            "not-applicable",
+            "unknown"
+          ]
+        },
+        "status": {
+          "enum": [
+            "pass",
+            "fail",
+            "unknown",
+            "not-applicable",
+            "not-executed"
+          ]
+        },
+        "method": {
+          "$ref": "#/$defs/CheckMethod"
+        },
+        "explanation": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 12000
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "minItems": 0,
+          "maxItems": 100
+        }
+      },
+      "required": [
+        "checkId",
+        "kind",
+        "applicability",
+        "status",
+        "method",
+        "explanation",
+        "evidence"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "applicability": {
+                "const": "unknown"
+              }
+            },
+            "required": [
+              "applicability"
+            ]
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "unknown"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "applicability": {
+                "const": "not-applicable"
+              }
+            },
+            "required": [
+              "applicability"
+            ]
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "const": "not-applicable"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "applicability": {
+                "const": "applicable"
+              }
+            },
+            "required": [
+              "applicability"
+            ]
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "pass",
+                  "fail",
+                  "unknown",
+                  "not-executed"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "pass",
+                  "fail"
+                ]
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "method": {
+                "properties": {
+                  "kind": {
+                    "const": "deterministic"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "method": {
+                "properties": {
+                  "kind": {
+                    "const": "not-executed"
+                  }
+                },
+                "required": [
+                  "kind"
+                ]
+              }
+            },
+            "required": [
+              "method"
+            ]
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "not-executed",
+                  "not-applicable",
+                  "unknown"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "model-explanation"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "unknown",
+                  "not-applicable",
+                  "not-executed"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "enum": [
+                  "rule-applicability",
+                  "claim-evidence"
+                ]
+              },
+              "status": {
+                "const": "pass"
+              }
+            },
+            "required": [
+              "kind",
+              "status"
+            ]
+          },
+          "then": {
+            "properties": {
+              "evidence": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ],
+      "description": "Only a performed deterministic check can pass or fail; an LLM may explain findings. Unknown rule applicability cannot pass. Check coverage does not establish professional correctness or factual truth."
+    },
+    "Provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "runId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "agentKey": {
+          "enum": [
+            "ontology-cognitive-analyst",
+            "situation-assessment-action",
+            "rule-applicability-action",
+            "tactics-research-action",
+            "ontology-consistency-action"
+          ]
+        },
+        "profileVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "ownerId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "goalLineageId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "budgetRef": {
+          "$ref": "#/$defs/BudgetRef"
+        },
+        "inputArtifactRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "minItems": 0,
+          "maxItems": 500,
+          "uniqueItems": true
+        },
+        "goalId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "parentGoalId": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^\\S(?:.*\\S)?$"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Null only for the application root; delegated Actions identify the direct parent goal. Server validates lineage."
+        }
+      },
+      "required": [
+        "runId",
+        "agentKey",
+        "profileVersion",
+        "ownerId",
+        "goalLineageId",
+        "budgetRef",
+        "inputArtifactRefs",
+        "goalId",
+        "parentGoalId"
+      ],
+      "description": "The runtime checks that owner and goal lineage match the budget ledger and frozen parent delegation, and that source evidence is reachable only through authorized direct-parent input Artifacts."
+    },
+    "SituationFinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "findingId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 12000
+        },
+        "entityIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^\\S(?:.*\\S)?$"
+          },
+          "minItems": 1,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "claimIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^\\S(?:.*\\S)?$"
+          },
+          "minItems": 1,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "state": {
+          "enum": [
+            "observed",
+            "inferred",
+            "unknown"
+          ]
+        },
+        "change": {
+          "enum": [
+            "new",
+            "changed",
+            "unchanged",
+            "undetermined"
+          ]
+        },
+        "validTime": {
+          "$ref": "#/$defs/TimeScope"
+        },
+        "observedAt": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Null means no source observation timestamp is available; never replace it with retrieval time."
+        }
+      },
+      "required": [
+        "findingId",
+        "description",
+        "entityIds",
+        "claimIds",
+        "state",
+        "change",
+        "validTime",
+        "observedAt"
+      ]
+    },
+    "RuleFinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ruleId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "applicability": {
+          "enum": [
+            "applicable",
+            "not-applicable",
+            "unknown"
+          ]
+        },
+        "determination": {
+          "enum": [
+            "constraint-identified",
+            "not-applicable",
+            "unknown"
+          ]
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 12000
+        },
+        "claimIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^\\S(?:.*\\S)?$"
+          },
+          "minItems": 0,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "evidence": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "minItems": 0,
+          "maxItems": 100
+        },
+        "checkIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^\\S(?:.*\\S)?$"
+          },
+          "minItems": 0,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "ruleVersion": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^\\S(?:.*\\S)?$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sourceAuthority": {
+          "enum": [
+            "verified-authoritative",
+            "unverified",
+            "unknown"
+          ],
+          "description": "Only a server-performed authority/provenance validation may establish verified-authoritative. It does not itself grant operational authority."
+        },
+        "effectivePeriod": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/TimeScope"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Null expresses an unknown validity interval and forces unknown applicability; context dates must not be substituted for rule dates."
+        }
+      },
+      "required": [
+        "ruleId",
+        "applicability",
+        "determination",
+        "rationale",
+        "claimIds",
+        "evidence",
+        "checkIds",
+        "ruleVersion",
+        "sourceAuthority",
+        "effectivePeriod"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "applicability": {
+                "const": "unknown"
+              }
+            },
+            "required": [
+              "applicability"
+            ]
+          },
+          "then": {
+            "properties": {
+              "determination": {
+                "const": "unknown"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "applicability": {
+                "const": "not-applicable"
+              }
+            },
+            "required": [
+              "applicability"
+            ]
+          },
+          "then": {
+            "properties": {
+              "determination": {
+                "const": "not-applicable"
+              },
+              "evidence": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "applicability": {
+                "const": "applicable"
+              }
+            },
+            "required": [
+              "applicability"
+            ]
+          },
+          "then": {
+            "properties": {
+              "determination": {
+                "const": "constraint-identified"
+              },
+              "evidence": {
+                "minItems": 1
+              },
+              "claimIds": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "anyOf": [
+              {
+                "properties": {
+                  "effectivePeriod": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "effectivePeriod"
+                ]
+              },
+              {
+                "properties": {
+                  "ruleVersion": {
+                    "type": "null"
+                  }
+                },
+                "required": [
+                  "ruleVersion"
+                ]
+              },
+              {
+                "properties": {
+                  "sourceAuthority": {
+                    "enum": [
+                      "unverified",
+                      "unknown"
+                    ]
+                  }
+                },
+                "required": [
+                  "sourceAuthority"
+                ]
+              }
+            ]
+          },
+          "then": {
+            "properties": {
+              "applicability": {
+                "const": "unknown"
+              },
+              "determination": {
+                "const": "unknown"
+              }
+            }
+          }
+        }
+      ],
+      "description": "Research about published rules and constraints only. No determination is an engagement permission, operational authorization or authority to act."
+    },
+    "ComparisonCriterion": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "criterionId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "definition": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 12000
+        }
+      },
+      "required": [
+        "criterionId",
+        "label",
+        "definition"
+      ]
+    },
+    "CriterionAssessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "criterionId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "assessment": {
+          "enum": [
+            "supported-comparison",
+            "insufficient-evidence",
+            "not-applicable"
+          ]
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 12000
+        },
+        "claimIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^\\S(?:.*\\S)?$"
+          },
+          "minItems": 0,
+          "maxItems": 100,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "criterionId",
+        "assessment",
+        "rationale",
+        "claimIds"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "assessment": {
+                "const": "supported-comparison"
+              }
+            },
+            "required": [
+              "assessment"
+            ]
+          },
+          "then": {
+            "properties": {
+              "claimIds": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "ResearchOption": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "optionId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 12000
+        },
+        "assessments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CriterionAssessment"
+          },
+          "minItems": 1,
+          "maxItems": 50
+        }
+      },
+      "required": [
+        "optionId",
+        "title",
+        "description",
+        "assessments"
+      ],
+      "description": "A public-literature or simulation research alternative; it is not a plan for real targeting, engagement optimization or weapon control."
+    },
+    "OntologyEntity": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "entityId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1000
+        },
+        "typeId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "claimIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^\\S(?:.*\\S)?$"
+          },
+          "minItems": 1,
+          "maxItems": 100,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "entityId",
+        "label",
+        "typeId",
+        "claimIds"
+      ]
+    },
+    "OntologyRelation": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "relationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "subjectId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "predicateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "objectId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "claimIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^\\S(?:.*\\S)?$"
+          },
+          "minItems": 0,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "support": {
+          "enum": [
+            "supported",
+            "disputed",
+            "unknown",
+            "rejected"
+          ]
+        },
+        "conditionClaimIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^\\S(?:.*\\S)?$"
+          },
+          "minItems": 0,
+          "maxItems": 100,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "relationId",
+        "subjectId",
+        "predicateId",
+        "objectId",
+        "claimIds",
+        "support",
+        "conditionClaimIds"
+      ],
+      "description": "A candidate analytical relationship. Supported relations require at least one supporting Claim. Unknown or disputed relations remain explicit. The semantic validator checks endpoints, ontology constraints, condition references and whether referenced supported Claims actually support this relation; rendering is not publication.",
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "support": {
+                "const": "supported"
+              }
+            },
+            "required": [
+              "support"
+            ]
+          },
+          "then": {
+            "properties": {
+              "claimIds": {
+                "minItems": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "OntologyView": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "entities": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OntologyEntity"
+          },
+          "minItems": 0,
+          "maxItems": 500
+        },
+        "relations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OntologyRelation"
+          },
+          "minItems": 0,
+          "maxItems": 500
+        }
+      },
+      "required": [
+        "entities",
+        "relations"
+      ],
+      "description": "Evidence-linked analytical graph of the current research report, distinct from the execution DAG, capability graph and published ontology."
+    },
+    "ResearchImplication": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "implicationId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 12000
+        },
+        "claimIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^\\S(?:.*\\S)?$"
+          },
+          "minItems": 1,
+          "maxItems": 100,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "implicationId",
+        "description",
+        "claimIds"
+      ]
+    },
+    "DecisionSupport": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "researchImplications": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ResearchImplication"
+          },
+          "minItems": 0,
+          "maxItems": 100
+        },
+        "unresolvedQuestions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "minItems": 0,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "nextResearchActions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "minItems": 0,
+          "maxItems": 100,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "researchImplications",
+        "unresolvedQuestions",
+        "nextResearchActions"
+      ],
+      "description": "Research guidance only. Missing evidence must remain visible; no unsupported best option or operational action recommendation is inferred."
+    },
+    "ConsistencyCoverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "performedCheckIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^\\S(?:.*\\S)?$"
+          },
+          "minItems": 0,
+          "maxItems": 500,
+          "uniqueItems": true
+        },
+        "excludedChecks": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "minItems": 0,
+          "maxItems": 100,
+          "uniqueItems": true
+        },
+        "entityCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "relationCount": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "performedCheckIds",
+        "excludedChecks",
+        "entityCount",
+        "relationCount"
+      ],
+      "description": "The semantic validator verifies that performedCheckIds exist and name actual performed checks. Counts must match the evaluated graph."
+    },
+    "PropertyChange": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "entityId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "propertyId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256,
+          "pattern": "^\\S(?:.*\\S)?$"
+        },
+        "proposedValue": {
+          "oneOf": [
+            {
+              "type": "string",
+              "maxLength": 12000
+            },
+            {
+              "type": "number"
+            },
+            {
+              "type": "boolean"
+            }
+          ]
+        },
+        "claimIds": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256,
+            "pattern": "^\\S(?:.*\\S)?$"
+          },
+          "minItems": 1,
+          "maxItems": 100,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "entityId",
+        "propertyId",
+        "proposedValue",
+        "claimIds"
+      ]
+    },
+    "CandidateChange": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "changeId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^\\S(?:.*\\S)?$"
+            },
+            "operation": {
+              "const": "propose-entity"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 12000
+            },
+            "payload": {
+              "$ref": "#/$defs/OntologyEntity"
+            }
+          },
+          "required": [
+            "changeId",
+            "operation",
+            "reason",
+            "payload"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "changeId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^\\S(?:.*\\S)?$"
+            },
+            "operation": {
+              "const": "propose-relation"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 12000
+            },
+            "payload": {
+              "$ref": "#/$defs/OntologyRelation"
+            }
+          },
+          "required": [
+            "changeId",
+            "operation",
+            "reason",
+            "payload"
+          ]
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "changeId": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 256,
+              "pattern": "^\\S(?:.*\\S)?$"
+            },
+            "operation": {
+              "const": "propose-property-update"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 12000
+            },
+            "payload": {
+              "$ref": "#/$defs/PropertyChange"
+            }
+          },
+          "required": [
+            "changeId",
+            "operation",
+            "reason",
+            "payload"
+          ]
+        }
+      ],
+      "description": "A no-write candidate only. Formal ontology mutation/publication requires a separate authorized publication process."
+    },
+    "SituationAssessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "const": "ontology-cognitive.v1"
+        },
+        "state": {
+          "const": "proposed"
+        },
+        "context": {
+          "$ref": "#/$defs/Context"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "minItems": 0,
+          "maxItems": 500
+        },
+        "gaps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Gap"
+          },
+          "minItems": 0,
+          "maxItems": 100
+        },
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Conflict"
+          },
+          "minItems": 0,
+          "maxItems": 100
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Check"
+          },
+          "minItems": 0,
+          "maxItems": 500
+        },
+        "productType": {
+          "const": "SituationAssessment"
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SituationFinding"
+          },
+          "minItems": 0,
+          "maxItems": 100
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "state",
+        "context",
+        "provenance",
+        "claims",
+        "gaps",
+        "conflicts",
+        "checks",
+        "productType",
+        "findings"
+      ],
+      "description": "Situation descriptions bounded to public research or simulation. Empty findings are permitted only as an honest gaps draft; domain acceptance evaluates this separately."
+    },
+    "ConstraintAssessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "const": "ontology-cognitive.v1"
+        },
+        "state": {
+          "const": "proposed"
+        },
+        "context": {
+          "$ref": "#/$defs/Context"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "minItems": 0,
+          "maxItems": 500
+        },
+        "gaps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Gap"
+          },
+          "minItems": 0,
+          "maxItems": 100
+        },
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Conflict"
+          },
+          "minItems": 0,
+          "maxItems": 100
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Check"
+          },
+          "minItems": 0,
+          "maxItems": 500
+        },
+        "productType": {
+          "const": "ConstraintAssessment"
+        },
+        "ruleFindings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/RuleFinding"
+          },
+          "minItems": 0,
+          "maxItems": 100
+        },
+        "researchConstraints": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "minItems": 0,
+          "maxItems": 100,
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "state",
+        "context",
+        "provenance",
+        "claims",
+        "gaps",
+        "conflicts",
+        "checks",
+        "productType",
+        "ruleFindings",
+        "researchConstraints"
+      ],
+      "description": "Published-rule applicability and research constraints. It never grants operational authority; unknown applicability stays unknown."
+    },
+    "ResearchOptionComparison": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "const": "ontology-cognitive.v1"
+        },
+        "state": {
+          "const": "proposed"
+        },
+        "context": {
+          "$ref": "#/$defs/Context"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "minItems": 0,
+          "maxItems": 500
+        },
+        "gaps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Gap"
+          },
+          "minItems": 0,
+          "maxItems": 100
+        },
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Conflict"
+          },
+          "minItems": 0,
+          "maxItems": 100
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Check"
+          },
+          "minItems": 0,
+          "maxItems": 500
+        },
+        "productType": {
+          "const": "ResearchOptionComparison"
+        },
+        "comparisonState": {
+          "enum": [
+            "evidence-bounded",
+            "insufficient-evidence"
+          ]
+        },
+        "criteria": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ComparisonCriterion"
+          },
+          "minItems": 1,
+          "maxItems": 50
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ResearchOption"
+          },
+          "minItems": 0,
+          "maxItems": 20
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "state",
+        "context",
+        "provenance",
+        "claims",
+        "gaps",
+        "conflicts",
+        "checks",
+        "productType",
+        "comparisonState",
+        "criteria",
+        "options"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "comparisonState": {
+                "const": "evidence-bounded"
+              }
+            },
+            "required": [
+              "comparisonState"
+            ]
+          },
+          "then": {
+            "properties": {
+              "options": {
+                "minItems": 2
+              },
+              "claims": {
+                "minItems": 1,
+                "contains": {
+                  "properties": {
+                    "support": {
+                      "const": "supported"
+                    }
+                  },
+                  "required": [
+                    "support"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      ],
+      "description": "Transparent comparison of research alternatives without operational engagement optimization. Domain acceptance checks comparable units, configurations, criteria, evidence and uncertainty; absence of evidence cannot yield a best option."
+    },
+    "ConsistencyReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "const": "ontology-cognitive.v1"
+        },
+        "state": {
+          "const": "proposed"
+        },
+        "context": {
+          "$ref": "#/$defs/Context"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "minItems": 0,
+          "maxItems": 500
+        },
+        "gaps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Gap"
+          },
+          "minItems": 0,
+          "maxItems": 100
+        },
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Conflict"
+          },
+          "minItems": 0,
+          "maxItems": 100
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Check"
+          },
+          "minItems": 0,
+          "maxItems": 500
+        },
+        "productType": {
+          "const": "ConsistencyReport"
+        },
+        "overallResult": {
+          "enum": [
+            "no-detected-conflict",
+            "contradictions-detected",
+            "insufficient-coverage"
+          ]
+        },
+        "coverage": {
+          "$ref": "#/$defs/ConsistencyCoverage"
+        },
+        "factualVerification": {
+          "const": "not-performed"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "state",
+        "context",
+        "provenance",
+        "claims",
+        "gaps",
+        "conflicts",
+        "checks",
+        "productType",
+        "overallResult",
+        "coverage",
+        "factualVerification"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "overallResult": {
+                "const": "no-detected-conflict"
+              }
+            },
+            "required": [
+              "overallResult"
+            ]
+          },
+          "then": {
+            "properties": {
+              "checks": {
+                "minItems": 1,
+                "items": {
+                  "properties": {
+                    "status": {
+                      "enum": [
+                        "pass",
+                        "not-applicable"
+                      ]
+                    }
+                  }
+                },
+                "contains": {
+                  "properties": {
+                    "status": {
+                      "const": "pass"
+                    }
+                  },
+                  "required": [
+                    "status"
+                  ]
+                }
+              },
+              "conflicts": {
+                "maxItems": 0
+              },
+              "coverage": {
+                "properties": {
+                  "performedCheckIds": {
+                    "minItems": 1
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "overallResult": {
+                "const": "contradictions-detected"
+              }
+            },
+            "required": [
+              "overallResult"
+            ]
+          },
+          "then": {
+            "anyOf": [
+              {
+                "properties": {
+                  "conflicts": {
+                    "minItems": 1
+                  }
+                }
+              },
+              {
+                "properties": {
+                  "checks": {
+                    "contains": {
+                      "properties": {
+                        "status": {
+                          "const": "fail"
+                        }
+                      },
+                      "required": [
+                        "status"
+                      ]
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "description": "No detected conflict means only the performed deterministic checks found none within their stated coverage. It does not verify facts, approve a plan or establish professional correctness."
+    },
+    "CognitiveResearchReport": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "const": "ontology-cognitive.v1"
+        },
+        "state": {
+          "const": "proposed"
+        },
+        "context": {
+          "$ref": "#/$defs/Context"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "minItems": 0,
+          "maxItems": 500
+        },
+        "gaps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Gap"
+          },
+          "minItems": 0,
+          "maxItems": 100
+        },
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Conflict"
+          },
+          "minItems": 0,
+          "maxItems": 100
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Check"
+          },
+          "minItems": 0,
+          "maxItems": 500
+        },
+        "productType": {
+          "const": "CognitiveResearchReport"
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 12000
+        },
+        "assessmentArtifactRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "minItems": 0,
+          "maxItems": 500,
+          "uniqueItems": true
+        },
+        "ontologyView": {
+          "$ref": "#/$defs/OntologyView"
+        },
+        "decisionSupport": {
+          "$ref": "#/$defs/DecisionSupport"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "state",
+        "context",
+        "provenance",
+        "claims",
+        "gaps",
+        "conflicts",
+        "checks",
+        "productType",
+        "summary",
+        "assessmentArtifactRefs",
+        "ontologyView",
+        "decisionSupport"
+      ],
+      "description": "Application-level synthesis from authorized child Action Artifacts and existing capability Artifacts. Evidence and graph claims remain traceable to frozen context; gaps may produce a partial proposed report without human waits.",
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "claims": {
+                "contains": {
+                  "properties": {
+                    "support": {
+                      "const": "supported"
+                    }
+                  },
+                  "required": [
+                    "support"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "claims"
+            ]
+          },
+          "then": {
+            "properties": {
+              "ontologyView": {
+                "properties": {
+                  "entities": {
+                    "minItems": 1
+                  },
+                  "relations": {
+                    "minItems": 1
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "OntologyChangeSetCandidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "schemaVersion": {
+          "const": "ontology-cognitive.v1"
+        },
+        "state": {
+          "const": "proposed"
+        },
+        "context": {
+          "$ref": "#/$defs/Context"
+        },
+        "provenance": {
+          "$ref": "#/$defs/Provenance"
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Claim"
+          },
+          "minItems": 0,
+          "maxItems": 500
+        },
+        "gaps": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Gap"
+          },
+          "minItems": 0,
+          "maxItems": 100
+        },
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Conflict"
+          },
+          "minItems": 0,
+          "maxItems": 100
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Check"
+          },
+          "minItems": 0,
+          "maxItems": 500
+        },
+        "productType": {
+          "const": "OntologyChangeSetCandidate"
+        },
+        "baseSnapshotRef": {
+          "$ref": "#/$defs/SnapshotRef"
+        },
+        "changeAssessment": {
+          "enum": [
+            "changes-proposed",
+            "no-changes-needed",
+            "insufficient-evidence"
+          ]
+        },
+        "changes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CandidateChange"
+          },
+          "minItems": 0,
+          "maxItems": 200
+        },
+        "publicationState": {
+          "const": "not-published"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "state",
+        "context",
+        "provenance",
+        "claims",
+        "gaps",
+        "conflicts",
+        "checks",
+        "productType",
+        "baseSnapshotRef",
+        "changeAssessment",
+        "changes",
+        "publicationState"
+      ],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "changeAssessment": {
+                "const": "changes-proposed"
+              }
+            },
+            "required": [
+              "changeAssessment"
+            ]
+          },
+          "then": {
+            "properties": {
+              "changes": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "changeAssessment": {
+                "enum": [
+                  "no-changes-needed",
+                  "insufficient-evidence"
+                ]
+              }
+            },
+            "required": [
+              "changeAssessment"
+            ]
+          },
+          "then": {
+            "properties": {
+              "changes": {
+                "maxItems": 0
+              }
+            }
+          }
+        }
+      ],
+      "description": "Tool-produced ontology candidate; not an additional Agent Profile. The semantic validator enforces baseSnapshotRef equality with context.ontologySnapshotRef. Publication is a separate human-authorized operation."
+    },
+    "Product": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/SituationAssessment"
+        },
+        {
+          "$ref": "#/$defs/ConstraintAssessment"
+        },
+        {
+          "$ref": "#/$defs/ResearchOptionComparison"
+        },
+        {
+          "$ref": "#/$defs/ConsistencyReport"
+        },
+        {
+          "$ref": "#/$defs/CognitiveResearchReport"
+        },
+        {
+          "$ref": "#/$defs/OntologyChangeSetCandidate"
+        }
+      ]
+    },
+    "AdmissionInput": {
+      "$ref": "#/$defs/FrozenTaskInput"
+    },
+    "FrozenTaskInput": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "question": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "context": {
+          "$ref": "#/$defs/Context"
+        },
+        "budgetRef": {
+          "$ref": "#/$defs/BudgetRef"
+        },
+        "sourceArtifactRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "minItems": 0,
+          "maxItems": 500,
+          "uniqueItems": true
+        },
+        "capabilityArtifactRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "minItems": 0,
+          "maxItems": 500,
+          "uniqueItems": true
+        },
+        "executionMode": {
+          "const": "profile-run"
+        },
+        "automationMode": {
+          "const": "unattended-draft"
+        },
+        "budgetLimits": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9223372036854775807
+          },
+          "minProperties": 1,
+          "propertyNames": {
+            "enum": [
+              "model_calls",
+              "input_tokens",
+              "output_tokens",
+              "tool_calls",
+              "http_calls",
+              "search_calls",
+              "scrape_calls",
+              "reasoning_rounds",
+              "gate_checks",
+              "relation_reviews"
+            ]
+          }
+        },
+        "cognitiveAdmissionId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "cognitiveContextId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope": {
+          "$ref": "#/$defs/FrozenResearchScope"
+        }
+      },
+      "required": [
+        "question",
+        "context",
+        "budgetRef",
+        "sourceArtifactRefs",
+        "capabilityArtifactRefs",
+        "executionMode",
+        "automationMode",
+        "budgetLimits",
+        "cognitiveAdmissionId",
+        "cognitiveContextId",
+        "scope"
+      ],
+      "description": "Server-issued frozen root admission transport. The database fingerprint binds semantic context, TaskIntent scope projection, budget and one-use admission to the authenticated principal. It is not a user-editable TaskInput."
+    },
+    "FrozenResearchScope": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "researchPurpose": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 12000
+        },
+        "scenarioRef": {
+          "$ref": "#/$defs/ScenarioRef"
+        },
+        "ontologySnapshotRef": {
+          "$ref": "#/$defs/SnapshotRef"
+        },
+        "ruleSetRef": {
+          "$ref": "#/$defs/RuleSetRef"
+        },
+        "timeScope": {
+          "$ref": "#/$defs/TimeScope"
+        },
+        "sourcePolicyRef": {
+          "$ref": "#/$defs/SnapshotRef"
+        },
+        "inputArtifactRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ArtifactRef"
+          },
+          "minItems": 0,
+          "maxItems": 500,
+          "uniqueItems": true
+        },
+        "ontologySchemaRef": {
+          "$ref": "#/$defs/SnapshotRef"
+        },
+        "contextId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 256
+        }
+      },
+      "required": [
+        "researchPurpose",
+        "scenarioRef",
+        "ontologySnapshotRef",
+        "ruleSetRef",
+        "timeScope",
+        "sourcePolicyRef",
+        "inputArtifactRefs",
+        "ontologySchemaRef",
+        "contextId"
+      ],
+      "description": "Server-generated projection of the frozen research context into the root TaskIntent scope. It is sealed in the same one-use admission fingerprint as context."
+    }
+  }
+}

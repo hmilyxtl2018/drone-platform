@@ -1,0 +1,714 @@
+{
+  "package": "coast-raid-k",
+  "contractId": "intelligence-ingestion-contract",
+  "version": "1.1.0",
+  "status": "draft-for-demo",
+  "schema": "schema.intelligence.json",
+  "attributesJsonbSchema": "schema.object-attributes-jsonb.json",
+  "scope": {
+    "purpose": "collect public-source military, equipment, procurement, and defence-industry reporting (or explicitly authorized documents), extract evidence-backed claims, and propose reviewed knowledge versions",
+    "allowedAccessBasis": [
+      "public",
+      "authorized"
+    ],
+    "excluded": [
+      "operational targeting",
+      "weapon or effector control",
+      "external action execution",
+      "identity inference about real persons",
+      "collection beyond granted access"
+    ],
+    "separation": "SourceDocument/EvidenceClaim and OSINTItem are evidence records; KnowledgeCandidate is not published truth; IntelligenceAssessment is a human-reviewable research report; PublishedKnowledgeVersion is the only released trusted knowledge projection. OSINT collection and trend reports never write directly to the trusted knowledge package."
+  },
+  "osintCollection": {
+    "purpose": "bounded open-source research for equipment technology, procurement, budgets, and defence industry dynamics",
+    "initialTrigger": "manual",
+    "allowedTriggerModes": [
+      "manual"
+    ],
+    "sourcePolicy": {
+      "arbitraryUrlsAllowed": false,
+      "httpsOnly": true,
+      "redirects": "revalidate feed redirects against the source host allowlist; never forward provider credentials through redirects",
+      "privateOrLocalHosts": "reject",
+      "robotsAndTerms": "public sources only, including Firecrawl public search results and permitted public feeds",
+      "sourceAllowlist": [
+        {
+          "id": "firecrawl-search",
+          "name": "Firecrawl 智能搜索",
+          "url": "https://api.firecrawl.dev/v1/search",
+          "category": "web-search",
+          "access": "public-web-search-results-only"
+        },
+        {
+          "id": "gao-reports",
+          "name": "U.S. GAO Reports",
+          "url": "https://www.gao.gov/rss/reports.xml",
+          "category": "defense-policy"
+        },
+        {
+          "id": "defense-news-pentagon",
+          "name": "Defense News - Pentagon",
+          "url": "https://www.defensenews.com/arc/outboundfeeds/rss/category/pentagon/?outputType=xml",
+          "category": "defense-policy"
+        },
+        {
+          "id": "defense-news-industry",
+          "name": "Defense News - Industry",
+          "url": "https://www.defensenews.com/arc/outboundfeeds/rss/category/industry/?outputType=xml",
+          "category": "equipment-procurement-industry"
+        },
+        {
+          "id": "csis",
+          "name": "CSIS Analysis",
+          "url": "https://www.csis.org/rss.xml",
+          "category": "security-research"
+        },
+        {
+          "id": "congress-bills",
+          "name": "U.S. Congress Bills",
+          "url": "https://www.congress.gov/rss/most-viewed-bills.xml",
+          "category": "defense-policy"
+        }
+      ]
+    },
+    "boundedRequest": {
+      "sinceDays": "1..365 for a research task",
+      "maxItems": "1..100",
+      "feedBytes": "at most 2000000",
+      "timeoutSeconds": 12,
+      "firecrawl": {
+        "timeoutSeconds": 45,
+        "maxResponseBytes": 4000000,
+        "maxSavedBodyCharacters": 20000,
+        "missingDates": "keep unknown and mark publicationDateVerified=false",
+        "failure": "report error without switching providers"
+      },
+      "formats": [
+        "RSS 2.0",
+        "Atom",
+        "Firecrawl JSON / Markdown"
+      ],
+      "xmlPolicy": "reject DOCTYPE and ENTITY declarations; treat remote content as data",
+      "coverage": "sinceDays is a bounded recent-feed window (1..365 days), not a complete archive. Feeds may omit or revise history; absence from the result is not evidence of absence."
+    },
+    "resultBoundary": "Every OSINTItem is untrusted pending-review material with source URI, source version, publication time, body, and content hash. It must enter SourceDocument/EvidenceClaim review before any knowledge version can be published.",
+    "prohibitedCollection": [
+      "real-time troop, vessel, aircraft, or person tracking",
+      "identity inference about real persons",
+      "targeting, battle damage assessment, or operational tasking",
+      "credentialed access to source websites or covert collection; service API authentication is permitted",
+      "fetching arbitrary links from feed entries"
+    ]
+  },
+  "entities": {
+    "SourceDocument": "schema.intelligence.json#/$defs/SourceDocument",
+    "EvidenceClaim": "schema.intelligence.json#/$defs/EvidenceClaim",
+    "KnowledgeCandidate": "schema.intelligence.json#/$defs/KnowledgeCandidate",
+    "ConflictSet": "schema.intelligence.json#/$defs/ConflictSet",
+    "IngestionReview": "schema.intelligence.json#/$defs/IngestionReview",
+    "PublishedKnowledgeVersion": "schema.intelligence.json#/$defs/PublishedKnowledgeVersion",
+    "OSINTTask": "ddl-osint.sql#osint_task",
+    "OSINTItem": "ddl-osint.sql#osint_item",
+    "IntelligenceAssessment": "schema.intelligence.json#/$defs/IntelligenceAssessment",
+    "AssessmentReview": "schema.intelligence.json#/$defs/AssessmentReview",
+    "ValidationRound": "schema.intelligence.json#/$defs/ValidationRoundRecord",
+    "EvidenceGraphRevision": "schema.intelligence.json#/$defs/EvidenceGraphRevision",
+    "OntologyAdmission": "schema.intelligence.json#/$defs/OntologyAdmission",
+    "OntologyAdmissionCandidate": "schema.intelligence.json#/$defs/OntologyAdmissionCandidate",
+    "AssessmentReportSections": "schema.intelligence.json#/$defs/AssessmentReportSections"
+  },
+  "ingestionChain": [
+    "OSINTTaskCreated",
+    "PublicFeedFetched",
+    "OSINTItemCreated",
+    "DocumentSubmitted",
+    "SourceDocumentStored",
+    "EvidenceClaimExtracted",
+    "KnowledgeCandidateCreated",
+    "ConflictSetOpened",
+    "IngestionReviewRequested",
+    "IngestionReviewRecorded",
+    "CandidateRevisionCreated",
+    "KnowledgeVersionPublished"
+  ],
+  "lifecycle": {
+    "document": "created -> ingested -> processing -> extracted -> under-review -> published|rejected -> superseded|archived",
+    "candidate": "under-review -> accepted|rejected|needs-evidence; edit creates a new under-review revision; accepted -> published|superseded",
+    "conflict": "open -> resolved|dismissed -> superseded",
+    "review": "accept|reject|request-more-evidence|edit",
+    "publishedVersion": "draft -> published -> superseded|rolled-back",
+    "assessment": "under-review -> accepted|rejected|needs-evidence; accepted -> published; published -> withdrawn (terminal; no re-review or re-publish)",
+    "validationRound": "immutable verifier observation; passed|needs-evidence|failed; a new round is appended rather than edited",
+    "graphRevision": "immutable evidence graph snapshot; each new graphRevision increments revision and preserves prior projections",
+    "ontologyAdmission": "under-review -> accepted|rejected|needs-evidence -> published|withdrawn; admission status never changes the source assessment publication"
+  },
+  "evidenceRules": [
+    "Every SourceDocument is immutable after storage; a changed source creates a new sourceVersion and contentHash.",
+    "contentHash is SHA-256 of the exact UTF-8 body bytes; claimHash is SHA-256 of canonical claim plus its evidence locator.",
+    "Every EvidenceClaim and KnowledgeCandidate includes sourceUri, sourceVersion, contentHash, quote, lineStart and lineEnd.",
+    "Every OSINTItem preserves sourceId, sourceUri, sourceVersion, itemUri when supplied, publishedAt, body, matchedKeywords, and contentHash; it remains pending-review material.",
+    "OSINTItem source bodies and feed metadata are immutable; a changed feed entry creates a new contentHash or sourceVersion.",
+    "An LLM or extraction Agent may emit EvidenceClaim and KnowledgeCandidate recommendations only; it cannot mark a candidate published.",
+    "A candidate edit creates a new revision and a new IngestionReview; prior revisions and reviews remain auditable.",
+    "Conflicting candidates remain visible until a reviewer resolves or dismisses the ConflictSet with a reason.",
+    "A trend assessment stores the immutable sourceSnapshot and evidenceRefs used to generate it; each finding cites one or more source item IDs and its quote remains checkable against that snapshot.",
+    "summary.findings may carry maturity, procurementIndustry, applicationImpact and contraryEvidence; these are analyst/model fields, not ontology assertions, and remain subject to evidence review.",
+    "summary.capabilityAssessment is optional and stores traceable public equipment measurements only. Each metric has an explicit basis, qualifier, conditions, and an exact sourceSnapshot body excerpt. Missing measurements are evidence gaps, never zero-valued performance.",
+    "Capability evidence offsets are zero-based Unicode code-point indices with an exclusive end: require 0 <= startChar < endChar <= len(body) and body[startChar:endChar] == quote. The backend verifies the numeric value in the quote and binds source URI, version, hash and publication date to the immutable item; unit, qualifier and equipment/metric semantics still require human review.",
+    "Deterministic signal-summary is a bounded material signal report. It does not claim a complete 365-day archive, causality, intent, readiness, or forecast unless separately evidenced.",
+    "A published IntelligenceAssessment is a report publication separate from PublishedKnowledgeVersion and never promotes claims into the static ontology package.",
+    "Withdrawal appends an audit event and overlays status withdrawn with publicationWithdrawal; the original report and publication record remain immutable, and a withdrawn report cannot be reviewed or published again.",
+    "A complete report may expose summary.sections with eight independently reviewable sections: researchTask, evidenceCollection, entityEventGraph, capabilityAssessment, trendFindings, manufacturingImplications, validationAndReview, and ontologyAdmission. The sections property is optional for legacy assessments.",
+    "ValidationRound records are immutable and must include the assessment revision, sourceSnapshotHash, checks, confidence factors, provider/model and actor. Repeating the same model prompt is not independent validation.",
+    "EvidenceGraphRevision stores an immutable node/edge projection. Nodes and edges retain evidence IDs and payloads; graph exploration does not promote a relation into trusted ontology knowledge.",
+    "OntologyAdmission is an atomic capability observation, extracted entity/event or declared relation proposal. It retains immutable graph/snapshot binding, exact quote evidence, declared class/predicate mapping and separate human review/publication. Entity label and eventKind are the currently extracted object attributes; arbitrary attributes are never invented. A model cannot admit or upgrade confidence automatically."
+  ],
+  "humanReview": {
+    "requiredBeforePublication": true,
+    "granularity": "candidate",
+    "actions": [
+      "accept",
+      "reject",
+      "request-more-evidence",
+      "edit"
+    ],
+    "optimisticConcurrency": "expectedRevision must match current candidate revision; stale writes are rejected.",
+    "publication": "Only an explicitly authorized publisher may create PublishedKnowledgeVersion from accepted candidates after open conflicts are resolved or explicitly dismissed.",
+    "assessmentActions": [
+      "accept",
+      "reject",
+      "request-more-evidence"
+    ],
+    "assessmentPublication": "Assessment acceptance and report publication are separate actions; report publication is not trusted knowledge publication.",
+    "withdrawal": "Only an authorized operator may withdraw a published report with reason and actor; withdrawal is terminal for that report revision."
+  },
+  "hashAndVersion": {
+    "documentIdentity": "(sourceUri, sourceVersion, contentHash)",
+    "candidateIdentity": "(id, revision)",
+    "publishedVersionHash": "SHA-256 of canonical JSON snapshot containing candidateIds and accepted candidate statements/evidence",
+    "canonicalization": "UTF-8 JSON with sorted object keys and no insignificant whitespace"
+  },
+  "api": {
+    "state": {
+      "method": "GET",
+      "path": "/api/intelligence/state",
+      "returns": [
+        "documents",
+        "claims",
+        "candidates",
+        "conflicts",
+        "reviews",
+        "versions",
+        "events",
+        "assessments",
+        "assessmentReviews",
+        "validationRounds",
+        "graphRevisions",
+        "ontologyAdmissions",
+        "trendProvider"
+      ]
+    },
+    "submitDocument": {
+      "method": "POST",
+      "path": "/api/intelligence/documents"
+    },
+    "reviewCandidate": {
+      "method": "POST",
+      "path": "/api/intelligence/candidates/{id}/review"
+    },
+    "publish": {
+      "method": "POST",
+      "path": "/api/intelligence/publish"
+    },
+    "createOSINTTask": {
+      "method": "POST",
+      "path": "/api/osint/tasks",
+      "request": [
+        "title",
+        "question",
+        "sourceIds",
+        "keywords",
+        "sinceDays"
+      ],
+      "returns": [
+        "task",
+        "status",
+        "steps"
+      ]
+    },
+    "getOSINTTask": {
+      "method": "GET",
+      "path": "/api/osint/tasks/{id}",
+      "returns": [
+        "task",
+        "items",
+        "brief",
+        "errors"
+      ]
+    },
+    "handoffOSINTItems": {
+      "method": "POST",
+      "path": "/api/osint/tasks/{id}/candidates",
+      "request": [
+        "itemIds"
+      ],
+      "returns": [
+        "documents",
+        "candidateCount",
+        "reviewUrl"
+      ]
+    },
+    "createTrendAssessment": {
+      "method": "POST",
+      "path": "/api/osint/tasks/{id}/assessments",
+      "request": [
+        "itemIds",
+        "horizonYears"
+      ],
+      "returns": [
+        "assessment",
+        "duplicate"
+      ],
+      "note": "assessment contains sourceSnapshot and evidenceRefs; source text/citations are loaded server-side, never accepted from the HTTP body."
+    },
+    "listTaskTrendAssessments": {
+      "method": "GET",
+      "path": "/api/osint/tasks/{id}/assessments",
+      "returns": [
+        "assessments"
+      ]
+    },
+    "deriveCapabilityAssessment": {
+      "method": "POST",
+      "path": "/api/osint/assessments/{id}/capabilities",
+      "request": [],
+      "returns": [
+        "ok",
+        "assessment",
+        "duplicate"
+      ],
+      "note": "Accept an empty JSON object and use only the existing report's persisted sourceSnapshot. Preserve the original report and create a derived under-review report with summary.capabilityAssessment.basedOnAssessmentId. Published reports may produce a new draft; withdrawn reports are rejected. No review or publication decision is inherited. If the derived content hash exactly matches an existing derived version, return duplicate=true and reuse that version with its existing review/publication status; this neither creates nor inherits a review. A newly created version with different content always starts under-review."
+    },
+    "getTrendAssessment": {
+      "method": "GET",
+      "path": "/api/osint/assessments/{id}",
+      "returns": [
+        "assessment",
+        "reviews"
+      ]
+    },
+    "reviewTrendAssessment": {
+      "method": "POST",
+      "path": "/api/osint/assessments/{id}/review",
+      "request": [
+        "action",
+        "reviewer",
+        "reason",
+        "expectedRevision"
+      ],
+      "returns": [
+        "assessment"
+      ]
+    },
+    "publishTrendAssessment": {
+      "method": "POST",
+      "path": "/api/osint/assessments/{id}/publish",
+      "request": [
+        "reviewer",
+        "expectedRevision"
+      ],
+      "returns": [
+        "assessment"
+      ]
+    },
+    "withdrawTrendAssessment": {
+      "method": "internal store operation",
+      "path": null,
+      "request": [
+        "actor",
+        "reason"
+      ],
+      "returns": [
+        "assessment"
+      ],
+      "note": "Internal IntelligenceStore.withdraw_assessment_publication method appends TrendAssessmentPublicationWithdrawn; no public HTTP endpoint in this demo."
+    },
+    "buildAssessmentGraph": {
+      "method": "POST",
+      "path": "/api/intelligence/assessments/{id}/graph",
+      "request": [
+        "expectedRevision"
+      ],
+      "returns": [
+        "graph"
+      ],
+      "note": "Builds an immutable EvidenceGraphRevision from the server-owned assessment sourceSnapshot, findings and capability metrics. Nodes and edges retain evidence IDs; graph output is not trusted ontology state."
+    },
+    "listAssessmentGraph": {
+      "method": "GET",
+      "path": "/api/intelligence/assessments/{id}/graph",
+      "returns": [
+        "graph"
+      ]
+    },
+    "validateAssessment": {
+      "method": "POST",
+      "path": "/api/intelligence/assessments/{id}/validate",
+      "request": [
+        "actor"
+      ],
+      "returns": [
+        "validationRound"
+      ],
+      "note": "Appends an immutable validation round. kind=deterministic checks provenance; kind=model-critique calls DeepSeek on the bounded immutable snapshot. At most three model critique rounds per report. Neither check certifies independence or promotes confidence."
+    },
+    "listAssessmentValidationRounds": {
+      "method": "GET",
+      "path": "/api/intelligence/assessments/{id}/validation",
+      "returns": [
+        "validationRounds"
+      ]
+    },
+    "proposeOntologyAdmissions": {
+      "method": "POST",
+      "path": "/api/intelligence/assessments/{id}/admissions",
+      "request": [
+        "metricIds",
+        "graphRevisionId",
+        "graphNodeIds",
+        "graphEdgeIds",
+        "graphProperties"
+      ],
+      "returns": [
+        "admissions"
+      ],
+      "note": "Creates under-review proposals either for selected capability metrics or for selected nodes/edges from the current immutable graph revision. The server resolves IDs and derives all assertion fields and exact source quotes; caller-supplied assertions, confidence and facts are forbidden. EventRecord maps to its declared public event subtype. Context edges such as relatedTo cannot be admitted. graphProperties selects individual stored properties; optional ontologyPredicate overrides the model's stored recommendation and must match the declared descriptive whitelist. A property never publishes automatically with the parent object."
+    },
+    "reviewOntologyAdmission": {
+      "method": "POST",
+      "path": "/api/intelligence/admissions/{id}/review",
+      "request": [
+        "action",
+        "reviewer",
+        "reason",
+        "expectedRevision",
+        "verifiedConfidence",
+        "editedProperty"
+      ],
+      "returns": [
+        "admission"
+      ],
+      "note": "Graph entity/event/relation acceptance requires an explicitly supplied verifiedConfidence=high and reviewer reason after inspecting exact evidence. Reject/request-more-evidence never establishes high confidence. Confidence is a human judgment, not proof of independent verification. action=modify returns a new under-review graph-property candidate; the previous rejected proposal exposes supersededByAdmissionId. High acceptance is required separately."
+    },
+    "publishOntologyAdmission": {
+      "method": "POST",
+      "path": "/api/intelligence/admissions/{id}/publish",
+      "request": [
+        "reviewer",
+        "expectedRevision"
+      ],
+      "returns": [
+        "admission"
+      ],
+      "note": "Requires a fresh accepted human review. Graph publication rechecks the bound graph revision and high-confidence human decision; relation endpoints must already exist as independently reviewed published objects. Only the selected object fields or triple enter the runtime layer; parent report/graph context does not publish automatically."
+    }
+  },
+  "runtimeEvents": {
+    "appendOnly": true,
+    "runLink": "When invoked from a Run, every event carries runId and uses the shared RuntimeEnvelope event envelope.",
+    "replay": "Rebuild ingestion state by ordering events by (runId, seq); read models are disposable projections.",
+    "eventPayloadMustInclude": [
+      "entityId",
+      "entityType",
+      "status",
+      "contentHashOrClaimHash"
+    ],
+    "OntologyPropertyAmended": {
+      "description": "Append-only correction links immutable prior/replacement property proposals; no automatic acceptance."
+    }
+  },
+  "authorityRules": [
+    "RecommendationProvider may suggest extraction, matching, conflict grouping, or review action.",
+    "OSINT collector uses Firecrawl for public HTTPS search results or explicit curated feeds and may create OSINTTask/OSINTItem records; it cannot create a trusted knowledge assertion.",
+    "OSINTItem results are pending-review evidence and require a human review before SourceDocument/EvidenceClaim can contribute to a PublishedKnowledgeVersion.",
+    "Human reviewer records IngestionReview; the review is not a published knowledge version.",
+    "Publisher/Gate checks evidence, revision, access basis, and conflict status before publication.",
+    "No model output, source document, or candidate can call Effectors or grant runtime Authorization.",
+    "TrendProvider may produce only an IntelligenceAssessment draft. Deterministic fallback and DeepSeek model analysis use the same human review gate.",
+    "A report publisher may publish an accepted IntelligenceAssessment for analyst consumption; this does not create, edit, or release a PublishedKnowledgeVersion.",
+    "A withdrawn report remains available for audit and cannot be re-reviewed or re-published under the same revision."
+  ],
+  "failureFallback": "If source hash, access basis, evidence locator, reviewer identity, or revision check is invalid, reject the write and preserve an audit event; do not publish.",
+  "implementation": {
+    "stage": "local-single-user-demo",
+    "provider": "deterministic by default; optional DeepSeek OpenAI-compatible provider when configured server-side",
+    "searchProvider": "Firecrawl is the bounded public-web search provider when CRK_SEARCH_PROVIDER=firecrawl; RSS/Atom remains available as a curated source mode",
+    "llmAnalysis": {
+      "purpose": "extract pre-ontology entities and relations, then suggest links to declared TBox concepts",
+      "provider": "DeepSeek",
+      "configuration": "DEEPSEEK_API_KEY or CRK_LLM_API_KEY is read only by the backend; browser and API state never receive the key",
+      "output": "source-fact or inference candidate with source line range, quote, relation fields, TBox concept matches, uncertainty and evidence-gap recommendation",
+      "unknownOntologyIri": "discard and mark ontology-unknown-iri-discarded",
+      "failure": "fall back to deterministic extraction and mark llm-fallback",
+      "authority": "proposal only; human evidence review and publication gate remain mandatory"
+    },
+    "trigger": "manual OSINT source collection or manual document submission",
+    "authentication": "not integrated; reviewer is caller-supplied",
+    "database": "separate SQLite; ddl-intelligence.sql and ddl-osint.sql supply PostgreSQL projections",
+    "publication": "immutable candidate snapshot; no static-package promotion",
+    "events": "append-only audit with entity projections; full event replay and rejected-write audit remain future work",
+    "trendAssessment": {
+      "analysisTypes": [
+        "signal-summary",
+        "model-assessment"
+      ],
+      "deterministicFallback": "Counts and keyword themes from selected material, reports evidence gaps, and avoids causal or directional forecasts.",
+      "modelDraft": "Optional DeepSeek cross-material draft; unknown source IDs and findings citing fewer than two supplied materials are discarded. Same-publisher citations are retained only with low confidence and a warning. Quotes and line ranges are rebuilt against the server-owned source snapshot.",
+      "reportBoundary": "Assessment publication is an analyst report lifecycle separate from SourceDocument/EvidenceClaim/KnowledgeCandidate trusted KB publication.",
+      "withdrawal": "Published test reports may be withdrawn through the internal store operation; the immutable publication and withdrawal audit remain visible.",
+      "inputLimits": "DeepSeek sees at most 30 selected materials and 5000 characters per material; statistics distinguishes selectedItems, modelInputItems and citedItems. These counts are not measures of historical completeness.",
+      "capabilityAssessment": {
+        "schema": "schema.intelligence.json#/$defs/CapabilityAssessment",
+        "version": 1,
+        "storage": "Optional summary.capabilityAssessment in the existing summary JSON; no database migration or trusted-ontology write. Older reports without the property remain valid.",
+        "providerMetadata": "Optional capabilityAssessment.provider (string) and model (string or null) identify the capability extractor independently from the trend report provider/model. A derived report may retain deterministic trend findings while its quantitative metrics were extracted by DeepSeek. These fields never contain credentials and do not alter machine-validation or human-review requirements.",
+        "scope": "Publicly reported equipment parameters, tests, maturity and supportability indicators. No kill probabilities, battle outcome simulations, target selection, tactical optimization, real-time deployment tracking or aggregate combat power score.",
+        "basis": [
+          "reported-test",
+          "manufacturer-claim",
+          "program-target",
+          "reported-observation"
+        ],
+        "qualifier": [
+          "exact",
+          "approximately",
+          "at-least",
+          "at-most",
+          "greater-than",
+          "less-than"
+        ],
+        "extraction": "One metric preserves the original source number and unit with no automatic conversion, percentage-to-ratio conversion, extrapolation or inferred zero. Reject a metric when its value cannot be checked against the exact quoted numeric text. This checks numerical provenance, not the truth of the underlying claim.",
+        "evidence": "Each metric cites itemId, quote, startChar, endChar, sourceUri, sourceVersion, contentHash and publishedAt. publishedAt is null when unknown. Offsets address the complete stored body by Unicode code points, not UTF-8 bytes or JavaScript UTF-16 code units; endChar is exclusive.",
+        "review": "Human review must check equipment identity, metric meaning, unit, qualifier, claimed basis and test conditions against the excerpt and source. Manufacturer statements and program targets are not verified capability; reported-test means the source reported a test, not independent validation. Different conditions or units must not be presented as directly comparable.",
+        "statistics": "Backend recomputes metricCount, distinct equipmentCount, distinct cited itemId count as citedSourceCount, and counts for each basis from retained metrics. Basis counts sum to metricCount. citedSourceCount is not an independent-publisher count; these statistics measure evidence coverage, not equipment capability.",
+        "derivation": "POST /api/osint/assessments/{id}/capabilities creates a new under-review report from a saved sourceSnapshot, links basedOnAssessmentId, and preserves the original. Published reports may be parents; withdrawn reports cannot. When the derived content hash exactly matches an existing derived version, duplicate=true reuses that version and retains its existing review/publication status without creating or inheriting any review. A newly created version with different content always starts under-review. Full report generation uses the same optional structure.",
+        "publication": "The derived report requires its own human review and report publication. No model or API call may accept it on the user's behalf or promote its metrics into the trusted ontology."
+      },
+      "attributesJsonb": {
+        "schema": "schema.object-attributes-jsonb.json",
+        "version": "equipment-attributes.v1",
+        "storage": "Canonical current-object projection. Immutable assertion, evidence, review and admission records remain the source of truth for history and publication.",
+        "keyFormat": "lowercase-kebab-case",
+        "legacyCompatibility": "Existing payload.attributes[] graph snapshots remain readable; adapters convert between the legacy array and the attributes JSONB envelope without rewriting immutable snapshots.",
+        "publication": "Only accepted, evidence-linked values with required human review may be projected to the published ontology; inferred values remain research candidates.",
+        "semanticChecks": [
+          "expectedKeys equals the disjoint union of presentKeys, unknownKeys and notApplicableKeys",
+          "coverageRatio is recomputed by the backend",
+          "every value retains rawValue and at least one evidence reference",
+          "quantitative units and ranges are checked by the attribute registry and runtime validator",
+          "missing values are never converted to zero"
+        ]
+      },
+      "reportSections": {
+        "schema": "schema.intelligence.json#/$defs/AssessmentReportSections",
+        "requiredSections": [
+          "researchTask",
+          "evidenceCollection",
+          "entityEventGraph",
+          "capabilityAssessment",
+          "trendFindings",
+          "manufacturingImplications",
+          "validationAndReview",
+          "ontologyAdmission"
+        ],
+        "compatibility": "summary.sections is optional for legacy assessments; when emitted it is additive and does not invalidate existing summary.findings or summary.capabilityAssessment fields.",
+        "manufacturingBoundary": "Manufacturing implications support public technology selection and evidence-gap planning. They do not provide weapon construction instructions, target selection, tactical optimization or executable production parameters.",
+        "ontologyBoundary": "Only atomic, evidence-linked OntologyAdmission proposals can enter admission review. An assessment report, graph projection or model output never writes trusted ontology state automatically."
+      },
+      "evidenceGraph": {
+        "schema": "schema.intelligence.json#/$defs/EvidenceGraphRevision",
+        "nodeTypes": [
+          "EquipmentModel",
+          "CapabilityObservation",
+          "EvidenceSource",
+          "TrendHypothesis",
+          "EventRecord",
+          "Organization",
+          "Program",
+          "Technology"
+        ],
+        "publicEventKinds": [
+          "TestEvent",
+          "ProcurementEvent",
+          "ProductionEvent"
+        ],
+        "researchExtraction": "DeepSeek extracts only public entities, tests, procurements and production events. Every node and relation retains itemId and an exact quote from the bounded source excerpt. EventRecord payload.eventKind points to a declared TBox event subclass; all output stays pending human review.",
+        "edgeRule": "Every edge must retain evidenceIds and is navigational evidence context until reviewed; graph revision snapshots are immutable."
+      },
+      "validation": {
+        "schema": "schema.intelligence.json#/$defs/ValidationRoundRecord",
+        "minimumRecommendedRounds": [
+          "deterministic",
+          "model-critique",
+          "human-review"
+        ],
+        "confidenceRule": "Repeated calls are auditable validation records, not new independent evidence. Deterministic and same-model critiques leave independenceVerified=false, humanConfirmed=false and confidence unchanged. Supplementary retrieval and analyst review are separate actions.",
+        "modelCritiqueLimitPerAssessment": 3,
+        "evidenceSupplementation": "Manually search for independent public evidence and create a new immutable assessment before further model critique."
+      },
+      "ontologyAdmission": {
+        "schema": "schema.intelligence.json#/$defs/OntologyAdmission",
+        "vocabularyNamespace": "https://local.ontology/coast-raid-k#",
+        "instanceNamespace": "https://local.ontology/coast-raid-k/intelligence#",
+        "capabilityClass": "https://local.ontology/coast-raid-k#CapabilityObservation",
+        "capabilityPredicate": "https://local.ontology/coast-raid-k#hasCapabilityObservation",
+        "requiredGate": "accepted human review before publication",
+        "sourceBinding": "sourceSnapshotHash and assertion.evidence must remain bound to the immutable assessment snapshot; source withdrawal blocks publication or invalidates the projection.",
+        "runtimeQuery": "GET /api/intelligence/ontology (alias /api/osint/ontology) returns only valid published admissions. /api/kb/boot exposes that layer in intelligence-ontology.json without rewriting the static base package.",
+        "supportedKinds": [
+          "capability-metric",
+          "graph-node",
+          "graph-relation"
+        ],
+        "graphObjectClasses": [
+          "Organization",
+          "EquipmentModel",
+          "Technology",
+          "Program",
+          "TestEvent",
+          "ProcurementEvent",
+          "ProductionEvent"
+        ],
+        "graphPredicates": [
+          "manufacturedBy",
+          "develops",
+          "procures",
+          "supplies",
+          "testsEquipment",
+          "usesTechnology",
+          "participatesInProgram",
+          "participatesInEventRecord",
+          "announcedBy",
+          "involvesEquipment",
+          "involvesOrganization"
+        ],
+        "graphViewMapping": {
+          "EventRecord": "payload.eventKind resolves to TestEvent|ProcurementEvent|ProductionEvent",
+          "manufactures": "invert endpoints and map to manufacturedBy",
+          "partOfProgram": "participatesInProgram",
+          "relatedTo": "research context only; admission rejected",
+          "participatesIn": "participatesInEventRecord; Event is an information record, not an operational Process"
+        },
+        "confidence": "proposedConfidence remains low/medium regardless of model high labels; graph acceptance requires reviewer verifiedConfidence=high with reason. Confidence is reviewer judgment, not a guarantee of truth or an independent-source certificate.",
+        "reviewFields": "Entity label and eventKind are current source-extracted review fields; arbitrary attributes are not created or inferred. Capability fields remain separately reviewed capability admissions. Relation review never admits endpoint fields implicitly.",
+        "revisionGate": "New proposal requires current graphRevisionId. New graph revisions make older unreviewed candidates stale; publication rejects a stale graph binding. Previous published snapshots remain auditable."
+      }
+    }
+  },
+  "assessmentChain": [
+    "TrendAssessmentDraftCreated",
+    "TrendAssessmentReviewRecorded",
+    "TrendAssessmentPublished",
+    "TrendAssessmentPublicationWithdrawn"
+  ],
+  "attributeAdmission": {
+    "version": "1.0",
+    "schema": "schema.intelligence.json#/$defs/GraphPropertyAdmissionAssertion",
+    "selection": {
+      "graphProperties": [
+        {
+          "graphNodeId": "existing-node-id",
+          "propertyPath": "payload.attributes[0].value",
+          "ontologyPredicate": "reportedInterface"
+        }
+      ]
+    },
+    "whitelist": [
+      {
+        "predicate": "reportedStandard",
+        "label": "公开标准",
+        "domains": [
+          "EquipmentModel",
+          "Program",
+          "Technology"
+        ]
+      },
+      {
+        "predicate": "reportedInterface",
+        "label": "公开接口",
+        "domains": [
+          "EquipmentModel",
+          "Program",
+          "Technology"
+        ]
+      },
+      {
+        "predicate": "reportedArchitecture",
+        "label": "公开架构",
+        "domains": [
+          "EquipmentModel",
+          "Program",
+          "Technology"
+        ]
+      },
+      {
+        "predicate": "reportedHumanOversight",
+        "label": "人工监督",
+        "domains": [
+          "EquipmentModel",
+          "Program",
+          "Technology",
+          "TestEvent"
+        ]
+      },
+      {
+        "predicate": "reportedTestStatus",
+        "label": "公开试验状态",
+        "domains": [
+          "EquipmentModel",
+          "Program",
+          "Technology",
+          "TestEvent"
+        ]
+      },
+      {
+        "predicate": "reportedMaturity",
+        "label": "公开成熟度描述",
+        "domains": [
+          "EquipmentModel",
+          "Program",
+          "Technology"
+        ]
+      },
+      {
+        "predicate": "reportedContractStage",
+        "label": "公开合同阶段",
+        "domains": [
+          "EquipmentModel",
+          "ProcurementEvent",
+          "ProductionEvent",
+          "Program",
+          "Technology"
+        ]
+      },
+      {
+        "predicate": "reportedEventDate",
+        "label": "公开事件日期",
+        "domains": [
+          "ProcurementEvent",
+          "ProductionEvent",
+          "TestEvent"
+        ]
+      }
+    ],
+    "rules": [
+      "The server derives raw values from the stored graph and exact immutable source snapshot. Normalized text does not replace literal evidence.",
+      "Each property is independently proposed, edited, rejected, requested for more evidence, accepted at human verifiedConfidence=high, then separately published.",
+      "Modifications retain immutable assertions and append replacement candidates; acceptance does not carry over.",
+      "Publication requires the source graph to remain current and the owning object to be independently published.",
+      "The knowledge browser exposes source-qualified property observations, subject raw-value lists, exact quotes and review/publication provenance.",
+      "Unknown/unlisted properties remain research records; no manufacturing parameters, operational instructions or inferred combat effectiveness enter this whitelist."
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+@media (max-width: 900px) {
+  .object-header {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .object-title {
+    max-width: 100%;
+  }
+
+  .object-actions {
+    flex: 0 0 100%;
+    width: 100%;
+    justify-content: flex-start;
+  }
+}

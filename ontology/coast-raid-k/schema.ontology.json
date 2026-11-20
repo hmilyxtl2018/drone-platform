@@ -1,0 +1,364 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.ontology/coast-raid-k/schema.ontology.json",
+  "title": "coast-raid-k ontology $defs",
+  "description": "OWL 2 + Protégé + ISO 11179。页签：注释 · 子类 · 等价 · 不相交 · 数据属性 · 对象属性 · 值域 · 个体 · 公理。",
+  "$defs": {
+    "TBox": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "package",
+        "type",
+        "language",
+        "iri",
+        "classes",
+        "objectProperties",
+        "dataProperties",
+        "axioms"
+      ],
+      "properties": {
+        "package": {
+          "const": "coast-raid-k"
+        },
+        "type": {
+          "const": "TBox"
+        },
+        "language": {
+          "const": "OWL2"
+        },
+        "iri": {
+          "type": "string",
+          "format": "uri"
+        },
+        "note": {
+          "type": "string"
+        },
+        "stateModel": {
+          "$ref": "#/$defs/StateModel"
+        },
+        "classes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "label",
+              "subClassOf"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "subClassOf": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "comment": {
+                "type": "string"
+              },
+              "synonyms": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "enumCodes": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "equivalentTo": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "owl:equivalentClass IRIs. Only BFO upper matches; do not invent domain equivalences."
+              },
+              "seeAlso": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "rdfs:seeAlso. CCO / GeoSPARQL / PROV / QUDT alignments that are not equivalentClass."
+              },
+              "enumerations": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "id",
+                    "values"
+                  ],
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "label": {
+                      "type": "string"
+                    },
+                    "values": {
+                      "type": "array"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "disjoint": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "objectProperties": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "domain",
+              "range"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "domain": {
+                "type": "string"
+              },
+              "range": {
+                "type": "string"
+              },
+              "inverseOf": {
+                "type": "string"
+              },
+              "comment": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "dataProperties": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "domain",
+              "range"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "domain": {
+                "type": "string"
+              },
+              "range": {
+                "type": "string"
+              },
+              "comment": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "axioms": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "manchester"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "manchester": {
+                "type": "string"
+              },
+              "comment": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "TypeCard": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "depict",
+        "what",
+        "state"
+      ],
+      "properties": {
+        "depict": {
+          "enum": [
+            "icon",
+            "photo",
+            "volume",
+            "mark",
+            "none"
+          ]
+        },
+        "glyph": {
+          "type": "string"
+        },
+        "has": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "attrs",
+              "behavior",
+              "iface",
+              "constraint",
+              "state"
+            ]
+          }
+        },
+        "what": {
+          "type": "string"
+        },
+        "usedIn": {
+          "type": "array"
+        },
+        "state": {
+          "$ref": "#/$defs/StateModel"
+        }
+      }
+    },
+    "Lexicon": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "package",
+        "types",
+        "facets"
+      ],
+      "properties": {
+        "package": {
+          "const": "coast-raid-k"
+        },
+        "note": {
+          "type": "string"
+        },
+        "depict": {
+          "type": "object"
+        },
+        "facets": {
+          "type": "object",
+          "required": [
+            "class",
+            "data",
+            "object",
+            "axiom",
+            "state"
+          ],
+          "properties": {
+            "class": {
+              "type": "string"
+            },
+            "data": {
+              "type": "string"
+            },
+            "object": {
+              "type": "string"
+            },
+            "axiom": {
+              "type": "string"
+            },
+            "state": {
+              "type": "string"
+            },
+            "attrs": {
+              "type": "string"
+            },
+            "behavior": {
+              "type": "string"
+            },
+            "iface": {
+              "type": "string"
+            },
+            "constraint": {
+              "type": "string"
+            }
+          }
+        },
+        "types": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/TypeCard"
+          }
+        },
+        "ids": {
+          "type": "object"
+        }
+      }
+    },
+    "Inventory": {
+      "type": "object",
+      "required": [
+        "package",
+        "generated",
+        "entries"
+      ],
+      "properties": {
+        "package": {
+          "const": "coast-raid-k"
+        },
+        "generated": {
+          "const": true
+        },
+        "entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "type",
+              "module",
+              "file"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              },
+              "module": {
+                "type": "string"
+              },
+              "file": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

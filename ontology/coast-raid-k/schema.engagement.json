@@ -1,0 +1,409 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.ontology/coast-raid-k/schema.engagement.json",
+  "title": "coast-raid-k engagement $defs",
+  "description": "C-BML 5W + REPORTING-DATA。页签：谁 · 何事 · 何时 · 何地 · 为何 · 出处 · 授权。",
+  "$defs": {
+    "Invariant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "text"
+      ],
+      "description": "Rule text mirror. Numbers live on Rule / Body / Site, not here.",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        }
+      }
+    },
+    "Track": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "id",
+        "target",
+        "p",
+        "t",
+        "src"
+      ],
+      "properties": {
+        "type": {
+          "const": "Track"
+        },
+        "id": {
+          "type": "string"
+        },
+        "target": {
+          "type": "string"
+        },
+        "p": {
+          "$ref": "#/$defs/Vec3"
+        },
+        "t": {
+          "type": "number"
+        },
+        "src": {
+          "type": "string"
+        },
+        "vis": {
+          "$ref": "#/$defs/Visibility"
+        }
+      }
+    },
+    "Identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "target",
+        "iden"
+      ],
+      "properties": {
+        "type": {
+          "const": "Identity"
+        },
+        "target": {
+          "type": "string"
+        },
+        "iden": {
+          "$ref": "#/$defs/Iden"
+        },
+        "p_belief": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "intent": {
+          "type": "string"
+        },
+        "listable": {
+          "type": "boolean"
+        },
+        "vis": {
+          "$ref": "#/$defs/Visibility"
+        }
+      }
+    },
+    "Pair": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "blue",
+        "red",
+        "task"
+      ],
+      "properties": {
+        "type": {
+          "const": "Pair"
+        },
+        "blue": {
+          "type": "string"
+        },
+        "red": {
+          "type": "string"
+        },
+        "task": {
+          "$ref": "#/$defs/PairTask"
+        },
+        "vis": {
+          "$ref": "#/$defs/Visibility"
+        }
+      }
+    },
+    "Slot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "agent",
+        "layer",
+        "s"
+      ],
+      "properties": {
+        "type": {
+          "const": "Slot"
+        },
+        "agent": {
+          "type": "string"
+        },
+        "layer": {
+          "$ref": "#/$defs/Layer"
+        },
+        "s": {
+          "$ref": "#/$defs/Vec3"
+        }
+      }
+    },
+    "Permit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "target",
+        "ok",
+        "why"
+      ],
+      "description": "Inserted only by gate monitor. No ShellTemplate may write this type.",
+      "properties": {
+        "type": {
+          "const": "Permit"
+        },
+        "target": {
+          "type": "string"
+        },
+        "ok": {
+          "type": "boolean"
+        },
+        "why": {
+          "type": "string"
+        },
+        "m_cost": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "Wave": {
+      "type": "object",
+      "required": [
+        "type",
+        "k"
+      ],
+      "properties": {
+        "type": {
+          "const": "Wave"
+        },
+        "k": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "N_k": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "Channel": {
+      "type": "object",
+      "required": [
+        "type",
+        "id",
+        "m"
+      ],
+      "properties": {
+        "type": {
+          "const": "Channel"
+        },
+        "id": {
+          "type": "string"
+        },
+        "ownerBody": {
+          "type": "string"
+        },
+        "m": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "m0": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "Inject": {
+      "type": "object",
+      "required": [
+        "type",
+        "kind"
+      ],
+      "properties": {
+        "type": {
+          "const": "Inject"
+        },
+        "kind": {
+          "enum": [
+            "jam",
+            "restore",
+            "attrition",
+            "wave"
+          ]
+        },
+        "t": {
+          "type": "number"
+        }
+      }
+    },
+    "Event": {
+      "type": "object",
+      "required": [
+        "t",
+        "writer",
+        "product",
+        "result"
+      ],
+      "properties": {
+        "t": {
+          "type": "number"
+        },
+        "k": {
+          "type": "integer"
+        },
+        "writer": {
+          "type": "string"
+        },
+        "product": {
+          "$ref": "#/$defs/ProductTypeId"
+        },
+        "payload": {
+          "type": "object"
+        },
+        "result": {
+          "enum": [
+            "accept",
+            "reject"
+          ]
+        },
+        "why": {
+          "type": "string"
+        },
+        "vis": {
+          "$ref": "#/$defs/Visibility"
+        }
+      }
+    },
+    "FunctionBind": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "give"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/FunctionId"
+        },
+        "title": {
+          "type": "string"
+        },
+        "eats": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "give": {
+          "$ref": "#/$defs/ProductTypeId"
+        },
+        "bound": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "runtime": {
+          "type": "string"
+        },
+        "notClaim": {
+          "type": "string"
+        },
+        "tasks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "toolsNotClaim": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "human": {
+          "type": "boolean"
+        },
+        "not": {
+          "type": "string"
+        }
+      }
+    },
+    "ProductEnvelope": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/Track"
+        },
+        {
+          "$ref": "#/$defs/Identity"
+        },
+        {
+          "$ref": "#/$defs/Pair"
+        },
+        {
+          "$ref": "#/$defs/Slot"
+        },
+        {
+          "$ref": "#/$defs/Permit"
+        },
+        {
+          "$ref": "#/$defs/Inject"
+        },
+        {
+          "$ref": "#/$defs/Wave"
+        },
+        {
+          "$ref": "#/$defs/Channel"
+        },
+        {
+          "$ref": "#/$defs/Event"
+        }
+      ]
+    },
+    "EngagementConstraints": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "package",
+        "invariants"
+      ],
+      "properties": {
+        "package": {
+          "const": "coast-raid-k"
+        },
+        "invariants": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/Invariant"
+          }
+        },
+        "clouds": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/CloudDef"
+          }
+        }
+      }
+    },
+    "GState": {
+      "type": "object",
+      "required": [
+        "jammed"
+      ],
+      "properties": {
+        "jammed": {
+          "type": "boolean"
+        },
+        "t": {
+          "type": "number"
+        }
+      }
+    }
+  }
+}

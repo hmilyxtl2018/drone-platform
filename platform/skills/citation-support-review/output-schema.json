@@ -1,0 +1,97 @@
+{
+  "type": "object",
+  "required": [
+    "reviews"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "reviews": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "perspectiveKey",
+          "verdict",
+          "reason",
+          "relations"
+        ],
+        "properties": {
+          "perspectiveKey": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "verdict": {
+            "enum": [
+              "supported",
+              "unsupported"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "scenarioAssessments": {
+            "type": "array",
+            "maxItems": 14,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "verdict",
+                "reason"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "maxLength": 1000
+                },
+                "verdict": {
+                  "enum": [
+                    "supported",
+                    "unsupported"
+                  ]
+                },
+                "reason": {
+                  "type": "string",
+                  "maxLength": 1000
+                }
+              }
+            }
+          },
+          "relations": {
+            "type": "array",
+            "maxItems": 16,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": [
+                "id",
+                "verdict",
+                "reason"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "maxLength": 1000
+                },
+                "verdict": {
+                  "enum": [
+                    "supported",
+                    "unsupported"
+                  ]
+                },
+                "reason": {
+                  "type": "string",
+                  "maxLength": 1000
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

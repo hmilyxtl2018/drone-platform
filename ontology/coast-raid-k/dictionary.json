@@ -1,0 +1,2878 @@
+{
+  "package": "coast-raid-k",
+  "type": "DataDictionary",
+  "version": "1.3.0",
+  "grain": "named-individual + package-version",
+  "note": "入库字典。ISO 11179：表=对象类，字段=特性，codes=值域。导航七组与页签是规范面，不是 OOP 属性/行为。一行是命名个体，一包是一个版本文档。",
+  "store": {
+    "kind": "document",
+    "body": "ontology/coast-raid-k/*.json",
+    "index": "inventory.json",
+    "snapshot": "compile/coast-raid-k.snapshot.json",
+    "pkPolicy": "Static relational key = (package_id, version, type, id); canonical IRI must be unique within package/version. Resolve semantic identity using identity-registry.json and identity.py; never derive every IRI as base#id.",
+    "identityPolicy": {
+      "registry": "identity-registry.json",
+      "sourceIri": "Preserve an explicit source iri exactly; this takes precedence over fallback naming, including Agent namespace IRIs.",
+      "classWithoutIri": "https://local.ontology/coast-raid-k#<URI-encoded-class-id>; do not introduce a Class# or Type# namespace.",
+      "individualWithoutIri": "https://local.ontology/coast-raid-k#individual/<URI-encoded-type>/<URI-encoded-id>; type and id are separate encoded path segments.",
+      "legacyAlias": "Historical base#id aliases are resolved only when unique. Ambiguous aliases return all canonical candidates; they never select the first match. An exact canonical IRI match takes precedence over alias lookup.",
+      "shortId": "A short id is a display and compatibility key, not a globally unique semantic identity.",
+      "scope": "Static knowledge package projection; runtime run-scoped records are held separately and are not flattened into this static key."
+    },
+    "not": [
+      "field-per-table RDBMS",
+      "SPARQL in 40ms",
+      "persist Track/Permit"
+    ],
+    "nav": "dictionary.nav",
+    "sqlite": "ontology/coast-raid-k/coast-raid-k.sqlite",
+    "sources": "sources.json"
+  },
+  "codes": [
+    {
+      "id": "Layer",
+      "values": [
+        "hi",
+        "mid",
+        "lo"
+      ],
+      "label": "高度层"
+    },
+    {
+      "id": "Side",
+      "values": [
+        "blue",
+        "red",
+        "unk"
+      ],
+      "label": "方"
+    },
+    {
+      "id": "Zone",
+      "values": [
+        "out",
+        "cor",
+        "ship",
+        "edge",
+        "in"
+      ],
+      "label": "区态"
+    },
+    {
+      "id": "Iden",
+      "values": [
+        "敌",
+        "我",
+        "不明"
+      ],
+      "label": "身份"
+    },
+    {
+      "id": "FunctionId",
+      "values": [
+        "see",
+        "read",
+        "assign",
+        "form",
+        "gate",
+        "foe"
+      ],
+      "label": "指挥职能"
+    },
+    {
+      "id": "ProductTypeId",
+      "values": [
+        "Track",
+        "Identity",
+        "Pair",
+        "Slot",
+        "Permit",
+        "Inject"
+      ],
+      "label": "产品型"
+    },
+    {
+      "id": "ExcludeId",
+      "values": [
+        "satelliteSensor",
+        "link16",
+        "ibcsIfcn",
+        "meanField",
+        "personAutoEngage",
+        "occupationZone"
+      ],
+      "label": "排除项"
+    },
+    {
+      "id": "Visibility",
+      "values": [
+        "team",
+        "local",
+        "any"
+      ],
+      "label": "可见性"
+    },
+    {
+      "id": "BlueTask",
+      "values": [
+        "巡逻",
+        "警戒",
+        "盯梢",
+        "压沿",
+        "识别"
+      ],
+      "label": "蓝方任务"
+    },
+    {
+      "id": "PairTask",
+      "values": [
+        "盯梢",
+        "压沿",
+        "识别"
+      ],
+      "label": "配对任务"
+    },
+    {
+      "id": "Modality",
+      "values": [
+        "hard",
+        "roe",
+        "comm"
+      ],
+      "label": "规则模态"
+    },
+    {
+      "id": "Shape",
+      "values": [
+        "hemisphere",
+        "aabb",
+        "sector_slab",
+        "disk"
+      ],
+      "label": "几何形状"
+    },
+    {
+      "id": "BodyType",
+      "values": [
+        "Envelope",
+        "Corridor",
+        "SearchSector",
+        "DetectionDisk",
+        "JamBloom"
+      ],
+      "label": "体积型"
+    },
+    {
+      "id": "SiteType",
+      "values": [
+        "CommandPost",
+        "Sensor",
+        "Shooter",
+        "Platform",
+        "Emitter"
+      ],
+      "label": "阵地型"
+    },
+    {
+      "id": "MembershipRule",
+      "values": [
+        "in",
+        "subset",
+        "spans"
+      ],
+      "label": "隶属规则"
+    },
+    {
+      "id": "EnvelopeModule",
+      "values": [
+        "Scene",
+        "Rule",
+        "Algorithm",
+        "Engagement",
+        "Agent",
+        "Knowledge"
+      ],
+      "label": "封皮模块"
+    },
+    {
+      "id": "StateKind",
+      "values": [
+        "static",
+        "compile",
+        "runtime",
+        "runtime-eval",
+        "ephemeral"
+      ],
+      "label": "状态寿命"
+    },
+    {
+      "id": "NavModule",
+      "values": [
+        "Ontology",
+        "Scene",
+        "Rule",
+        "Algorithm",
+        "Engagement",
+        "Agent",
+        "Knowledge"
+      ],
+      "label": "规范导航"
+    },
+    {
+      "id": "StandardIdentity",
+      "values": [
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6"
+      ],
+      "label": "2525D 标准身份 0 pending … 3 friend … 6 hostile"
+    },
+    {
+      "id": "SymbolSet",
+      "values": [
+        "01",
+        "10",
+        "15",
+        "20",
+        "30"
+      ],
+      "label": "2525D 符号集 air/land-unit/land-eq/installation/sea"
+    },
+    {
+      "id": "QudtUnit",
+      "values": [
+        "http://qudt.org/vocab/unit/KiloM",
+        "http://qudt.org/vocab/unit/KiloM-PER-HR",
+        "http://qudt.org/vocab/unit/M"
+      ],
+      "label": "QUDT 单位"
+    },
+    {
+      "id": "CrsId",
+      "values": [
+        "CRK:ENG"
+      ],
+      "label": "砂盘工程坐标"
+    },
+    {
+      "id": "GeoSparqlGeom",
+      "values": [
+        "Point",
+        "LineString",
+        "Polygon",
+        "Polygon Z"
+      ],
+      "label": "GeoSPARQL WKT 类型（本包足迹，不是占领区）"
+    },
+    {
+      "id": "UasGroup",
+      "values": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "label": "DoD UAS Group"
+    },
+    {
+      "id": "NatoUasClass",
+      "values": [
+        "I-micro",
+        "I-mini",
+        "I-small",
+        "II",
+        "III-MALE",
+        "III-HALE",
+        "III-strike"
+      ],
+      "label": "NATO UAS Class (STANAG 4670 公开表)"
+    },
+    {
+      "id": "Airframe",
+      "values": [
+        "fixed-wing",
+        "rotary",
+        "vtol",
+        "sea-skimming"
+      ],
+      "label": "气动构型"
+    },
+    {
+      "id": "UasRole",
+      "values": [
+        "isr",
+        "ew",
+        "decoy",
+        "raid",
+        "cargo",
+        "civilian",
+        "relay"
+      ],
+      "label": "无人机职能型"
+    },
+    {
+      "id": "EasaClass",
+      "values": [
+        "C0",
+        "C1",
+        "C2",
+        "C3",
+        "C4",
+        "C5",
+        "C6"
+      ],
+      "label": "EASA 2019/947 类标识"
+    }
+  ],
+  "tables": [
+    {
+      "id": "Package",
+      "label": "封皮包",
+      "persist": "archive",
+      "file": "catalog.json",
+      "pk": [
+        "id",
+        "version"
+      ],
+      "rows": "1 per package version",
+      "fields": [
+        {
+          "name": "id",
+          "label": "包标识",
+          "type": "string",
+          "required": true,
+          "pk": true,
+          "enum": [
+            "coast-raid-k"
+          ]
+        },
+        {
+          "name": "version",
+          "label": "版本",
+          "type": "string",
+          "required": true,
+          "pk": true,
+          "example": "1.0.0"
+        },
+        {
+          "name": "title",
+          "label": "题名",
+          "type": "string",
+          "required": false
+        },
+        {
+          "name": "kind",
+          "label": "包类",
+          "type": "string",
+          "required": true,
+          "enum": [
+            "engagement-body-package"
+          ]
+        },
+        {
+          "name": "envelope",
+          "label": "封皮六模块",
+          "type": "code[]",
+          "required": true,
+          "code": "EnvelopeModule",
+          "note": "交战封皮六模块。规范导航另含 01 领域本体，见 dictionary.nav"
+        },
+        {
+          "name": "unit.length",
+          "label": "长度单位",
+          "type": "const",
+          "required": true,
+          "enum": [
+            "km"
+          ],
+          "unit": "km"
+        },
+        {
+          "name": "unit.speed",
+          "label": "速度单位",
+          "type": "const",
+          "required": true,
+          "enum": [
+            "km/h"
+          ],
+          "unit": "km/h"
+        },
+        {
+          "name": "unit.tick_s",
+          "label": "节拍",
+          "type": "number",
+          "required": true,
+          "unit": "s",
+          "owner": "Package.unit",
+          "example": 0.04
+        },
+        {
+          "name": "frame",
+          "label": "空间轴",
+          "type": "SpatialFrame",
+          "required": true,
+          "owner": "Package.frame"
+        },
+        {
+          "name": "excludes",
+          "label": "排除项",
+          "type": "code[]",
+          "required": true,
+          "code": "ExcludeId",
+          "fk": "Exclude.id"
+        },
+        {
+          "name": "parts",
+          "label": "分册清单",
+          "type": "map<string,filename>",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "Exclude",
+      "label": "排除项",
+      "persist": "archive",
+      "file": "catalog.json",
+      "pk": [
+        "id"
+      ],
+      "rows": "listed on Package.excludes",
+      "fields": [
+        {
+          "name": "id",
+          "label": "排除标识",
+          "type": "code",
+          "required": true,
+          "pk": true,
+          "code": "ExcludeId",
+          "facet": "约束"
+        }
+      ],
+      "nav": "Scene"
+    },
+    {
+      "id": "SpatialFrame",
+      "label": "空间坐标系",
+      "persist": "archive",
+      "file": "catalog.json",
+      "pk": [
+        "package"
+      ],
+      "rows": "1, embedded in Package; gis.frame must copy verbatim",
+      "fields": [
+        {
+          "name": "origin",
+          "label": "原点",
+          "type": "string",
+          "required": true,
+          "example": "岸线中点 O",
+          "facet": "几何"
+        },
+        {
+          "name": "x",
+          "label": "X 轴",
+          "type": "string",
+          "required": true,
+          "note": "东距，东为正",
+          "facet": "几何"
+        },
+        {
+          "name": "y",
+          "label": "Y 轴",
+          "type": "string",
+          "required": true,
+          "note": "高，上为正。与问题表述 z=高度 不同",
+          "facet": "几何"
+        },
+        {
+          "name": "z",
+          "label": "Z 轴",
+          "type": "string",
+          "required": true,
+          "note": "距岸，陆正海负",
+          "facet": "几何"
+        },
+        {
+          "name": "heading000_deg",
+          "label": "000 航向",
+          "type": "number",
+          "required": false,
+          "unit": "deg",
+          "example": 0,
+          "facet": "几何"
+        },
+        {
+          "name": "heading000",
+          "label": "000 含义",
+          "type": "string",
+          "required": false,
+          "facet": "几何"
+        },
+        {
+          "name": "heading180",
+          "label": "180 含义",
+          "type": "string",
+          "required": false,
+          "facet": "几何"
+        }
+      ],
+      "nav": "Scene"
+    },
+    {
+      "id": "Shoreline",
+      "label": "岸线",
+      "persist": "archive",
+      "file": "gis.json",
+      "pk": [
+        "id"
+      ],
+      "rows": "1",
+      "fields": [
+        {
+          "name": "id",
+          "label": "岸线标识",
+          "type": "string",
+          "required": true,
+          "pk": true,
+          "example": "SHORE_0"
+        },
+        {
+          "name": "type",
+          "label": "型",
+          "type": "const",
+          "required": true,
+          "enum": [
+            "Shoreline"
+          ]
+        },
+        {
+          "name": "kind",
+          "label": "拟合",
+          "type": "enum",
+          "required": true,
+          "enum": [
+            "harmonic",
+            "polyline"
+          ],
+          "facet": "几何"
+        },
+        {
+          "name": "params.terms",
+          "label": "谐波项",
+          "type": "object[]",
+          "required": true,
+          "note": "每项 amp,freq,phase；不因挪泡而改",
+          "facet": "几何"
+        },
+        {
+          "name": "plane",
+          "label": "平面",
+          "type": "string",
+          "required": false,
+          "example": "y=0",
+          "facet": "几何"
+        }
+      ],
+      "nav": "Scene"
+    },
+    {
+      "id": "Region",
+      "label": "海陆域",
+      "persist": "archive",
+      "file": "gis.json",
+      "pk": [
+        "id"
+      ],
+      "rows": "2",
+      "fields": [
+        {
+          "name": "id",
+          "label": "域",
+          "type": "enum",
+          "required": true,
+          "pk": true,
+          "enum": [
+            "SEA",
+            "LAND"
+          ],
+          "facet": "位置"
+        },
+        {
+          "name": "type",
+          "label": "型",
+          "type": "const",
+          "required": true,
+          "enum": [
+            "Region"
+          ]
+        },
+        {
+          "name": "predicate",
+          "label": "谓词",
+          "type": "string",
+          "required": false,
+          "example": "z < shoreline(x)",
+          "facet": "位置"
+        }
+      ],
+      "nav": "Scene"
+    },
+    {
+      "id": "Membership",
+      "label": "海陆隶属",
+      "persist": "archive",
+      "file": "gis.json",
+      "pk": [
+        "of",
+        "region"
+      ],
+      "rows": "compile-time constraints",
+      "fields": [
+        {
+          "name": "of",
+          "label": "对象",
+          "type": "string",
+          "required": true,
+          "pk": true,
+          "fk": "Body.id|Site.id",
+          "facet": "关联"
+        },
+        {
+          "name": "region",
+          "label": "域",
+          "type": "enum",
+          "required": true,
+          "pk": true,
+          "enum": [
+            "SEA",
+            "LAND"
+          ],
+          "fk": "Region.id",
+          "facet": "位置"
+        },
+        {
+          "name": "rule",
+          "label": "规则",
+          "type": "code",
+          "required": true,
+          "code": "MembershipRule",
+          "facet": "关联"
+        }
+      ],
+      "nav": "Scene"
+    },
+    {
+      "id": "Body",
+      "label": "空间体积",
+      "persist": "archive",
+      "file": "theater.json",
+      "pk": [
+        "id"
+      ],
+      "rows": "B_BMD, B_SAM, C_low, B_ship, SEARCH, JAM_BLOOM",
+      "fields": [
+        {
+          "name": "id",
+          "label": "体积标识",
+          "type": "string",
+          "required": true,
+          "pk": true
+        },
+        {
+          "name": "type",
+          "label": "型",
+          "type": "code",
+          "required": true,
+          "code": "BodyType",
+          "facet": "个体"
+        },
+        {
+          "name": "layer",
+          "label": "层",
+          "type": "code",
+          "required": false,
+          "code": "Layer",
+          "facet": "位置"
+        },
+        {
+          "name": "shape",
+          "label": "形状",
+          "type": "code",
+          "required": true,
+          "code": "Shape",
+          "facet": "几何"
+        },
+        {
+          "name": "c",
+          "label": "心",
+          "type": "Vec3",
+          "required": "if hemisphere|disk|sector_slab",
+          "unit": "km",
+          "facet": "几何"
+        },
+        {
+          "name": "r",
+          "label": "半径",
+          "type": "number",
+          "required": "if hemisphere|disk|sector_slab",
+          "unit": "km",
+          "minimum": 0,
+          "facet": "几何"
+        },
+        {
+          "name": "z0",
+          "label": "半球底",
+          "type": "number",
+          "required": "if hemisphere",
+          "unit": "km",
+          "facet": "几何"
+        },
+        {
+          "name": "rim",
+          "label": "授权内界比例",
+          "type": "number",
+          "required": false,
+          "minimum": 0,
+          "maximum": 1,
+          "owner": "Body.B_SAM",
+          "note": "Rule.gate 只引用，不另存数",
+          "facet": "几何"
+        },
+        {
+          "name": "x0,x1,z0,z1,y0,y1",
+          "label": "AABB",
+          "type": "number",
+          "required": "if aabb",
+          "unit": "km",
+          "facet": "几何"
+        },
+        {
+          "name": "az_deg,half_deg,h",
+          "label": "扇参数",
+          "type": "number",
+          "required": "if sector_slab",
+          "unit": "deg|km",
+          "facet": "几何"
+        },
+        {
+          "name": "region",
+          "label": "所在域",
+          "type": "enum",
+          "required": false,
+          "enum": [
+            "SEA",
+            "LAND"
+          ],
+          "fk": "Region.id",
+          "facet": "位置"
+        },
+        {
+          "name": "not",
+          "label": "禁止解读",
+          "type": "string",
+          "required": false,
+          "example": "occupationZone",
+          "facet": "约束"
+        }
+      ],
+      "nav": "Scene"
+    },
+    {
+      "id": "Site",
+      "label": "阵地/平台实例",
+      "persist": "archive",
+      "file": "theater.json",
+      "pk": [
+        "id"
+      ],
+      "rows": "C2, RADAR_SHORE, RADAR_SAM, SAM_TEL, BMD_SILO, SHIP, JAMMER",
+      "fields": [
+        {
+          "name": "id",
+          "label": "阵地标识",
+          "type": "string",
+          "required": true,
+          "pk": true
+        },
+        {
+          "name": "type",
+          "label": "型",
+          "type": "code",
+          "required": true,
+          "code": "SiteType",
+          "facet": "个体"
+        },
+        {
+          "name": "p",
+          "label": "位置",
+          "type": "Vec3",
+          "required": true,
+          "unit": "km",
+          "facet": "位置"
+        },
+        {
+          "name": "region",
+          "label": "所在域",
+          "type": "enum",
+          "required": false,
+          "enum": [
+            "SEA",
+            "LAND"
+          ],
+          "fk": "Region.id",
+          "facet": "位置"
+        },
+        {
+          "name": "covers",
+          "label": "覆盖体积",
+          "type": "string",
+          "required": false,
+          "fk": "Body.id",
+          "facet": "能力"
+        },
+        {
+          "name": "envelope",
+          "label": "拥有包络",
+          "type": "string",
+          "required": false,
+          "fk": "Body.id",
+          "facet": "能力"
+        },
+        {
+          "name": "channels0",
+          "label": "通道初值 m0",
+          "type": "integer",
+          "required": false,
+          "minimum": 0,
+          "owner": "Site.SAM_TEL",
+          "note": "Rule 不另存 m0",
+          "facet": "能力"
+        },
+        {
+          "name": "heading_deg",
+          "label": "航向",
+          "type": "number",
+          "required": false,
+          "unit": "deg",
+          "facet": "位置"
+        }
+      ],
+      "nav": "Scene"
+    },
+    {
+      "id": "PlatformType",
+      "label": "平台型",
+      "persist": "archive",
+      "file": "theater.json",
+      "pk": [
+        "id"
+      ],
+      "rows": "本幕 ITEM: blue_uav, host_lo, unk_lo · 型库 OBJECT-TYPE: uas-*",
+      "fields": [
+        {
+          "name": "id",
+          "label": "型标识",
+          "type": "string",
+          "required": true,
+          "pk": true
+        },
+        {
+          "name": "side",
+          "label": "方",
+          "type": "code",
+          "required": false,
+          "code": "Side",
+          "facet": "型谱"
+        },
+        {
+          "name": "layers",
+          "label": "可分层",
+          "type": "code[]",
+          "required": false,
+          "code": "Layer",
+          "facet": "型谱"
+        },
+        {
+          "name": "speed_kmh",
+          "label": "速度",
+          "type": "number",
+          "required": false,
+          "unit": "km/h",
+          "owner": "PlatformType",
+          "minimum": 0,
+          "facet": "型谱"
+        },
+        {
+          "name": "speed_kmh_byLayer",
+          "label": "分层速度",
+          "type": "map<Layer,number>",
+          "required": false,
+          "unit": "km/h",
+          "note": "blue_uav hi=280 mid=320",
+          "facet": "型谱"
+        },
+        {
+          "name": "form_lo_lat_kmh",
+          "label": "低空侧向保持",
+          "type": "number",
+          "required": false,
+          "unit": "km/h",
+          "owner": "PlatformType.host_lo",
+          "facet": "型谱"
+        },
+        {
+          "name": "band_m",
+          "label": "高度带",
+          "type": "number[2]",
+          "required": false,
+          "unit": "m",
+          "facet": "型谱"
+        },
+        {
+          "name": "tasks",
+          "label": "任务集",
+          "type": "code[]",
+          "required": false,
+          "code": "BlueTask",
+          "facet": "能力"
+        },
+        {
+          "name": "inScene",
+          "label": "是否本幕",
+          "type": "boolean",
+          "required": false,
+          "facet": "型谱"
+        },
+        {
+          "name": "uasGroup",
+          "label": "DoD Group",
+          "type": "code",
+          "required": false,
+          "code": "UasGroup",
+          "facet": "型谱"
+        },
+        {
+          "name": "natoClass",
+          "label": "NATO Class",
+          "type": "code",
+          "required": false,
+          "code": "NatoUasClass",
+          "facet": "型谱"
+        },
+        {
+          "name": "airframe",
+          "label": "构型",
+          "type": "code",
+          "required": false,
+          "code": "Airframe",
+          "facet": "型谱"
+        },
+        {
+          "name": "role",
+          "label": "职能",
+          "type": "code",
+          "required": false,
+          "code": "UasRole",
+          "facet": "能力"
+        },
+        {
+          "name": "mtow_kg_max",
+          "label": "最大起飞质量",
+          "type": "number",
+          "required": false,
+          "unit": "kg",
+          "facet": "能力"
+        },
+        {
+          "name": "alt_m_max",
+          "label": "高度上限",
+          "type": "number",
+          "required": false,
+          "unit": "m",
+          "facet": "能力"
+        },
+        {
+          "name": "speed_kt_max",
+          "label": "速度上限",
+          "type": "number",
+          "required": false,
+          "unit": "kt",
+          "facet": "能力"
+        },
+        {
+          "name": "missionRadius",
+          "label": "任务半径",
+          "type": "string",
+          "required": false,
+          "facet": "能力"
+        },
+        {
+          "name": "source",
+          "label": "分类出处",
+          "type": "string",
+          "required": false,
+          "facet": "约束"
+        },
+        {
+          "name": "sidc",
+          "label": "SIDC",
+          "type": "object",
+          "required": false,
+          "facet": "符号"
+        }
+      ],
+      "nav": "Scene"
+    },
+    {
+      "id": "OwnRel",
+      "label": "拥有",
+      "persist": "archive",
+      "file": "graph.json",
+      "pk": [
+        "site"
+      ],
+      "fields": [
+        {
+          "name": "site",
+          "label": "阵地",
+          "type": "string",
+          "required": true,
+          "pk": true,
+          "fk": "Site.id",
+          "facet": "关联"
+        },
+        {
+          "name": "body",
+          "label": "体积",
+          "type": "string|null",
+          "required": false,
+          "fk": "Body.id",
+          "facet": "关联"
+        },
+        {
+          "name": "beam",
+          "label": "波束",
+          "type": "string",
+          "required": false,
+          "facet": "能力"
+        }
+      ],
+      "nav": "Scene"
+    },
+    {
+      "id": "CoverRel",
+      "label": "覆盖",
+      "persist": "archive",
+      "file": "graph.json",
+      "pk": [
+        "sensor",
+        "mode"
+      ],
+      "fields": [
+        {
+          "name": "sensor",
+          "label": "传感器",
+          "type": "string",
+          "required": true,
+          "pk": true,
+          "fk": "Site.id",
+          "facet": "关联"
+        },
+        {
+          "name": "body",
+          "label": "体积",
+          "type": "string",
+          "required": false,
+          "fk": "Body.id",
+          "facet": "关联"
+        },
+        {
+          "name": "mode",
+          "label": "模式",
+          "type": "string",
+          "required": false,
+          "facet": "能力"
+        }
+      ],
+      "nav": "Scene"
+    },
+    {
+      "id": "Needline",
+      "label": "岸上数据链",
+      "persist": "archive",
+      "file": "graph.json",
+      "pk": [
+        "id"
+      ],
+      "rows": "G_t",
+      "fields": [
+        {
+          "name": "id",
+          "label": "链标识",
+          "type": "string",
+          "required": true,
+          "pk": true,
+          "example": "G_t"
+        },
+        {
+          "name": "kind",
+          "label": "类",
+          "type": "const",
+          "required": true,
+          "enum": [
+            "needline"
+          ],
+          "facet": "关联"
+        },
+        {
+          "name": "root",
+          "label": "根",
+          "type": "string",
+          "required": true,
+          "fk": "Site.id",
+          "example": "C2",
+          "facet": "关联"
+        },
+        {
+          "name": "deniedBy",
+          "label": "拒止源",
+          "type": "string",
+          "required": false,
+          "fk": "Site.id",
+          "facet": "约束"
+        },
+        {
+          "name": "onDenied",
+          "label": "拒止效果",
+          "type": "string",
+          "required": false,
+          "example": "teamFusionUnavailable",
+          "facet": "约束"
+        }
+      ],
+      "nav": "Scene"
+    },
+    {
+      "id": "NeedlineSpoke",
+      "label": "需求线辐",
+      "persist": "archive",
+      "file": "graph.json",
+      "pk": [
+        "from",
+        "to"
+      ],
+      "fields": [
+        {
+          "name": "from",
+          "label": "从",
+          "type": "string",
+          "required": true,
+          "pk": true,
+          "fk": "Site.id",
+          "facet": "关联"
+        },
+        {
+          "name": "to",
+          "label": "到",
+          "type": "string",
+          "required": true,
+          "pk": true,
+          "fk": "Site.id",
+          "facet": "关联"
+        },
+        {
+          "name": "km",
+          "label": "长度",
+          "type": "number",
+          "required": false,
+          "unit": "km",
+          "facet": "几何"
+        },
+        {
+          "name": "role",
+          "label": "角色",
+          "type": "enum",
+          "required": false,
+          "enum": [
+            "feeds",
+            "commands"
+          ],
+          "facet": "关联"
+        }
+      ],
+      "nav": "Scene"
+    },
+    {
+      "id": "Link",
+      "label": "其他链路",
+      "persist": "archive",
+      "file": "graph.json",
+      "pk": [
+        "id"
+      ],
+      "rows": "air_station, mesh, ship_shore",
+      "fields": [
+        {
+          "name": "id",
+          "label": "链路标识",
+          "type": "string",
+          "required": true,
+          "pk": true
+        },
+        {
+          "name": "from",
+          "label": "从",
+          "type": "string",
+          "required": false,
+          "facet": "关联"
+        },
+        {
+          "name": "to",
+          "label": "到",
+          "type": "string",
+          "required": false,
+          "facet": "关联"
+        },
+        {
+          "name": "among",
+          "label": "组内",
+          "type": "string",
+          "required": false,
+          "facet": "关联"
+        },
+        {
+          "name": "survivesJam",
+          "label": "抗 G(t) 拒止",
+          "type": "boolean",
+          "required": false,
+          "facet": "约束"
+        },
+        {
+          "name": "km",
+          "label": "长度",
+          "type": "number",
+          "required": false,
+          "unit": "km",
+          "facet": "几何"
+        }
+      ],
+      "nav": "Scene"
+    },
+    {
+      "id": "Rule",
+      "label": "规则",
+      "persist": "archive",
+      "file": "rules.json",
+      "pk": [
+        "id"
+      ],
+      "rows": "11; 入库以本表为准",
+      "fields": [
+        {
+          "name": "id",
+          "label": "规则标识",
+          "type": "string",
+          "required": true,
+          "pk": true
+        },
+        {
+          "name": "type",
+          "label": "型",
+          "type": "const",
+          "required": true,
+          "enum": [
+            "Rule"
+          ]
+        },
+        {
+          "name": "modality",
+          "label": "模态",
+          "type": "code",
+          "required": true,
+          "code": "Modality",
+          "facet": "模态"
+        },
+        {
+          "name": "text",
+          "label": "表述",
+          "type": "string",
+          "required": true,
+          "facet": "表述"
+        },
+        {
+          "name": "params.N_max",
+          "label": "分层规模上限",
+          "type": "NMax",
+          "required": "if N_bound",
+          "owner": "Rule.N_bound",
+          "example": {
+            "hi": 3,
+            "mid": 3,
+            "lo": 6
+          },
+          "facet": "参数"
+        },
+        {
+          "name": "params.K_max",
+          "label": "波次上限",
+          "type": "integer",
+          "required": "if N_bound",
+          "owner": "Rule.N_bound",
+          "example": 4,
+          "facet": "参数"
+        },
+        {
+          "name": "params.tau",
+          "label": "过门置信",
+          "type": "number",
+          "required": "if gate",
+          "owner": "Rule.gate",
+          "minimum": 0,
+          "maximum": 1,
+          "example": 0.85,
+          "facet": "参数"
+        },
+        {
+          "name": "params.zone",
+          "label": "过门区态",
+          "type": "code",
+          "required": "if gate",
+          "code": "Zone",
+          "example": "in",
+          "facet": "参数"
+        },
+        {
+          "name": "params.denied_blocks",
+          "label": "拒止阻断开门",
+          "type": "boolean",
+          "required": "if gate",
+          "facet": "参数"
+        },
+        {
+          "name": "evalOn",
+          "label": "条件",
+          "type": "string",
+          "required": false,
+          "facet": "条件"
+        },
+        {
+          "name": "states",
+          "label": "裁决",
+          "type": "string[]",
+          "required": true,
+          "facet": "裁决"
+        },
+        {
+          "name": "illegal",
+          "label": "禁止",
+          "type": "string[]",
+          "required": false,
+          "facet": "禁止"
+        },
+        {
+          "name": "enforcement",
+          "label": "执行",
+          "type": "StateModel",
+          "required": false,
+          "facet": "执行",
+          "note": "RuleCatalog.stateModel；structure=frozen；每拍只评，不得豁免 hard/roe"
+        }
+      ],
+      "nav": "Rule"
+    },
+    {
+      "id": "Algorithm",
+      "label": "算法工具",
+      "persist": "archive",
+      "file": "algorithms.json",
+      "pk": [
+        "id"
+      ],
+      "note": "进包；claim 永假；不进 40ms 快照",
+      "fields": [
+        {
+          "name": "id",
+          "label": "工具标识",
+          "type": "string",
+          "required": true,
+          "pk": true
+        },
+        {
+          "name": "type",
+          "label": "型",
+          "type": "const",
+          "required": true,
+          "enum": [
+            "Algorithm"
+          ]
+        },
+        {
+          "name": "bind",
+          "label": "绑定职能",
+          "type": "code",
+          "required": true,
+          "code": "FunctionId",
+          "fk": "FunctionBind.id",
+          "facet": "职能"
+        },
+        {
+          "name": "scope",
+          "label": "范围",
+          "type": "enum",
+          "required": false,
+          "enum": [
+            "sense",
+            "know",
+            "decide",
+            "inner",
+            "roe",
+            "inject",
+            "tool"
+          ],
+          "facet": "范围"
+        },
+        {
+          "name": "claim",
+          "label": "是否主张",
+          "type": "const",
+          "required": true,
+          "enum": [
+            false
+          ],
+          "facet": "主张"
+        },
+        {
+          "name": "title",
+          "label": "题名",
+          "type": "string",
+          "required": false,
+          "facet": "实现"
+        },
+        {
+          "name": "eats",
+          "label": "输入",
+          "type": "string[]",
+          "required": false,
+          "facet": "输入",
+          "note": "只读引用 FunctionBind.eats"
+        },
+        {
+          "name": "give",
+          "label": "输出",
+          "type": "code",
+          "required": false,
+          "facet": "输出",
+          "code": "ProductTypeId",
+          "note": "只读引用 FunctionBind.give"
+        },
+        {
+          "name": "bound",
+          "label": "绑定",
+          "type": "string[]",
+          "required": false,
+          "facet": "绑定",
+          "note": "逆引 FunctionBind.bound"
+        }
+      ],
+      "nav": "Algorithm"
+    },
+    {
+      "id": "FunctionBind",
+      "label": "指挥职能",
+      "persist": "archive",
+      "file": "algorithms.json",
+      "pk": [
+        "id"
+      ],
+      "rows": "exactly 6",
+      "fields": [
+        {
+          "name": "id",
+          "label": "职能",
+          "type": "code",
+          "required": true,
+          "pk": true,
+          "code": "FunctionId",
+          "facet": "何事"
+        },
+        {
+          "name": "title",
+          "label": "题名",
+          "type": "string",
+          "required": true,
+          "facet": "何事"
+        },
+        {
+          "name": "give",
+          "label": "产出产品型",
+          "type": "code",
+          "required": true,
+          "code": "ProductTypeId",
+          "facet": "何事"
+        },
+        {
+          "name": "eats",
+          "label": "输入",
+          "type": "string[]",
+          "required": false,
+          "facet": "何事"
+        },
+        {
+          "name": "bound",
+          "label": "绑定工具",
+          "type": "string[]",
+          "required": false,
+          "fk": "Algorithm.id",
+          "facet": "谁"
+        },
+        {
+          "name": "human",
+          "label": "人在回路",
+          "type": "boolean",
+          "required": "if gate",
+          "note": "gate 必须 true",
+          "facet": "授权"
+        },
+        {
+          "name": "runtime",
+          "label": "实现指针",
+          "type": "string",
+          "required": false,
+          "facet": "出处"
+        },
+        {
+          "name": "toolsNotClaim",
+          "label": "非主张工具",
+          "type": "string[]",
+          "required": false,
+          "facet": "谁",
+          "fk": "Algorithm.id"
+        }
+      ],
+      "nav": "Engagement"
+    },
+    {
+      "id": "CloudDef",
+      "label": "云定义",
+      "persist": "archive",
+      "file": "constraints.json",
+      "pk": [
+        "id"
+      ],
+      "rows": "inSam, nEnv, threatSam",
+      "fields": [
+        {
+          "name": "id",
+          "label": "云标识",
+          "type": "string",
+          "required": true,
+          "pk": true,
+          "facet": "来源"
+        },
+        {
+          "name": "Ex",
+          "label": "期望",
+          "type": "number",
+          "required": true,
+          "facet": "数字特征"
+        },
+        {
+          "name": "En",
+          "label": "熵",
+          "type": "number",
+          "required": true,
+          "minimum": 0,
+          "facet": "数字特征"
+        },
+        {
+          "name": "He",
+          "label": "超熵",
+          "type": "number",
+          "required": true,
+          "minimum": 0,
+          "facet": "数字特征"
+        }
+      ],
+      "nav": "Knowledge"
+    },
+    {
+      "id": "ShellTemplate",
+      "label": "壳体模板",
+      "persist": "archive",
+      "file": "shells.json",
+      "pk": [
+        "id"
+      ],
+      "rows": "shell-blue-uav",
+      "fields": [
+        {
+          "name": "id",
+          "label": "模板标识",
+          "type": "string",
+          "required": true,
+          "pk": true
+        },
+        {
+          "name": "type",
+          "label": "型",
+          "type": "const",
+          "required": true,
+          "enum": [
+            "ShellTemplate"
+          ]
+        },
+        {
+          "name": "bindsPlatformType",
+          "label": "绑定平台型",
+          "type": "string",
+          "required": true,
+          "fk": "PlatformType.id",
+          "facet": "型谱"
+        }
+      ],
+      "nav": "Agent"
+    },
+    {
+      "id": "Stage",
+      "label": "壳体段",
+      "persist": "archive",
+      "file": "shells.json",
+      "pk": [
+        "shell",
+        "name"
+      ],
+      "rows": "exactly 5 per template",
+      "fields": [
+        {
+          "name": "name",
+          "label": "段名",
+          "type": "enum",
+          "required": true,
+          "pk": true,
+          "enum": [
+            "感知",
+            "推理",
+            "决策",
+            "交互",
+            "行动"
+          ],
+          "facet": "阶段"
+        },
+        {
+          "name": "reads",
+          "label": "读",
+          "type": "string[]",
+          "required": true,
+          "facet": "读写"
+        },
+        {
+          "name": "writes",
+          "label": "写",
+          "type": "string[]",
+          "required": true,
+          "note": "不得含 Permit",
+          "facet": "读写"
+        },
+        {
+          "name": "writes.not",
+          "label": "禁写",
+          "type": "const",
+          "required": true,
+          "facet": "禁写",
+          "enum": [
+            "Permit"
+          ],
+          "note": "writes 不得含 Permit"
+        }
+      ],
+      "nav": "Agent"
+    },
+    {
+      "id": "Monitor",
+      "label": "授权监视",
+      "persist": "archive",
+      "file": "shells.json",
+      "pk": [
+        "id"
+      ],
+      "rows": "1",
+      "fields": [
+        {
+          "name": "id",
+          "label": "监视者",
+          "type": "string",
+          "required": true,
+          "pk": true,
+          "example": "monitor.gate",
+          "facet": "角色"
+        },
+        {
+          "name": "writes",
+          "label": "可写产品",
+          "type": "const",
+          "required": true,
+          "enum": [
+            "Permit"
+          ],
+          "facet": "角色"
+        }
+      ],
+      "nav": "Agent"
+    },
+    {
+      "id": "AgentInstance",
+      "label": "作战 Agent 实例",
+      "persist": "archive",
+      "file": "agent.instances.json",
+      "pk": [
+        "id"
+      ],
+      "rows": "one per run-scoped agent instance",
+      "fields": [
+        {
+          "name": "id",
+          "label": "实例标识",
+          "type": "string",
+          "required": true,
+          "pk": true,
+          "facet": "型谱"
+        },
+        {
+          "name": "type",
+          "label": "型",
+          "type": "const",
+          "required": true,
+          "enum": [
+            "AgentInstance"
+          ],
+          "facet": "型谱"
+        },
+        {
+          "name": "iri",
+          "label": "稳定 IRI",
+          "type": "uri",
+          "required": true,
+          "facet": "型谱"
+        },
+        {
+          "name": "agentType",
+          "label": "Agent 型",
+          "type": "uri",
+          "required": true,
+          "facet": "型谱"
+        },
+        {
+          "name": "implementedOn",
+          "label": "实现平台",
+          "type": "uri",
+          "required": false,
+          "facet": "型谱"
+        },
+        {
+          "name": "organization",
+          "label": "组织",
+          "type": "uri",
+          "required": false,
+          "facet": "角色"
+        },
+        {
+          "name": "roles",
+          "label": "角色",
+          "type": "uri[]",
+          "required": false,
+          "facet": "角色"
+        },
+        {
+          "name": "capabilities",
+          "label": "能力",
+          "type": "uri[]",
+          "required": false,
+          "facet": "能力"
+        },
+        {
+          "name": "runId",
+          "label": "运行标识",
+          "type": "string",
+          "required": true,
+          "facet": "阶段"
+        },
+        {
+          "name": "modelId",
+          "label": "模型标识",
+          "type": "string",
+          "required": true,
+          "facet": "型谱"
+        },
+        {
+          "name": "modelRevision",
+          "label": "模型版本",
+          "type": "string",
+          "required": true,
+          "facet": "型谱"
+        },
+        {
+          "name": "decisionMode",
+          "label": "决策模式",
+          "type": "enum",
+          "required": true,
+          "enum": [
+            "reactive",
+            "bdi",
+            "rule",
+            "human-in-loop",
+            "hybrid"
+          ],
+          "facet": "阶段"
+        },
+        {
+          "name": "autonomyLevel",
+          "label": "自治等级",
+          "type": "enum",
+          "required": true,
+          "enum": [
+            "supervised",
+            "delegated",
+            "autonomous"
+          ],
+          "facet": "禁写"
+        },
+        {
+          "name": "lifecycleState",
+          "label": "生命周期",
+          "type": "enum",
+          "required": true,
+          "enum": [
+            "initialized",
+            "active",
+            "degraded",
+            "suspended",
+            "destroyed"
+          ],
+          "facet": "阶段"
+        },
+        {
+          "name": "authorityScope",
+          "label": "权限范围",
+          "type": "uri[]",
+          "required": false,
+          "facet": "禁写"
+        },
+        {
+          "name": "provenance",
+          "label": "来源",
+          "type": "object",
+          "required": true,
+          "facet": "读写"
+        }
+      ],
+      "nav": "Agent"
+    },
+    {
+      "id": "Class",
+      "label": "TBox 类",
+      "persist": "archive",
+      "file": "tbox.json",
+      "pk": [
+        "id"
+      ],
+      "rows": "48",
+      "fields": [
+        {
+          "name": "id",
+          "label": "类名",
+          "type": "string",
+          "required": true,
+          "pk": true
+        },
+        {
+          "name": "label",
+          "label": "注释",
+          "type": "string",
+          "required": true,
+          "facet": "注释"
+        },
+        {
+          "name": "subClassOf",
+          "label": "子类",
+          "type": "string[]",
+          "required": true,
+          "fk": "Class.id",
+          "facet": "子类"
+        },
+        {
+          "name": "comment",
+          "label": "注释",
+          "type": "string",
+          "required": false,
+          "facet": "注释"
+        },
+        {
+          "name": "synonyms",
+          "label": "同义词",
+          "type": "string[]",
+          "required": false,
+          "facet": "注释"
+        },
+        {
+          "name": "equivalentTo",
+          "label": "等价类",
+          "type": "string[]",
+          "required": false,
+          "facet": "等价",
+          "note": "充分必要定义。现包可空，禁止伪造"
+        },
+        {
+          "name": "enumCodes",
+          "label": "值域码",
+          "type": "string[]",
+          "required": false,
+          "facet": "值域",
+          "fk": "DictCode.id"
+        }
+      ],
+      "nav": "Ontology"
+    },
+    {
+      "id": "ObjectProperty",
+      "label": "对象属性",
+      "persist": "archive",
+      "file": "tbox.json",
+      "pk": [
+        "id"
+      ],
+      "fields": [
+        {
+          "name": "id",
+          "label": "属性",
+          "type": "string",
+          "required": true,
+          "pk": true,
+          "facet": "对象属性"
+        },
+        {
+          "name": "domain",
+          "label": "定义域",
+          "type": "string",
+          "required": true,
+          "fk": "Class.id",
+          "facet": "对象属性"
+        },
+        {
+          "name": "range",
+          "label": "值域",
+          "type": "string",
+          "required": true,
+          "fk": "Class.id",
+          "facet": "对象属性"
+        },
+        {
+          "name": "inverseOf",
+          "label": "逆",
+          "type": "string",
+          "required": false,
+          "fk": "ObjectProperty.id",
+          "facet": "对象属性"
+        }
+      ],
+      "nav": "Ontology"
+    },
+    {
+      "id": "DataProperty",
+      "label": "数据属性",
+      "persist": "archive",
+      "file": "tbox.json",
+      "pk": [
+        "id"
+      ],
+      "fields": [
+        {
+          "name": "id",
+          "label": "属性",
+          "type": "string",
+          "required": true,
+          "pk": true,
+          "facet": "数据属性"
+        },
+        {
+          "name": "domain",
+          "label": "定义域",
+          "type": "string",
+          "required": true,
+          "fk": "Class.id",
+          "facet": "数据属性"
+        },
+        {
+          "name": "range",
+          "label": "值域",
+          "type": "string",
+          "required": true,
+          "example": "xsd:boolean",
+          "facet": "值域"
+        }
+      ],
+      "nav": "Ontology"
+    },
+    {
+      "id": "Axiom",
+      "label": "公理",
+      "persist": "archive",
+      "file": "tbox.json",
+      "pk": [
+        "id"
+      ],
+      "note": "Manchester 文本入库；Restriction 图由校验生成，运行时不推理",
+      "fields": [
+        {
+          "name": "id",
+          "label": "公理标识",
+          "type": "string",
+          "required": true,
+          "pk": true,
+          "facet": "公理"
+        },
+        {
+          "name": "manchester",
+          "label": "Manchester",
+          "type": "string",
+          "required": true,
+          "facet": "公理"
+        }
+      ],
+      "nav": "Ontology"
+    },
+    {
+      "id": "Disjoint",
+      "label": "不相交",
+      "nav": "Ontology",
+      "persist": "archive",
+      "file": "tbox.json",
+      "pk": [
+        "a",
+        "b"
+      ],
+      "rows": "Continuant⊥Occurrent 等",
+      "fields": [
+        {
+          "name": "a",
+          "label": "类 A",
+          "type": "string",
+          "required": true,
+          "pk": true,
+          "fk": "Class.id",
+          "facet": "不相交"
+        },
+        {
+          "name": "b",
+          "label": "类 B",
+          "type": "string",
+          "required": true,
+          "pk": true,
+          "fk": "Class.id",
+          "facet": "不相交"
+        }
+      ]
+    },
+    {
+      "id": "Inventory",
+      "label": "个体索引",
+      "persist": "derived",
+      "file": "inventory.json",
+      "pk": [
+        "type",
+        "id"
+      ],
+      "note": "校验生成。归档时与 version 一起存。禁止手改。",
+      "fields": [
+        {
+          "name": "id",
+          "label": "个体",
+          "type": "string",
+          "required": true,
+          "pk": true,
+          "facet": "个体"
+        },
+        {
+          "name": "type",
+          "label": "型",
+          "type": "string",
+          "required": true,
+          "pk": true,
+          "fk": "Class.id",
+          "facet": "个体"
+        },
+        {
+          "name": "module",
+          "label": "模块",
+          "type": "string",
+          "required": true,
+          "facet": "个体",
+          "note": "七导航中文名：领域本体/战场/规则/算法/交战/Agent/知识"
+        },
+        {
+          "name": "file",
+          "label": "分册",
+          "type": "string",
+          "required": true,
+          "facet": "个体"
+        },
+        {
+          "name": "label",
+          "label": "显示名",
+          "type": "string",
+          "required": false,
+          "facet": "注释"
+        }
+      ],
+      "nav": "Ontology"
+    },
+    {
+      "id": "Line",
+      "label": "关系线",
+      "persist": "derived",
+      "file": "graph.json",
+      "pk": [
+        "id"
+      ],
+      "nav": "Scene",
+      "note": "物理表 crk_line。Relator / JC3IEDM ASSOCIATION。从分册展开，禁止手改。G_t 本体仍在个体表；辐条、拥有、覆盖、不相等、隶属、绑定、子类才是线。",
+      "rows": "owns / covers / spoke / notSameAs / membership / boundTo / subClassOf / disjoint / link",
+      "fields": [
+        {
+          "name": "id",
+          "label": "线标识",
+          "type": "string",
+          "required": true,
+          "pk": true,
+          "facet": "关联",
+          "example": "spoke:G_t:C2-SAM_TEL"
+        },
+        {
+          "name": "pred",
+          "label": "谓词",
+          "type": "string",
+          "required": true,
+          "facet": "关联",
+          "fk": "ObjectProperty.id",
+          "note": "owns|covers|feeds|commands|notSameAs|memberOf|boundTo|subClassOf|disjointWith|link|deniedBy|bindsPlatformType|reads|writes"
+        },
+        {
+          "name": "from_id",
+          "label": "从",
+          "type": "string",
+          "required": true,
+          "facet": "关联"
+        },
+        {
+          "name": "from_type",
+          "label": "从的型",
+          "type": "string",
+          "required": false,
+          "facet": "关联"
+        },
+        {
+          "name": "to_id",
+          "label": "到",
+          "type": "string",
+          "required": false,
+          "facet": "关联",
+          "note": "owns.body 可空"
+        },
+        {
+          "name": "to_type",
+          "label": "到的型",
+          "type": "string",
+          "required": false,
+          "facet": "关联"
+        },
+        {
+          "name": "nav",
+          "label": "导航",
+          "type": "string",
+          "required": true,
+          "facet": "关联"
+        },
+        {
+          "name": "file",
+          "label": "分册",
+          "type": "string",
+          "required": true,
+          "facet": "关联"
+        },
+        {
+          "name": "doc",
+          "label": "线属性",
+          "type": "object",
+          "required": false,
+          "facet": "关联",
+          "note": "km、role、mode、rule、beam 等，不升列"
+        }
+      ]
+    },
+    {
+      "id": "Snapshot",
+      "label": "编译快照",
+      "persist": "derived",
+      "file": "compile/coast-raid-k.snapshot.json",
+      "pk": [
+        "packageId",
+        "version",
+        "hash"
+      ],
+      "note": "运行时只读这份。禁止手改。P1 才生成。",
+      "fields": [
+        {
+          "name": "packageId",
+          "label": "包",
+          "type": "const",
+          "required": true,
+          "enum": [
+            "coast-raid-k"
+          ]
+        },
+        {
+          "name": "version",
+          "label": "版本",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "hash",
+          "label": "源分册哈希",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "unit",
+          "label": "单位",
+          "type": "Unit",
+          "required": true
+        },
+        {
+          "name": "frame",
+          "label": "轴",
+          "type": "SpatialFrame",
+          "required": true
+        },
+        {
+          "name": "bodies",
+          "label": "体积图",
+          "type": "map<id,Body>",
+          "required": true
+        },
+        {
+          "name": "sites",
+          "label": "阵地图",
+          "type": "map<id,Site>",
+          "required": true
+        },
+        {
+          "name": "invariants",
+          "label": "规则参数投影",
+          "type": "map<id,params>",
+          "required": true,
+          "note": "从 Rule 派生，不是第二主人"
+        },
+        {
+          "name": "clouds",
+          "label": "云初值",
+          "type": "map<id,CloudDef>",
+          "required": true
+        },
+        {
+          "name": "graph",
+          "label": "通信拓扑",
+          "type": "object",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "Observation",
+      "label": "观测断言",
+      "persist": "archive",
+      "file": "agent.instances.json",
+      "pk": [
+        "id"
+      ],
+      "rows": "Agent extension document",
+      "fields": [
+        {
+          "name": "id",
+          "label": "标识",
+          "type": "string",
+          "required": true,
+          "pk": true
+        },
+        {
+          "name": "assertedBy",
+          "label": "断言 Agent",
+          "type": "uri",
+          "required": true,
+          "facet": "角色"
+        },
+        {
+          "name": "observedEntity",
+          "label": "观测实体",
+          "type": "string",
+          "required": true,
+          "facet": "读写"
+        },
+        {
+          "name": "observationKind",
+          "label": "观测类型",
+          "type": "string",
+          "required": true,
+          "facet": "阶段"
+        },
+        {
+          "name": "sourceIri",
+          "label": "来源",
+          "type": "uri",
+          "required": true,
+          "facet": "读写"
+        },
+        {
+          "name": "confidence",
+          "label": "置信度",
+          "type": "number",
+          "required": true,
+          "facet": "能力"
+        },
+        {
+          "name": "runId",
+          "label": "运行标识",
+          "type": "string",
+          "required": true,
+          "facet": "阶段"
+        }
+      ],
+      "nav": "Agent"
+    },
+    {
+      "id": "BeliefAssertion",
+      "label": "信念断言",
+      "persist": "archive",
+      "file": "agent.instances.json",
+      "pk": [
+        "id"
+      ],
+      "rows": "Agent extension document",
+      "fields": [
+        {
+          "name": "id",
+          "label": "标识",
+          "type": "string",
+          "required": true,
+          "pk": true
+        },
+        {
+          "name": "assertedBy",
+          "label": "断言 Agent",
+          "type": "uri",
+          "required": true,
+          "facet": "角色"
+        },
+        {
+          "name": "aboutIri",
+          "label": "关于实体",
+          "type": "uri",
+          "required": true,
+          "facet": "读写"
+        },
+        {
+          "name": "proposition",
+          "label": "命题",
+          "type": "string",
+          "required": true,
+          "facet": "读写"
+        },
+        {
+          "name": "derivedFrom",
+          "label": "依据",
+          "type": "uri[]",
+          "required": true,
+          "facet": "读写"
+        },
+        {
+          "name": "confidence",
+          "label": "置信度",
+          "type": "number",
+          "required": true,
+          "facet": "能力"
+        },
+        {
+          "name": "runId",
+          "label": "运行标识",
+          "type": "string",
+          "required": true,
+          "facet": "阶段"
+        }
+      ],
+      "nav": "Agent"
+    },
+    {
+      "id": "Authorization",
+      "label": "授权裁决",
+      "persist": "archive",
+      "file": "agent.instances.json",
+      "pk": [
+        "id"
+      ],
+      "rows": "Agent extension document",
+      "fields": [
+        {
+          "name": "id",
+          "label": "标识",
+          "type": "string",
+          "required": true,
+          "pk": true
+        },
+        {
+          "name": "requestIri",
+          "label": "请求",
+          "type": "uri",
+          "required": true,
+          "facet": "读写"
+        },
+        {
+          "name": "decidedBy",
+          "label": "裁决 Agent",
+          "type": "uri",
+          "required": true,
+          "facet": "角色"
+        },
+        {
+          "name": "result",
+          "label": "结果",
+          "type": "enum",
+          "required": true,
+          "facet": "角色"
+        },
+        {
+          "name": "reasonCode",
+          "label": "理由码",
+          "type": "string",
+          "required": true,
+          "facet": "禁写"
+        },
+        {
+          "name": "ruleVersion",
+          "label": "规则版本",
+          "type": "string",
+          "required": true,
+          "facet": "型谱"
+        },
+        {
+          "name": "runId",
+          "label": "运行标识",
+          "type": "string",
+          "required": true,
+          "facet": "阶段"
+        }
+      ],
+      "nav": "Agent"
+    }
+  ],
+  "out": [
+    {
+      "id": "Track",
+      "label": "航迹",
+      "why": "ephemeral 产品",
+      "keep": "Class + products.schema",
+      "nav": "Engagement",
+      "facet": "何事"
+    },
+    {
+      "id": "Identity",
+      "label": "身份",
+      "why": "ephemeral；不明不得 listable",
+      "keep": "Class + products.schema",
+      "nav": "Engagement",
+      "facet": "为何"
+    },
+    {
+      "id": "Pair",
+      "label": "配对",
+      "why": "本波账",
+      "keep": "Class + products.schema",
+      "nav": "Engagement",
+      "facet": "何事"
+    },
+    {
+      "id": "Slot",
+      "label": "槽位",
+      "why": "球面码派生点",
+      "keep": "Class + products.schema",
+      "nav": "Engagement",
+      "facet": "何地"
+    },
+    {
+      "id": "Permit",
+      "label": "许可",
+      "why": "仅 Monitor 可写，一场一清",
+      "keep": "Class + products.schema",
+      "nav": "Engagement",
+      "facet": "授权"
+    },
+    {
+      "id": "Inject",
+      "label": "注入",
+      "why": "有界扰动事件",
+      "keep": "Class + products.schema",
+      "nav": "Engagement",
+      "facet": "何事"
+    },
+    {
+      "id": "Event",
+      "label": "黑板事件",
+      "why": "回放可选 JSONL，不回写包",
+      "keep": "型",
+      "nav": "Engagement",
+      "facet": "何时"
+    },
+    {
+      "id": "Wave",
+      "label": "波次实例",
+      "why": "运行时 k",
+      "keep": "K_max 在 Rule",
+      "nav": "Engagement",
+      "facet": "何时"
+    },
+    {
+      "id": "Channel",
+      "label": "通道余量",
+      "why": "运行时 m",
+      "keep": "m0 在 Site.SAM_TEL",
+      "nav": "Engagement",
+      "facet": "授权"
+    },
+    {
+      "id": "GState",
+      "label": "G(t) 通断",
+      "why": "运行时 jammed 布尔",
+      "keep": "拓扑在 Needline",
+      "nav": "Engagement",
+      "facet": "出处"
+    },
+    {
+      "id": "Shadow",
+      "label": "云影",
+      "why": "队影/局影",
+      "keep": "CloudDef 名义",
+      "nav": "Knowledge",
+      "facet": "谱系"
+    },
+    {
+      "id": "Candidate",
+      "label": "进化候选",
+      "why": "本包无实例",
+      "keep": "下一包版本",
+      "nav": "Knowledge",
+      "facet": "谱系"
+    },
+    {
+      "id": "Granularity",
+      "label": "粗中细",
+      "why": "视图路由",
+      "keep": "不建表",
+      "nav": "Knowledge",
+      "facet": "粒度"
+    },
+    {
+      "id": "Invariant",
+      "label": "交战镜像",
+      "why": "与 Rule 同 id；入库以 Rule 为准",
+      "keep": "快照 invariants 投影",
+      "nav": "Engagement",
+      "facet": "何事"
+    },
+    {
+      "id": "Quality",
+      "label": "状态质量",
+      "why": "每拍 pass/fail",
+      "keep": "TBox 公理 hasState",
+      "nav": "Knowledge",
+      "facet": "质量"
+    },
+    {
+      "id": "Presentation",
+      "label": "砂盘表现",
+      "why": "非战场 TBox",
+      "keep": "gis.presentation 可随包但不索引",
+      "nav": "Scene",
+      "facet": "符号"
+    },
+    {
+      "id": "MapGrid",
+      "label": "陆格",
+      "why": "表现",
+      "keep": "gis.grid",
+      "nav": "Scene",
+      "facet": "符号"
+    }
+  ],
+  "nav": [
+    {
+      "id": "Ontology",
+      "n": "01",
+      "label": "领域本体",
+      "standard": "OWL 2 + Protégé + ISO 11179",
+      "tabs": [
+        {
+          "id": "注释",
+          "standard": "Annotation"
+        },
+        {
+          "id": "子类",
+          "standard": "rdfs:subClassOf"
+        },
+        {
+          "id": "等价",
+          "standard": "owl:equivalentClass"
+        },
+        {
+          "id": "不相交",
+          "standard": "owl:disjointWith"
+        },
+        {
+          "id": "数据属性",
+          "standard": "owl:DatatypeProperty"
+        },
+        {
+          "id": "对象属性",
+          "standard": "owl:ObjectProperty"
+        },
+        {
+          "id": "值域",
+          "standard": "ISO 11179 Value Domain"
+        },
+        {
+          "id": "个体",
+          "standard": "owl:NamedIndividual"
+        },
+        {
+          "id": "公理",
+          "standard": "Axiom · Manchester"
+        }
+      ]
+    },
+    {
+      "id": "Scene",
+      "n": "02",
+      "label": "战场",
+      "standard": "JC3IEDM TYPE/ITEM/LOCATION/CAPABILITY + ISO 19109 + GeoSPARQL",
+      "tabs": [
+        {
+          "id": "型谱",
+          "standard": "OBJECT-TYPE"
+        },
+        {
+          "id": "个体",
+          "standard": "OBJECT-ITEM"
+        },
+        {
+          "id": "几何",
+          "standard": "Geometry · geo:hasGeometry"
+        },
+        {
+          "id": "位置",
+          "standard": "LOCATION"
+        },
+        {
+          "id": "能力",
+          "standard": "CAPABILITY"
+        },
+        {
+          "id": "关联",
+          "standard": "ASSOCIATION"
+        },
+        {
+          "id": "约束",
+          "standard": "GFM Constraint"
+        },
+        {
+          "id": "符号",
+          "standard": "SIDC · 2525D/APP-6"
+        }
+      ]
+    },
+    {
+      "id": "Rule",
+      "n": "03",
+      "label": "规则",
+      "standard": "SBVR + LegalRuleML",
+      "tabs": [
+        {
+          "id": "表述",
+          "standard": "Statement"
+        },
+        {
+          "id": "模态",
+          "standard": "Modality"
+        },
+        {
+          "id": "条件",
+          "standard": "Antecedent"
+        },
+        {
+          "id": "参数",
+          "standard": "Value Domain"
+        },
+        {
+          "id": "裁决",
+          "standard": "Effect · Violation"
+        },
+        {
+          "id": "禁止",
+          "standard": "Prohibition"
+        },
+        {
+          "id": "执行",
+          "standard": "Enforcement"
+        }
+      ]
+    },
+    {
+      "id": "Algorithm",
+      "n": "04",
+      "label": "算法",
+      "standard": "IEEE 1872 + CCO Design Specification",
+      "tabs": [
+        {
+          "id": "职能",
+          "standard": "Function · boundTo"
+        },
+        {
+          "id": "范围",
+          "standard": "Scope"
+        },
+        {
+          "id": "输入",
+          "standard": "Input"
+        },
+        {
+          "id": "输出",
+          "standard": "Output"
+        },
+        {
+          "id": "绑定",
+          "standard": "Binding"
+        },
+        {
+          "id": "主张",
+          "standard": "Claim"
+        },
+        {
+          "id": "实现",
+          "standard": "Implementation"
+        }
+      ]
+    },
+    {
+      "id": "Engagement",
+      "n": "05",
+      "label": "交战",
+      "standard": "C-BML 5W + REPORTING-DATA",
+      "tabs": [
+        {
+          "id": "谁",
+          "standard": "Who"
+        },
+        {
+          "id": "何事",
+          "standard": "What"
+        },
+        {
+          "id": "何时",
+          "standard": "When"
+        },
+        {
+          "id": "何地",
+          "standard": "Where"
+        },
+        {
+          "id": "为何",
+          "standard": "Why"
+        },
+        {
+          "id": "出处",
+          "standard": "REPORTING-DATA"
+        },
+        {
+          "id": "授权",
+          "standard": "Authority"
+        }
+      ]
+    },
+    {
+      "id": "Agent",
+      "n": "06",
+      "label": "Agent",
+      "standard": "CORA + BFO Role",
+      "tabs": [
+        {
+          "id": "型谱",
+          "standard": "Type"
+        },
+        {
+          "id": "能力",
+          "standard": "Capability"
+        },
+        {
+          "id": "阶段",
+          "standard": "Stage"
+        },
+        {
+          "id": "读写",
+          "standard": "Information flow"
+        },
+        {
+          "id": "角色",
+          "standard": "Role"
+        },
+        {
+          "id": "禁写",
+          "standard": "Constraint"
+        }
+      ]
+    },
+    {
+      "id": "Knowledge",
+      "n": "07",
+      "label": "知识",
+      "standard": "出处 + 云模型 Ex/En/He",
+      "tabs": [
+        {
+          "id": "来源",
+          "standard": "INFORMATION-SOURCE"
+        },
+        {
+          "id": "数字特征",
+          "standard": "Ex / En / He"
+        },
+        {
+          "id": "质量",
+          "standard": "Quality"
+        },
+        {
+          "id": "谱系",
+          "standard": "PROV-O"
+        },
+        {
+          "id": "粒度",
+          "standard": "Granularity"
+        },
+        {
+          "id": "可见性",
+          "standard": "Visibility"
+        }
+      ]
+    }
+  ]
+}

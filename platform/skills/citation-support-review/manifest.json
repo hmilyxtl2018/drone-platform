@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "agent-skill.v1",
+  "skillKey": "citation-support-review",
+  "version": "1.0.0",
+  "name": "引文支持审查",
+  "description": "复核给定引文是否支持完整判断及逐条本体关系，保留不确定性。",
+  "applicability": {
+    "agentKeys": [
+      "scenario-analysis-action"
+    ],
+    "stepKeys": [
+      "review-perspective-evidence"
+    ],
+    "stages": [
+      "future-battlefield-support-review"
+    ]
+  },
+  "validatorRefs": [
+    "exact-quote-and-source-hash",
+    "relation-evidence-binding",
+    "persisted-support-review-proof"
+  ]
+}

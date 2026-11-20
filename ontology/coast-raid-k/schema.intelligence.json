@@ -1,0 +1,4306 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.ontology/coast-raid-k/intelligence/1.0.0/schema.intelligence.json",
+  "title": "coast-raid-k Intelligence ingestion and knowledge governance schemas",
+  "description": "Evidence-first interchange shapes for collecting public or authorized documents and proposing reviewed knowledge, including traceable public equipment measurements. This module contains no operational targeting, weapon control, or external execution fields.",
+  "$defs": {
+    "Sha256": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{64}$"
+    },
+    "EntityId": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "DateTime": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "IriOrUri": {
+      "type": "string",
+      "minLength": 1
+    },
+    "SourceAccessBasis": {
+      "type": "string",
+      "enum": [
+        "public",
+        "authorized"
+      ]
+    },
+    "SourceReliability": {
+      "type": "string",
+      "enum": [
+        "unknown",
+        "primary",
+        "secondary"
+      ]
+    },
+    "SourceDocumentStatus": {
+      "type": "string",
+      "enum": [
+        "created",
+        "ingested",
+        "processing",
+        "extracted",
+        "under-review",
+        "published",
+        "superseded",
+        "rejected",
+        "archived"
+      ]
+    },
+    "EvidenceLocator": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "documentId",
+        "sourceUri",
+        "sourceVersion",
+        "lineStart",
+        "lineEnd",
+        "quote",
+        "contentHash"
+      ],
+      "properties": {
+        "documentId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "sourceUri": {
+          "$ref": "#/$defs/IriOrUri"
+        },
+        "sourceVersion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lineStart": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "lineEnd": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "page": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "paragraph": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "charStart": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "charEnd": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "quote": {
+          "type": "string",
+          "minLength": 1
+        },
+        "contentHash": {
+          "$ref": "#/$defs/Sha256"
+        }
+      }
+    },
+    "ConceptMatch": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "iri",
+        "label",
+        "keyword"
+      ],
+      "properties": {
+        "iri": {
+          "$ref": "#/$defs/IriOrUri"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "keyword": {
+          "type": "string",
+          "minLength": 1
+        },
+        "matchMethod": {
+          "type": "string",
+          "enum": [
+            "exact",
+            "alias",
+            "embedding",
+            "llm",
+            "human-confirmed"
+          ]
+        }
+      }
+    },
+    "SourceDocument": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "title",
+        "sourceUri",
+        "sourceVersion",
+        "body",
+        "contentHash",
+        "accessBasis",
+        "sourceReliability",
+        "status",
+        "createdAt",
+        "immutable"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "documentId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "type": {
+          "const": "SourceDocument"
+        },
+        "runId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceUri": {
+          "$ref": "#/$defs/IriOrUri"
+        },
+        "sourceVersion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "body": {
+          "type": "string",
+          "minLength": 1
+        },
+        "contentHash": {
+          "$ref": "#/$defs/Sha256"
+        },
+        "hash": {
+          "$ref": "#/$defs/Sha256"
+        },
+        "accessBasis": {
+          "$ref": "#/$defs/SourceAccessBasis"
+        },
+        "sourceReliability": {
+          "$ref": "#/$defs/SourceReliability"
+        },
+        "status": {
+          "$ref": "#/$defs/SourceDocumentStatus"
+        },
+        "createdAt": {
+          "$ref": "#/$defs/DateTime"
+        },
+        "retrievedAt": {
+          "$ref": "#/$defs/DateTime"
+        },
+        "publishedAt": {
+          "$ref": "#/$defs/DateTime"
+        },
+        "immutable": {
+          "const": true
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "EvidenceClaim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "documentId",
+        "statement",
+        "subject",
+        "predicate",
+        "value",
+        "evidence",
+        "claimHash",
+        "extractionMethod",
+        "confidence",
+        "status",
+        "createdAt"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "type": {
+          "const": "EvidenceClaim"
+        },
+        "runId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "documentId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1
+        },
+        "predicate": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {},
+        "evidence": {
+          "$ref": "#/$defs/EvidenceLocator"
+        },
+        "claimHash": {
+          "$ref": "#/$defs/Sha256"
+        },
+        "extractionMethod": {
+          "type": "string",
+          "enum": [
+            "deterministic",
+            "llm",
+            "human",
+            "imported"
+          ]
+        },
+        "extractorAgent": {
+          "$ref": "#/$defs/IriOrUri"
+        },
+        "modelId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "modelRevision": {
+          "type": "string",
+          "minLength": 1
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "extracted",
+            "under-review",
+            "accepted",
+            "rejected",
+            "superseded"
+          ]
+        },
+        "createdAt": {
+          "$ref": "#/$defs/DateTime"
+        },
+        "provenance": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IriOrUri"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "CandidateStatus": {
+      "type": "string",
+      "enum": [
+        "new",
+        "under-review",
+        "edited",
+        "needs-evidence",
+        "accepted",
+        "rejected",
+        "published",
+        "superseded"
+      ]
+    },
+    "KnowledgeCandidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "documentId",
+        "claimId",
+        "revision",
+        "originalStatement",
+        "statement",
+        "subject",
+        "predicate",
+        "value",
+        "status",
+        "evidence",
+        "concepts",
+        "conflictIds",
+        "uncertainty",
+        "recommendation",
+        "latestReviewId"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "candidateId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "type": {
+          "const": "KnowledgeCandidate"
+        },
+        "runId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "documentId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "claimId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "originalStatement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1
+        },
+        "predicate": {
+          "type": "string",
+          "minLength": 1
+        },
+        "matchKey": {
+          "type": "string"
+        },
+        "value": {},
+        "status": {
+          "$ref": "#/$defs/CandidateStatus"
+        },
+        "evidence": {
+          "$ref": "#/$defs/EvidenceLocator"
+        },
+        "concepts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ConceptMatch"
+          },
+          "uniqueItems": true
+        },
+        "conflictIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EntityId"
+          },
+          "uniqueItems": true
+        },
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ConflictSet"
+          }
+        },
+        "uncertainty": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "type": "object",
+              "additionalProperties": true
+            }
+          ]
+        },
+        "recommendation": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "object",
+              "additionalProperties": true
+            }
+          ]
+        },
+        "latestReviewId": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/EntityId"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "createdAt": {
+          "$ref": "#/$defs/DateTime"
+        },
+        "updatedAt": {
+          "$ref": "#/$defs/DateTime"
+        }
+      }
+    },
+    "ConflictStatus": {
+      "type": "string",
+      "enum": [
+        "open",
+        "unresolved",
+        "resolved",
+        "dismissed",
+        "superseded"
+      ]
+    },
+    "ConflictSet": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "candidateIds",
+        "matchKey",
+        "status",
+        "reason",
+        "resolution"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "conflictId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "type": {
+          "const": "ConflictSet"
+        },
+        "runId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "candidateIds": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "$ref": "#/$defs/EntityId"
+          },
+          "uniqueItems": true
+        },
+        "matchKey": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "$ref": "#/$defs/ConflictStatus"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resolution": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "object",
+              "additionalProperties": true
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "resolvedBy": {
+          "type": "string",
+          "minLength": 1
+        },
+        "resolvedAt": {
+          "$ref": "#/$defs/DateTime"
+        },
+        "createdAt": {
+          "$ref": "#/$defs/DateTime"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "resolved"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "required": [
+              "resolution",
+              "resolvedBy",
+              "resolvedAt"
+            ]
+          }
+        }
+      ]
+    },
+    "IngestionReviewAction": {
+      "type": "string",
+      "enum": [
+        "accept",
+        "reject",
+        "request-more-evidence",
+        "edit"
+      ]
+    },
+    "IngestionReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "candidateId",
+        "action",
+        "reviewer",
+        "reason",
+        "expectedRevision",
+        "createdAt"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "reviewId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "type": {
+          "const": "IngestionReview"
+        },
+        "runId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "candidateId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "action": {
+          "$ref": "#/$defs/IngestionReviewAction"
+        },
+        "reviewer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "editedStatement": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "expectedRevision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "resolveConflict": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "createdAt": {
+          "$ref": "#/$defs/DateTime"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "action": {
+                "const": "edit"
+              }
+            },
+            "required": [
+              "action"
+            ]
+          },
+          "then": {
+            "required": [
+              "editedStatement"
+            ]
+          }
+        }
+      ]
+    },
+    "PublishedKnowledgeVersionStatus": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "published",
+        "superseded",
+        "rolled-back"
+      ]
+    },
+    "PublishedKnowledgeVersion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "version",
+        "hash",
+        "candidateIds",
+        "snapshot",
+        "status",
+        "publishedBy",
+        "publishedAt"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "versionId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "type": {
+          "const": "PublishedKnowledgeVersion"
+        },
+        "runId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "hash": {
+          "$ref": "#/$defs/Sha256"
+        },
+        "contentHash": {
+          "$ref": "#/$defs/Sha256"
+        },
+        "candidateIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/EntityId"
+          },
+          "uniqueItems": true
+        },
+        "snapshot": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "status": {
+          "$ref": "#/$defs/PublishedKnowledgeVersionStatus"
+        },
+        "publishedBy": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "publishedAt": {
+          "$ref": "#/$defs/DateTime"
+        },
+        "supersedesVersion": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "publicationReason": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "AssessmentReview": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "assessmentId",
+        "action",
+        "reviewer",
+        "reason",
+        "expectedRevision",
+        "createdAt"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "reviewId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "type": {
+          "const": "AssessmentReview"
+        },
+        "assessmentId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "accept",
+            "reject",
+            "request-more-evidence"
+          ]
+        },
+        "reviewer": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "expectedRevision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "createdAt": {
+          "$ref": "#/$defs/DateTime"
+        }
+      }
+    },
+    "IntelligenceAssessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "assessmentId",
+        "taskId",
+        "title",
+        "question",
+        "horizonYears",
+        "revision",
+        "status",
+        "provider",
+        "analysisType",
+        "summary",
+        "evidenceRefs",
+        "sourceSnapshot",
+        "contentHash",
+        "createdAt",
+        "updatedAt"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "type": {
+          "const": "IntelligenceAssessment"
+        },
+        "assessmentId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "taskId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "question": {
+          "type": "string",
+          "minLength": 1
+        },
+        "horizonYears": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 30
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "under-review",
+            "accepted",
+            "rejected",
+            "needs-evidence",
+            "published",
+            "withdrawn"
+          ]
+        },
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "analysisType": {
+          "type": "string",
+          "enum": [
+            "signal-summary",
+            "model-assessment"
+          ]
+        },
+        "summary": {
+          "$ref": "#/$defs/AssessmentSummary"
+        },
+        "evidenceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/AssessmentEvidenceRef"
+          }
+        },
+        "sourceSnapshot": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/SourceSnapshotItem"
+          }
+        },
+        "uncertainty": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "contentHash": {
+          "$ref": "#/$defs/Sha256"
+        },
+        "hash": {
+          "$ref": "#/$defs/Sha256"
+        },
+        "latestReviewId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "createdAt": {
+          "$ref": "#/$defs/DateTime"
+        },
+        "updatedAt": {
+          "$ref": "#/$defs/DateTime"
+        },
+        "publishedAt": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "publishedBy": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "publicationWithdrawal": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "reason",
+            "actor",
+            "createdAt"
+          ],
+          "properties": {
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            },
+            "actor": {
+              "type": "string",
+              "minLength": 1
+            },
+            "createdAt": {
+              "$ref": "#/$defs/DateTime"
+            },
+            "eventId": {
+              "$ref": "#/$defs/EntityId"
+            }
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "const": "withdrawn"
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "required": [
+              "publicationWithdrawal"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "status": {
+                "enum": [
+                  "published",
+                  "withdrawn"
+                ]
+              }
+            },
+            "required": [
+              "status"
+            ]
+          },
+          "then": {
+            "required": [
+              "publishedAt",
+              "publishedBy"
+            ],
+            "properties": {
+              "publishedAt": {
+                "$ref": "#/$defs/DateTime"
+              },
+              "publishedBy": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        }
+      ]
+    },
+    "IntelligenceRuntimeEnvelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "documents",
+        "claims",
+        "candidates",
+        "conflicts",
+        "reviews",
+        "versions"
+      ],
+      "properties": {
+        "runId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "documents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SourceDocument"
+          }
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EvidenceClaim"
+          }
+        },
+        "candidates": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/KnowledgeCandidate"
+          }
+        },
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ConflictSet"
+          }
+        },
+        "reviews": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IngestionReview"
+          }
+        },
+        "versions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PublishedKnowledgeVersion"
+          }
+        },
+        "assessments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/IntelligenceAssessment"
+          }
+        },
+        "assessmentReviews": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AssessmentReview"
+          }
+        },
+        "validationRounds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ValidationRound"
+          }
+        },
+        "graphRevisions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EvidenceGraphRevision"
+          }
+        },
+        "ontologyAdmissions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/OntologyAdmission"
+          }
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "summary": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "provider": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "trendProvider": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "revisions": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "AssessmentEvidenceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "itemId",
+        "title",
+        "sourceUri",
+        "sourceVersion",
+        "contentHash",
+        "quote",
+        "lineStart",
+        "lineEnd"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "itemId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceUri": {
+          "$ref": "#/$defs/IriOrUri"
+        },
+        "itemUri": {
+          "$ref": "#/$defs/IriOrUri"
+        },
+        "sourceVersion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "publishedAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "contentHash": {
+          "$ref": "#/$defs/Sha256"
+        },
+        "quote": {
+          "type": "string",
+          "minLength": 1
+        },
+        "lineStart": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "lineEnd": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sourceCategory": {
+          "type": "string"
+        },
+        "sourceRole": {
+          "type": "string"
+        },
+        "publisherDomain": {
+          "type": "string"
+        },
+        "contentNature": {
+          "type": "string"
+        },
+        "verificationStatus": {
+          "type": "string"
+        },
+        "sourceReliability": {
+          "type": "string"
+        },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Server-retained collection provenance. Source classification does not verify claims."
+        },
+        "category": {
+          "type": "string"
+        }
+      }
+    },
+    "TrendFinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "judgment",
+        "analysisType",
+        "confidence",
+        "evidenceIds",
+        "uncertainty",
+        "nextChecks"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "judgment": {
+          "type": "string",
+          "minLength": 1
+        },
+        "analysisType": {
+          "type": "string",
+          "enum": [
+            "signal",
+            "analysis",
+            "inference"
+          ]
+        },
+        "confidence": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium"
+          ]
+        },
+        "evidenceIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/EntityId"
+          },
+          "uniqueItems": true
+        },
+        "uncertainty": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "nextChecks": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "maturity": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1500
+        },
+        "procurementIndustry": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1500
+        },
+        "applicationImpact": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1500
+        },
+        "contraryEvidence": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1500
+        },
+        "ontologyClaims": {
+          "type": "array",
+          "maxItems": 12,
+          "items": {
+            "$ref": "#/$defs/DecisionAssertion"
+          }
+        }
+      }
+    },
+    "CapabilityMetricEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Exact excerpt of an immutable sourceSnapshot body. Offsets count Unicode code points, use zero-based indexing, and define a half-open interval. Runtime validation must enforce 0 <= startChar < endChar <= len(body), body[startChar:endChar] == quote, matching source metadata, and the numeric value in this excerpt. Units, qualifiers and equipment/metric meaning require human review. JSON Schema alone cannot enforce these cross-field/source constraints.",
+      "required": [
+        "itemId",
+        "quote",
+        "startChar",
+        "endChar",
+        "sourceUri",
+        "sourceVersion",
+        "contentHash",
+        "publishedAt"
+      ],
+      "properties": {
+        "itemId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "quote": {
+          "type": "string",
+          "minLength": 1
+        },
+        "startChar": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "endChar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sourceUri": {
+          "$ref": "#/$defs/IriOrUri"
+        },
+        "sourceVersion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "contentHash": {
+          "$ref": "#/$defs/Sha256"
+        },
+        "publishedAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      }
+    },
+    "CapabilityMetric": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "One traceable public equipment parameter, reported test result, maturity or supportability measure. It is a source-reported quantity, not a combat effectiveness score. Runtime validation must preserve the reported value, unit, qualifier, evidence basis and conditions; absent data is omitted and recorded as a gap, never imputed as zero.",
+      "required": [
+        "id",
+        "equipment",
+        "dimension",
+        "metric",
+        "value",
+        "unit",
+        "qualifier",
+        "basis",
+        "conditions",
+        "assessment",
+        "evidence"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "equipment": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dimension": {
+          "type": "string",
+          "minLength": 1
+        },
+        "metric": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {
+          "type": "number",
+          "description": "Finite numeric quantity explicitly present in evidence.quote. Preserve the source magnitude and unit; no automatic unit conversion, percentage-to-ratio conversion, extrapolation or synthesized estimate."
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "qualifier": {
+          "type": "string",
+          "enum": [
+            "exact",
+            "approximately",
+            "at-least",
+            "at-most",
+            "greater-than",
+            "less-than"
+          ]
+        },
+        "basis": {
+          "type": "string",
+          "enum": [
+            "reported-test",
+            "manufacturer-claim",
+            "program-target",
+            "reported-observation"
+          ],
+          "description": "Evidence basis as reported by the source. Even reported-test is a reported result, not independent verification. Manufacturer claims and program targets must not be relabeled as demonstrated capability."
+        },
+        "conditions": {
+          "type": "string",
+          "minLength": 1
+        },
+        "assessment": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence": {
+          "$ref": "#/$defs/CapabilityMetricEvidence"
+        }
+      }
+    },
+    "CapabilityAssessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Optional additive analysis of source-reported public equipment measurements. It shares the report review gate and does not publish ontology assertions. No kill probabilities, battle outcome simulation, targeting, tactical optimization, real-time deployment tracking or overall combat power scoring.",
+      "required": [
+        "version",
+        "scope",
+        "metrics",
+        "gaps",
+        "statistics"
+      ],
+      "properties": {
+        "version": {
+          "const": 1
+        },
+        "basedOnAssessmentId": {
+          "$ref": "#/$defs/EntityId",
+          "description": "Present when this under-review report is derived from an existing assessment. The original report and its review/publication state remain unchanged."
+        },
+        "provider": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Provider that extracted the capability metrics, independently of the provider that produced the parent report's trend findings. Contains no credentials."
+        },
+        "model": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Model used for capability extraction, or null when no model applies. Does not replace the parent report's trend model metadata."
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "metrics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/CapabilityMetric"
+          }
+        },
+        "gaps": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "statistics": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "Recomputed from accepted metrics by the backend. metricCount equals metrics length; equipmentCount counts distinct equipment labels; citedSourceCount counts distinct evidence.itemId values, not independent publishers. The four basis counts sum to metricCount. These are coverage counts, not capability scores.",
+          "required": [
+            "metricCount",
+            "equipmentCount",
+            "citedSourceCount",
+            "reportedTestCount",
+            "manufacturerClaimCount",
+            "programTargetCount",
+            "reportedObservationCount"
+          ],
+          "properties": {
+            "metricCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "equipmentCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "citedSourceCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "reportedTestCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "manufacturerClaimCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "programTargetCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "reportedObservationCount": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "ValidationStatus": {
+      "type": "string",
+      "enum": [
+        "machine-checked",
+        "human-confirmed",
+        "needs-evidence",
+        "rejected"
+      ]
+    },
+    "ValidationRoundSummary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "round",
+        "type",
+        "status",
+        "method",
+        "result"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "round": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "extraction",
+            "synthesis",
+            "adversarial",
+            "independent-retrieval",
+            "human-review",
+            "ontology-review"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "completed",
+            "failed",
+            "skipped"
+          ]
+        },
+        "method": {
+          "type": "string",
+          "minLength": 1
+        },
+        "result": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidenceIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EntityId"
+          },
+          "uniqueItems": true
+        },
+        "startedAt": {
+          "$ref": "#/$defs/DateTime"
+        },
+        "completedAt": {
+          "$ref": "#/$defs/DateTime"
+        },
+        "agent": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "ValidationRoundRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "validationRoundId",
+        "type",
+        "assessmentId",
+        "roundNo",
+        "kind",
+        "status",
+        "checks",
+        "confidenceFactors",
+        "issues",
+        "sourceSnapshotHash",
+        "provider",
+        "createdAt",
+        "actor"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "validationRoundId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "type": {
+          "const": "ValidationRound"
+        },
+        "assessmentId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "roundNo": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "deterministic",
+            "model-critique"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "passed",
+            "needs-evidence",
+            "failed"
+          ]
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "code",
+              "status",
+              "detail"
+            ],
+            "properties": {
+              "code": {
+                "type": "string",
+                "minLength": 1
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "passed",
+                  "needs-evidence",
+                  "failed"
+                ]
+              },
+              "detail": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "confidenceFactors": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "sourceCount",
+            "publisherCount",
+            "timeWindowCount",
+            "independenceVerified",
+            "contraryEvidenceChecked",
+            "humanConfirmed"
+          ],
+          "properties": {
+            "sourceCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "publisherCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "independentPublisherCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "timeWindowCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "independenceVerified": {
+              "type": "boolean"
+            },
+            "contraryEvidenceChecked": {
+              "type": "boolean"
+            },
+            "humanConfirmed": {
+              "type": "boolean"
+            }
+          }
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "sourceSnapshotHash": {
+          "$ref": "#/$defs/Sha256"
+        },
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "model": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "actor": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "createdAt": {
+          "$ref": "#/$defs/DateTime"
+        },
+        "method": {
+          "type": "string",
+          "minLength": 1
+        },
+        "result": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidenceIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EntityId"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "ValidationRound": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/ValidationRoundRecord"
+        },
+        {
+          "$ref": "#/$defs/ValidationRoundSummary"
+        }
+      ]
+    },
+    "AssessmentValidation": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Validation metadata for a report. Repeated model calls do not increase confidence unless an independent method, source set, adversarial check or human decision is recorded.",
+      "required": [
+        "status",
+        "confidence",
+        "rounds"
+      ],
+      "properties": {
+        "status": {
+          "$ref": "#/$defs/ValidationStatus"
+        },
+        "confidence": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "rounds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ValidationRound"
+          }
+        },
+        "confidenceFactors": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "independentPublisherCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "timeWindowCoverage": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "contraryEvidenceChecked": {
+              "type": "boolean"
+            },
+            "manufacturingEvidenceComplete": {
+              "type": "boolean"
+            },
+            "unresolvedConflictCount": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "unresolvedGaps": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "lastValidatedAt": {
+          "$ref": "#/$defs/DateTime"
+        }
+      }
+    },
+    "HumanDecision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "action",
+        "actor",
+        "reason",
+        "createdAt"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "action": {
+          "type": "string",
+          "enum": [
+            "accept",
+            "reject",
+            "request-more-evidence",
+            "defer"
+          ]
+        },
+        "actor": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "candidateIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EntityId"
+          },
+          "uniqueItems": true
+        },
+        "expectedRevision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "createdAt": {
+          "$ref": "#/$defs/DateTime"
+        }
+      }
+    },
+    "GraphNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "entityType",
+        "label"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "entityType": {
+          "type": "string",
+          "enum": [
+            "Equipment",
+            "Technology",
+            "Organization",
+            "Program",
+            "Contract",
+            "Event",
+            "Test",
+            "CapabilityObservation",
+            "SourceDocument",
+            "TrendFinding",
+            "ManufacturingProcess"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "properties": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "evidenceIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EntityId"
+          },
+          "uniqueItems": true
+        },
+        "reviewStatus": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "reviewed",
+            "rejected"
+          ]
+        }
+      }
+    },
+    "GraphEdgeProvenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceRefs",
+        "quote",
+        "sourceVersion",
+        "contentHash",
+        "basis",
+        "confidence",
+        "extractionMethod",
+        "reviewStatus",
+        "graphRevision"
+      ],
+      "properties": {
+        "sourceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/EntityId"
+          },
+          "uniqueItems": true
+        },
+        "quote": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceVersion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "contentHash": {
+          "$ref": "#/$defs/Sha256"
+        },
+        "validTime": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "start": {
+              "$ref": "#/$defs/DateTime"
+            },
+            "end": {
+              "$ref": "#/$defs/DateTime"
+            }
+          }
+        },
+        "basis": {
+          "type": "string",
+          "enum": [
+            "reported-test",
+            "manufacturer-claim",
+            "program-target",
+            "reported-observation",
+            "source-relation"
+          ]
+        },
+        "confidence": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "extractionMethod": {
+          "type": "string",
+          "enum": [
+            "deterministic",
+            "llm",
+            "human",
+            "imported"
+          ]
+        },
+        "reviewStatus": {
+          "type": "string",
+          "enum": [
+            "pending",
+            "reviewed",
+            "rejected"
+          ]
+        },
+        "graphRevision": {
+          "type": "integer",
+          "minimum": 1
+        }
+      }
+    },
+    "GraphEdge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "source",
+        "target",
+        "predicate",
+        "provenance"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "source": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "target": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "predicate": {
+          "type": "string",
+          "enum": [
+            "hasCapabilityObservation",
+            "testedIn",
+            "reportedBy",
+            "manufacturedBy",
+            "procuredBy",
+            "supplies",
+            "dependsOn",
+            "supportsApplication",
+            "contradicts",
+            "sameAs",
+            "supersedes",
+            "derivedFrom"
+          ]
+        },
+        "properties": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "provenance": {
+          "$ref": "#/$defs/GraphEdgeProvenance"
+        }
+      }
+    },
+    "EvidenceGraphNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "label",
+        "iri",
+        "evidenceIds",
+        "payload"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "EquipmentModel",
+            "CapabilityObservation",
+            "EvidenceSource",
+            "TrendHypothesis",
+            "EventRecord",
+            "Organization",
+            "Program",
+            "Technology",
+            "DecisionAssertion",
+            "ManufacturingRequirement"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "iri": {
+          "$ref": "#/$defs/IriOrUri"
+        },
+        "evidenceIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EntityId"
+          },
+          "uniqueItems": true
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "EvidenceGraphEdge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "from",
+        "to",
+        "relation",
+        "evidenceIds",
+        "payload"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "from": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "to": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "relation": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidenceIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EntityId"
+          },
+          "uniqueItems": true
+        },
+        "payload": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      }
+    },
+    "EvidenceGraphRevision": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Immutable graph projection persisted for an assessment. It is an evidence view and does not publish trusted ontology assertions.",
+      "required": [
+        "id",
+        "graphRevisionId",
+        "type",
+        "assessmentId",
+        "revision",
+        "nodes",
+        "edges",
+        "contentHash",
+        "createdAt"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "graphRevisionId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "type": {
+          "const": "EvidenceGraphRevision"
+        },
+        "assessmentId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "nodes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EvidenceGraphNode"
+          }
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EvidenceGraphEdge"
+          }
+        },
+        "contentHash": {
+          "$ref": "#/$defs/Sha256"
+        },
+        "hash": {
+          "$ref": "#/$defs/Sha256",
+          "description": "Compatibility alias emitted by the normalized persistence projection. It equals contentHash."
+        },
+        "createdAt": {
+          "$ref": "#/$defs/DateTime"
+        }
+      }
+    },
+    "EntityEventGraph": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/EvidenceGraphRevision"
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "A versioned, evidence-linked graph snapshot for interactive exploration. Graph membership is a report projection and does not by itself assert trusted ontology facts.",
+          "required": [
+            "graphRevision",
+            "nodes",
+            "edges"
+          ],
+          "properties": {
+            "graphRevision": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "nodes": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/GraphNode"
+              }
+            },
+            "edges": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/GraphEdge"
+              }
+            },
+            "generatedAt": {
+              "$ref": "#/$defs/DateTime"
+            }
+          }
+        }
+      ]
+    },
+    "ResearchTaskSection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "question",
+        "timeWindow",
+        "equipmentScope",
+        "manufacturingObjective"
+      ],
+      "properties": {
+        "question": {
+          "type": "string",
+          "minLength": 1
+        },
+        "timeWindow": {
+          "type": "string",
+          "minLength": 1
+        },
+        "equipmentScope": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "manufacturingObjective": {
+          "type": "string",
+          "minLength": 1
+        },
+        "owner": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "EvidenceCollectionSection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "queryCount",
+        "selectedItemIds",
+        "sourceDomains",
+        "limits"
+      ],
+      "properties": {
+        "queryCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "selectedItemIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EntityId"
+          },
+          "uniqueItems": true
+        },
+        "sourceDomains": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          },
+          "uniqueItems": true
+        },
+        "limits": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "collectionProvider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "retrievedAt": {
+          "$ref": "#/$defs/DateTime"
+        }
+      }
+    },
+    "TrendFindingsSection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "findings"
+      ],
+      "properties": {
+        "findings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/TrendFinding"
+          }
+        },
+        "overallJudgment": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "ManufacturingAssessment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "technology",
+        "fit",
+        "maturity",
+        "confidence",
+        "rationale",
+        "evidenceIds"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "technology": {
+          "type": "string",
+          "minLength": 1
+        },
+        "fit": {
+          "type": "string",
+          "enum": [
+            "fit",
+            "conditional",
+            "not-established",
+            "not-fit"
+          ]
+        },
+        "maturity": {
+          "type": "string",
+          "enum": [
+            "concept",
+            "prototype",
+            "tested",
+            "repeatable",
+            "production",
+            "unknown"
+          ]
+        },
+        "confidence": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium",
+            "high"
+          ]
+        },
+        "rationale": {
+          "type": "string",
+          "minLength": 1
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "evidenceIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/EntityId"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "ManufacturingImplications": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "objective",
+        "assessments",
+        "gaps",
+        "nextChecks"
+      ],
+      "properties": {
+        "objective": {
+          "type": "string",
+          "minLength": 1
+        },
+        "assessments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ManufacturingAssessment"
+          }
+        },
+        "gaps": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "nextChecks": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "recommendation": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "ValidationAndReviewSection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "validation",
+        "humanDecisions"
+      ],
+      "properties": {
+        "validation": {
+          "$ref": "#/$defs/AssessmentValidation"
+        },
+        "humanDecisions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/HumanDecision"
+          }
+        }
+      }
+    },
+    "AuditCheck": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["code", "status", "detail"],
+      "properties": {
+        "code": {"type": "string", "minLength": 1},
+        "status": {"type": "string", "enum": ["passed", "failed", "needs-review"]},
+        "detail": {"type": "string", "minLength": 1},
+        "targetId": {"$ref": "#/$defs/EntityId"}
+      }
+    },
+    "OntologyAudit": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Immutable periodic integrity result. It records evidence and review gaps; it never publishes a fact by itself.",
+      "required": ["id", "auditId", "type", "scope", "status", "checks", "summary", "contentHash", "actor", "createdAt"],
+      "properties": {
+        "id": {"$ref": "#/$defs/EntityId"},
+        "auditId": {"$ref": "#/$defs/EntityId"},
+        "type": {"const": "OntologyAudit"},
+        "assessmentId": {"$ref": "#/$defs/EntityId"},
+        "scope": {"type": "string", "minLength": 1},
+        "status": {"type": "string", "enum": ["passed", "failed", "needs-review"]},
+        "checks": {"type": "array", "items": {"$ref": "#/$defs/AuditCheck"}},
+        "summary": {"type": "object", "additionalProperties": true},
+        "contentHash": {"$ref": "#/$defs/Sha256"},
+        "actor": {"type": "string", "minLength": 1},
+        "createdAt": {"$ref": "#/$defs/DateTime"},
+        "completedAt": {"$ref": "#/$defs/DateTime"},
+        "runNo": {"type": "integer", "minimum": 1},
+        "trigger": {"type": "string", "enum": ["periodic", "manual", "publication-gate"]},
+        "assessmentRevision": {"type": "integer", "minimum": 1},
+        "graphRevisionId": {"$ref": "#/$defs/EntityId"},
+        "findings": {"type": "array", "items": {"type": "object"}},
+        "findingCount": {"type": "integer", "minimum": 0},
+        "openFindingCount": {"type": "integer", "minimum": 0},
+        "currentStatus": {"type": "string", "enum": ["passed", "needs-review"]}
+      }
+    },
+    "OntologyAdmissionStatus": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "partially-admitted",
+        "admitted",
+        "rejected",
+        "blocked"
+      ]
+    },
+    "OntologyAdmissionCandidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "An atomic, evidence-linked proposal for adding a capability or relation to the trusted ontology. It is never a published assertion until a human admission review creates a knowledge version.",
+      "required": [
+        "id",
+        "type",
+        "revision",
+        "subjectIri",
+        "predicateIri",
+        "object",
+        "sourceClaimIds",
+        "status",
+        "reviewRequired",
+        "createdAt"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "type": {
+          "const": "OntologyAdmissionCandidate"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "subjectIri": {
+          "$ref": "#/$defs/IriOrUri"
+        },
+        "predicateIri": {
+          "$ref": "#/$defs/IriOrUri"
+        },
+        "object": {},
+        "ontologyClass": {
+          "$ref": "#/$defs/IriOrUri"
+        },
+        "sourceClaimIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/EntityId"
+          },
+          "uniqueItems": true
+        },
+        "evidenceIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EntityId"
+          },
+          "uniqueItems": true
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "new",
+            "under-review",
+            "accepted",
+            "rejected",
+            "published",
+            "superseded"
+          ]
+        },
+        "reviewRequired": {
+          "const": true
+        },
+        "latestReviewId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "conflictIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EntityId"
+          },
+          "uniqueItems": true
+        },
+        "createdAt": {
+          "$ref": "#/$defs/DateTime"
+        },
+        "updatedAt": {
+          "$ref": "#/$defs/DateTime"
+        }
+      }
+    },
+    "OntologyAdmission": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "An immutable evidence-bound proposal for one capability observation, extracted entity/event or declared relation. Model proposals remain low/medium confidence; a graph candidate requires an explicit high-confidence human acceptance and a separate publication action. A graph-property candidate independently reviews one source-qualified descriptive attribute. Modification retires the proposal and creates a new immutable candidate; it does not accept it.",
+      "required": [
+        "id",
+        "admissionId",
+        "type",
+        "assessmentId",
+        "metricId",
+        "revision",
+        "status",
+        "candidateIri",
+        "ontologyClass",
+        "mapping",
+        "assertion",
+        "sourceSnapshotHash",
+        "createdAt",
+        "updatedAt"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "admissionId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "type": {
+          "const": "OntologyAdmission"
+        },
+        "assessmentId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "metricId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "under-review",
+            "accepted",
+            "rejected",
+            "needs-evidence",
+            "published",
+            "withdrawn"
+          ]
+        },
+        "candidateIri": {
+          "$ref": "#/$defs/IriOrUri"
+        },
+        "ontologyClass": {
+          "$ref": "#/$defs/IriOrUri"
+        },
+        "mapping": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/CapabilityAdmissionMapping"
+            },
+            {
+              "$ref": "#/$defs/GraphNodeAdmissionMapping"
+            },
+            {
+              "$ref": "#/$defs/GraphRelationAdmissionMapping"
+            },
+            {
+              "$ref": "#/$defs/GraphPropertyAdmissionMapping"
+            }
+          ]
+        },
+        "assertion": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/CapabilityAdmissionAssertion"
+            },
+            {
+              "$ref": "#/$defs/GraphNodeAdmissionAssertion"
+            },
+            {
+              "$ref": "#/$defs/GraphRelationAdmissionAssertion"
+            },
+            {
+              "$ref": "#/$defs/GraphPropertyAdmissionAssertion"
+            }
+          ]
+        },
+        "sourceSnapshotHash": {
+          "$ref": "#/$defs/Sha256"
+        },
+        "contentHash": {
+          "$ref": "#/$defs/Sha256"
+        },
+        "hash": {
+          "$ref": "#/$defs/Sha256",
+          "description": "Compatibility alias emitted by the normalized persistence projection."
+        },
+        "latestReviewId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "review": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "action",
+            "reviewer",
+            "reason",
+            "expectedRevision",
+            "createdAt"
+          ],
+          "properties": {
+            "action": {
+              "type": "string",
+              "enum": [
+                "accept",
+                "reject",
+                "request-more-evidence",
+                "modify"
+              ]
+            },
+            "reviewer": {
+              "type": "string",
+              "minLength": 1
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1
+            },
+            "expectedRevision": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "createdAt": {
+              "$ref": "#/$defs/DateTime"
+            },
+            "verifiedConfidence": {
+              "type": "string",
+              "enum": [
+                "low",
+                "medium",
+                "high"
+              ]
+            }
+          }
+        },
+        "publication": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "versionId": {
+              "$ref": "#/$defs/EntityId"
+            },
+            "publisher": {
+              "type": "string",
+              "minLength": 1
+            },
+            "createdAt": {
+              "$ref": "#/$defs/DateTime"
+            }
+          }
+        },
+        "createdAt": {
+          "$ref": "#/$defs/DateTime"
+        },
+        "updatedAt": {
+          "$ref": "#/$defs/DateTime"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "capability-metric",
+            "graph-node",
+            "graph-relation",
+            "graph-property"
+          ]
+        },
+        "graphRevisionId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "graphElementId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "proposedConfidence": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium"
+          ]
+        },
+        "staleGraph": {
+          "type": "boolean"
+        },
+        "supersededByAdmissionId": {
+          "$ref": "#/$defs/EntityId"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "graph-node"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "graphRevisionId",
+              "graphElementId",
+              "proposedConfidence",
+              "staleGraph"
+            ],
+            "properties": {
+              "mapping": {
+                "$ref": "#/$defs/GraphNodeAdmissionMapping"
+              },
+              "assertion": {
+                "$ref": "#/$defs/GraphNodeAdmissionAssertion"
+              },
+              "ontologyClass": {
+                "type": "string",
+                "enum": [
+                  "https://local.ontology/coast-raid-k#Organization",
+                  "https://local.ontology/coast-raid-k#EquipmentModel",
+                  "https://local.ontology/coast-raid-k#Technology",
+                  "https://local.ontology/coast-raid-k#Program",
+                  "https://local.ontology/coast-raid-k#TestEvent",
+                  "https://local.ontology/coast-raid-k#ProcurementEvent",
+                  "https://local.ontology/coast-raid-k#ProductionEvent"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "graph-relation"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "graphRevisionId",
+              "graphElementId",
+              "proposedConfidence",
+              "staleGraph"
+            ],
+            "properties": {
+              "mapping": {
+                "$ref": "#/$defs/GraphRelationAdmissionMapping"
+              },
+              "assertion": {
+                "$ref": "#/$defs/GraphRelationAdmissionAssertion"
+              },
+              "ontologyClass": {
+                "type": "string",
+                "enum": [
+                  "https://local.ontology/coast-raid-k#Organization",
+                  "https://local.ontology/coast-raid-k#EquipmentModel",
+                  "https://local.ontology/coast-raid-k#Technology",
+                  "https://local.ontology/coast-raid-k#Program",
+                  "https://local.ontology/coast-raid-k#TestEvent",
+                  "https://local.ontology/coast-raid-k#ProcurementEvent",
+                  "https://local.ontology/coast-raid-k#ProductionEvent"
+                ]
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "anyOf": [
+              {
+                "not": {
+                  "required": [
+                    "kind"
+                  ]
+                }
+              },
+              {
+                "properties": {
+                  "kind": {
+                    "const": "capability-metric"
+                  }
+                },
+                "required": [
+                  "kind"
+                ]
+              }
+            ]
+          },
+          "then": {
+            "properties": {
+              "mapping": {
+                "$ref": "#/$defs/CapabilityAdmissionMapping"
+              },
+              "assertion": {
+                "$ref": "#/$defs/CapabilityAdmissionAssertion"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "graph-node",
+                  "graph-relation",
+                  "graph-property"
+                ]
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "accepted",
+                  "published"
+                ]
+              }
+            },
+            "required": [
+              "kind",
+              "status"
+            ]
+          },
+          "then": {
+            "required": [
+              "review"
+            ],
+            "properties": {
+              "review": {
+                "required": [
+                  "verifiedConfidence"
+                ],
+                "properties": {
+                  "action": {
+                    "const": "accept"
+                  },
+                  "verifiedConfidence": {
+                    "const": "high"
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "graph-property"
+              }
+            },
+            "required": [
+              "kind"
+            ]
+          },
+          "then": {
+            "required": [
+              "graphRevisionId",
+              "graphElementId",
+              "proposedConfidence",
+              "staleGraph"
+            ],
+            "properties": {
+              "mapping": {
+                "$ref": "#/$defs/GraphPropertyAdmissionMapping"
+              },
+              "assertion": {
+                "$ref": "#/$defs/GraphPropertyAdmissionAssertion"
+              },
+              "ontologyClass": {
+                "const": "https://local.ontology/coast-raid-k#AttributeObservation"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "OntologyAdmissionSection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "status",
+        "candidates"
+      ],
+      "properties": {
+        "status": {
+          "$ref": "#/$defs/OntologyAdmissionStatus"
+        },
+        "candidates": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/OntologyAdmission"
+              },
+              {
+                "$ref": "#/$defs/OntologyAdmissionCandidate"
+              }
+            ]
+          }
+        },
+        "publishedKnowledgeVersionIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EntityId"
+          },
+          "uniqueItems": true
+        }
+      }
+    },
+    "AssessmentReportSections": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "The complete eight-part analyst report. The property is optional on AssessmentSummary for backward compatibility; when present it is a complete structured report and each section remains independently reviewable.",
+      "required": [
+        "researchTask",
+        "evidenceCollection",
+        "entityEventGraph",
+        "capabilityAssessment",
+        "trendFindings",
+        "manufacturingImplications",
+        "validationAndReview",
+        "ontologyAdmission"
+      ],
+      "properties": {
+        "researchTask": {
+          "$ref": "#/$defs/ResearchTaskSection"
+        },
+        "evidenceCollection": {
+          "$ref": "#/$defs/EvidenceCollectionSection"
+        },
+        "entityEventGraph": {
+          "$ref": "#/$defs/EntityEventGraph"
+        },
+        "capabilityAssessment": {
+          "$ref": "#/$defs/CapabilityAssessment"
+        },
+        "trendFindings": {
+          "$ref": "#/$defs/TrendFindingsSection"
+        },
+        "manufacturingImplications": {
+          "$ref": "#/$defs/ManufacturingImplications"
+        },
+        "validationAndReview": {
+          "$ref": "#/$defs/ValidationAndReviewSection"
+        },
+        "ontologyAdmission": {
+          "$ref": "#/$defs/OntologyAdmissionSection"
+        },
+        "reviewAndOntology": {
+          "type": "object",
+          "additionalProperties": true,
+          "description": "Legacy combined view; new reports should use validationAndReview and ontologyAdmission separately."
+        }
+      }
+    },
+    "AssessmentSummary": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "executiveSummary",
+        "findings",
+        "statistics",
+        "gaps",
+        "nextQuestions"
+      ],
+      "properties": {
+        "executiveSummary": {
+          "type": "string",
+          "minLength": 1
+        },
+        "capabilityAssessment": {
+          "$ref": "#/$defs/CapabilityAssessment",
+          "description": "Optional for backward compatibility. Reports created before this extension remain valid without this property."
+        },
+        "sections": {
+          "$ref": "#/$defs/AssessmentReportSections",
+          "description": "Optional eight-part report structure. It is additive so existing assessments remain valid."
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/TrendFinding"
+          }
+        },
+        "statistics": {
+          "type": "object",
+          "additionalProperties": true,
+          "properties": {
+            "items": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "sourceCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "datedItems": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "procurementSignalItems": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "industrySignalItems": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "themeSignalCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "modelInputItems": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "citedItems": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "selectedItems": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "distinctPublisherCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "citedPublisherCount": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "gaps": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "nextQuestions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SourceSnapshotItem": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "itemId",
+        "title",
+        "sourceUri",
+        "sourceVersion",
+        "contentHash",
+        "body"
+      ],
+      "properties": {
+        "itemId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "sourceId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceUri": {
+          "$ref": "#/$defs/IriOrUri"
+        },
+        "itemUri": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "sourceVersion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "publishedAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "body": {
+          "type": "string",
+          "minLength": 1
+        },
+        "contentHash": {
+          "$ref": "#/$defs/Sha256"
+        },
+        "matchedKeywords": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "CapabilityAdmissionMapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "equipmentIri",
+        "metricName",
+        "predicate"
+      ],
+      "properties": {
+        "equipmentIri": {
+          "$ref": "#/$defs/IriOrUri"
+        },
+        "metricName": {
+          "type": "string",
+          "minLength": 1
+        },
+        "predicate": {
+          "$ref": "#/$defs/IriOrUri"
+        }
+      }
+    },
+    "CapabilityAdmissionAssertion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "equipment",
+        "dimension",
+        "metric",
+        "value",
+        "unit",
+        "qualifier",
+        "basis",
+        "conditions",
+        "evidence"
+      ],
+      "properties": {
+        "equipment": {
+          "type": "string",
+          "minLength": 1
+        },
+        "dimension": {
+          "type": "string",
+          "minLength": 1
+        },
+        "metric": {
+          "type": "string",
+          "minLength": 1
+        },
+        "value": {
+          "type": "number"
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1
+        },
+        "qualifier": {
+          "type": "string",
+          "enum": [
+            "exact",
+            "approximately",
+            "at-least",
+            "at-most",
+            "greater-than",
+            "less-than"
+          ]
+        },
+        "basis": {
+          "type": "string",
+          "enum": [
+            "reported-test",
+            "manufacturer-claim",
+            "program-target",
+            "reported-observation"
+          ]
+        },
+        "conditions": {
+          "type": "string",
+          "minLength": 1
+        },
+        "evidence": {
+          "$ref": "#/$defs/CapabilityMetricEvidence"
+        }
+      }
+    },
+    "GraphAdmissionEvidence": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": [
+        "itemId",
+        "quote",
+        "sourceUri",
+        "sourceVersion",
+        "contentHash"
+      ],
+      "properties": {
+        "itemId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "quote": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sourceUri": {
+          "$ref": "#/$defs/IriOrUri"
+        },
+        "sourceVersion": {
+          "type": "string",
+          "minLength": 1
+        },
+        "contentHash": {
+          "$ref": "#/$defs/Sha256"
+        },
+        "startChar": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "endChar": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "lineStart": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "lineEnd": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "publishedAt": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      },
+      "anyOf": [
+        {
+          "required": [
+            "startChar",
+            "endChar"
+          ]
+        },
+        {
+          "required": [
+            "lineStart",
+            "lineEnd"
+          ]
+        }
+      ],
+      "description": "Exact immutable source quote. Runtime enforces quote equality, full snapshot identity and locator boundaries; metadata classifies the publisher but does not verify the claim."
+    },
+    "GraphNodeAdmissionMapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "graphRevisionId",
+        "graphElementId",
+        "proposedConfidence"
+      ],
+      "properties": {
+        "kind": {
+          "const": "graph-node"
+        },
+        "graphRevisionId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "graphElementId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "proposedConfidence": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium"
+          ]
+        }
+      }
+    },
+    "GraphRelationAdmissionMapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "graphRevisionId",
+        "graphElementId",
+        "proposedConfidence",
+        "predicate",
+        "fromGraphNodeId",
+        "toGraphNodeId",
+        "requiredCandidateIris"
+      ],
+      "properties": {
+        "kind": {
+          "const": "graph-relation"
+        },
+        "graphRevisionId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "graphElementId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "proposedConfidence": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium"
+          ]
+        },
+        "predicate": {
+          "type": "string",
+          "enum": [
+            "https://local.ontology/coast-raid-k#manufacturedBy",
+            "https://local.ontology/coast-raid-k#develops",
+            "https://local.ontology/coast-raid-k#procures",
+            "https://local.ontology/coast-raid-k#supplies",
+            "https://local.ontology/coast-raid-k#testsEquipment",
+            "https://local.ontology/coast-raid-k#usesTechnology",
+            "https://local.ontology/coast-raid-k#participatesInProgram",
+            "https://local.ontology/coast-raid-k#participatesInEventRecord",
+            "https://local.ontology/coast-raid-k#announcedBy",
+            "https://local.ontology/coast-raid-k#involvesEquipment",
+            "https://local.ontology/coast-raid-k#involvesOrganization"
+          ]
+        },
+        "fromGraphNodeId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "toGraphNodeId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "requiredCandidateIris": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/IriOrUri"
+          }
+        }
+      }
+    },
+    "GraphNodeAdmissionAssertion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "type",
+        "label",
+        "attributes",
+        "evidenceRefs"
+      ],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": [
+            "Organization",
+            "EquipmentModel",
+            "Technology",
+            "Program",
+            "EventRecord"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "attributes": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [],
+          "properties": {
+            "eventKind": {
+              "type": "string",
+              "enum": [
+                "TestEvent",
+                "ProcurementEvent",
+                "ProductionEvent"
+              ]
+            }
+          }
+        },
+        "evidenceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/GraphAdmissionEvidence"
+          }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "EventRecord"
+              }
+            },
+            "required": [
+              "type"
+            ]
+          },
+          "then": {
+            "properties": {
+              "attributes": {
+                "required": [
+                  "eventKind"
+                ]
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "attributes": {
+                "maxProperties": 0
+              }
+            }
+          }
+        }
+      ]
+    },
+    "GraphRelationAdmissionAssertion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "from",
+        "to",
+        "relation",
+        "evidenceRefs"
+      ],
+      "properties": {
+        "from": {
+          "$ref": "#/$defs/IriOrUri"
+        },
+        "to": {
+          "$ref": "#/$defs/IriOrUri"
+        },
+        "relation": {
+          "type": "string",
+          "enum": [
+            "manufacturedBy",
+            "develops",
+            "procures",
+            "supplies",
+            "testsEquipment",
+            "usesTechnology",
+            "participatesInProgram",
+            "participatesInEventRecord",
+            "announcedBy",
+            "involvesEquipment",
+            "involvesOrganization"
+          ]
+        },
+        "evidenceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/GraphAdmissionEvidence"
+          }
+        }
+      }
+    },
+    "PublishedIntelligenceObject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "iri",
+        "type",
+        "ontologyClass",
+        "label"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/IriOrUri"
+        },
+        "iri": {
+          "$ref": "#/$defs/IriOrUri"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "Organization",
+            "EquipmentModel",
+            "Technology",
+            "Program",
+            "TestEvent",
+            "ProcurementEvent",
+            "ProductionEvent",
+            "CapabilityObservation",
+            "AttributeObservation"
+          ]
+        },
+        "ontologyClass": {
+          "type": "string",
+          "enum": [
+            "https://local.ontology/coast-raid-k#Organization",
+            "https://local.ontology/coast-raid-k#EquipmentModel",
+            "https://local.ontology/coast-raid-k#Technology",
+            "https://local.ontology/coast-raid-k#Program",
+            "https://local.ontology/coast-raid-k#TestEvent",
+            "https://local.ontology/coast-raid-k#ProcurementEvent",
+            "https://local.ontology/coast-raid-k#ProductionEvent",
+            "https://local.ontology/coast-raid-k#CapabilityObservation",
+            "https://local.ontology/coast-raid-k#AttributeObservation"
+          ]
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "attributes": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "assertion": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "admissionId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "admissionIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EntityId"
+          }
+        },
+        "assessmentId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "publication": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "versionId": {
+              "$ref": "#/$defs/EntityId"
+            },
+            "publisher": {
+              "type": "string",
+              "minLength": 1
+            },
+            "createdAt": {
+              "$ref": "#/$defs/DateTime"
+            }
+          }
+        },
+        "verifiedConfidence": {
+          "const": "high"
+        },
+        "admittedProperties": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PublishedAttributeRecord"
+          }
+        }
+      },
+      "description": "Runtime query object from valid explicitly published admission records. Metadata and evidence envelopes are not themselves new ontology attributes. EventRecord is resolved to a declared event subtype before projection."
+    },
+    "GraphPropertySelection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "graphNodeId",
+        "propertyPath"
+      ],
+      "properties": {
+        "graphNodeId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "propertyPath": {
+          "type": "string",
+          "pattern": "^payload\\.(?:attributes\\[(?:0|[1-9]\\d?)\\]\\.value|date)$"
+        },
+        "ontologyPredicate": {
+          "type": "string",
+          "enum": [
+            "reportedStandard",
+            "reportedInterface",
+            "reportedArchitecture",
+            "reportedHumanOversight",
+            "reportedTestStatus",
+            "reportedMaturity",
+            "reportedContractStage",
+            "reportedEventDate",
+            "https://local.ontology/coast-raid-k#reportedStandard",
+            "https://local.ontology/coast-raid-k#reportedInterface",
+            "https://local.ontology/coast-raid-k#reportedArchitecture",
+            "https://local.ontology/coast-raid-k#reportedHumanOversight",
+            "https://local.ontology/coast-raid-k#reportedTestStatus",
+            "https://local.ontology/coast-raid-k#reportedMaturity",
+            "https://local.ontology/coast-raid-k#reportedContractStage",
+            "https://local.ontology/coast-raid-k#reportedEventDate"
+          ]
+        }
+      }
+    },
+    "GraphPropertyAdmissionMapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "graphRevisionId",
+        "graphElementId",
+        "propertyPath",
+        "predicate",
+        "subjectIri",
+        "subjectClass",
+        "requiredCandidateIris",
+        "proposedConfidence"
+      ],
+      "properties": {
+        "kind": {
+          "const": "graph-property"
+        },
+        "graphRevisionId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "graphElementId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "propertyPath": {
+          "type": "string",
+          "pattern": "^payload\\.(?:attributes\\[(?:0|[1-9]\\d?)\\]\\.value|date)$"
+        },
+        "predicate": {
+          "type": "string",
+          "enum": [
+            "https://local.ontology/coast-raid-k#reportedStandard",
+            "https://local.ontology/coast-raid-k#reportedInterface",
+            "https://local.ontology/coast-raid-k#reportedArchitecture",
+            "https://local.ontology/coast-raid-k#reportedHumanOversight",
+            "https://local.ontology/coast-raid-k#reportedTestStatus",
+            "https://local.ontology/coast-raid-k#reportedMaturity",
+            "https://local.ontology/coast-raid-k#reportedContractStage",
+            "https://local.ontology/coast-raid-k#reportedEventDate"
+          ]
+        },
+        "subjectIri": {
+          "$ref": "#/$defs/IriOrUri"
+        },
+        "subjectClass": {
+          "type": "string",
+          "enum": [
+            "https://local.ontology/coast-raid-k#Organization",
+            "https://local.ontology/coast-raid-k#EquipmentModel",
+            "https://local.ontology/coast-raid-k#Technology",
+            "https://local.ontology/coast-raid-k#Program",
+            "https://local.ontology/coast-raid-k#TestEvent",
+            "https://local.ontology/coast-raid-k#ProcurementEvent",
+            "https://local.ontology/coast-raid-k#ProductionEvent"
+          ]
+        },
+        "requiredCandidateIris": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": {
+            "$ref": "#/$defs/IriOrUri"
+          }
+        },
+        "proposedConfidence": {
+          "const": "low"
+        },
+        "supersedesAdmissionId": {
+          "$ref": "#/$defs/EntityId"
+        }
+      }
+    },
+    "GraphPropertyAdmissionAssertion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject",
+        "subjectLabel",
+        "propertyName",
+        "predicate",
+        "rawValue",
+        "evidenceRefs",
+        "identityEvidenceRefs"
+      ],
+      "properties": {
+        "subject": {
+          "$ref": "#/$defs/IriOrUri"
+        },
+        "subjectLabel": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "propertyName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "predicate": {
+          "type": "string",
+          "enum": [
+            "https://local.ontology/coast-raid-k#reportedStandard",
+            "https://local.ontology/coast-raid-k#reportedInterface",
+            "https://local.ontology/coast-raid-k#reportedArchitecture",
+            "https://local.ontology/coast-raid-k#reportedHumanOversight",
+            "https://local.ontology/coast-raid-k#reportedTestStatus",
+            "https://local.ontology/coast-raid-k#reportedMaturity",
+            "https://local.ontology/coast-raid-k#reportedContractStage",
+            "https://local.ontology/coast-raid-k#reportedEventDate"
+          ]
+        },
+        "rawValue": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 600
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "normalizedValue": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 600
+        },
+        "normalizationBasis": {
+          "enum": [
+            "model-translation",
+            "human-proposal"
+          ]
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "conditions": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "validTime": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "evidenceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/GraphAdmissionEvidence"
+          }
+        },
+        "identityEvidenceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/GraphAdmissionEvidence"
+          }
+        },
+        "reviewRecommendation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "action",
+            "reason",
+            "source",
+            "truthVerified"
+          ],
+          "properties": {
+            "action": {
+              "enum": [
+                "consider",
+                "more-evidence",
+                "reject"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "maxLength": 1000
+            },
+            "source": {
+              "const": "model"
+            },
+            "truthVerified": {
+              "const": false
+            }
+          }
+        },
+        "predicateRecommendation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["id", "label", "confidence", "reason", "alternatives", "source", "humanReviewRequired", "truthVerified"],
+          "properties": {
+            "id": {"type": "string", "minLength": 1, "maxLength": 120},
+            "label": {"type": "string", "minLength": 1, "maxLength": 200},
+            "confidence": {"enum": ["low", "medium", "high"]},
+            "reason": {"type": "string", "maxLength": 600},
+            "alternatives": {"type": "array", "maxItems": 4, "items": {"type": "string", "minLength": 1, "maxLength": 120}},
+            "source": {"const": "model"},
+            "humanReviewRequired": {"const": true},
+            "truthVerified": {"const": false}
+          }
+        }
+      }
+    },
+    "GraphPropertyEdit": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "properties": {
+        "rawValue": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 600
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "normalizedValue": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 600
+        },
+        "unit": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 60
+        },
+        "conditions": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 300
+        },
+        "validTime": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 200
+        },
+        "ontologyPredicate": {
+          "type": "string",
+          "enum": [
+            "reportedStandard",
+            "reportedInterface",
+            "reportedArchitecture",
+            "reportedHumanOversight",
+            "reportedTestStatus",
+            "reportedMaturity",
+            "reportedContractStage",
+            "reportedEventDate",
+            "https://local.ontology/coast-raid-k#reportedStandard",
+            "https://local.ontology/coast-raid-k#reportedInterface",
+            "https://local.ontology/coast-raid-k#reportedArchitecture",
+            "https://local.ontology/coast-raid-k#reportedHumanOversight",
+            "https://local.ontology/coast-raid-k#reportedTestStatus",
+            "https://local.ontology/coast-raid-k#reportedMaturity",
+            "https://local.ontology/coast-raid-k#reportedContractStage",
+            "https://local.ontology/coast-raid-k#reportedEventDate"
+          ]
+        },
+        "evidenceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/GraphAdmissionEvidence"
+          }
+        }
+      }
+    },
+    "PublishedAttributeRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "admissionId",
+        "observationIri",
+        "propertyPath",
+        "subject",
+        "subjectLabel",
+        "propertyName",
+        "predicate",
+        "rawValue",
+        "evidenceRefs",
+        "identityEvidenceRefs",
+        "verifiedConfidence",
+        "normalizedValueVerified"
+      ],
+      "properties": {
+        "subject": {
+          "$ref": "#/$defs/IriOrUri"
+        },
+        "subjectLabel": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "propertyName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "predicate": {
+          "type": "string",
+          "enum": [
+            "https://local.ontology/coast-raid-k#reportedStandard",
+            "https://local.ontology/coast-raid-k#reportedInterface",
+            "https://local.ontology/coast-raid-k#reportedArchitecture",
+            "https://local.ontology/coast-raid-k#reportedHumanOversight",
+            "https://local.ontology/coast-raid-k#reportedTestStatus",
+            "https://local.ontology/coast-raid-k#reportedMaturity",
+            "https://local.ontology/coast-raid-k#reportedContractStage",
+            "https://local.ontology/coast-raid-k#reportedEventDate"
+          ]
+        },
+        "rawValue": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 600
+            },
+            {
+              "type": "number"
+            }
+          ]
+        },
+        "normalizedValue": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 600
+        },
+        "normalizationBasis": {
+          "enum": [
+            "model-translation",
+            "human-proposal"
+          ]
+        },
+        "unit": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 60
+        },
+        "conditions": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "validTime": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "evidenceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/GraphAdmissionEvidence"
+          }
+        },
+        "identityEvidenceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/GraphAdmissionEvidence"
+          }
+        },
+        "admissionId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "observationIri": {
+          "$ref": "#/$defs/IriOrUri"
+        },
+        "propertyPath": {
+          "type": "string",
+          "pattern": "^payload\\.(?:attributes\\[(?:0|[1-9]\\d?)\\]\\.value|date)$"
+        },
+        "verifiedConfidence": {
+          "const": "high"
+        },
+        "normalizedValueVerified": {
+          "type": "boolean"
+        },
+        "reviewRecommendation": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "action",
+            "reason",
+            "source",
+            "truthVerified"
+          ],
+          "properties": {
+            "action": {
+              "enum": [
+                "consider",
+                "more-evidence",
+                "reject"
+              ]
+            },
+            "reason": {
+              "type": "string",
+              "maxLength": 1000
+            },
+            "source": {
+              "const": "model"
+            },
+            "truthVerified": {
+              "const": false
+            }
+          }
+        }
+      }
+    },
+    "DecisionAssertion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "subject",
+        "predicate",
+        "object",
+        "evidenceIds",
+        "confidence",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "predicate": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "object": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        },
+        "metrics": {
+          "type": "array",
+          "maxItems": 8,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "label",
+              "value"
+            ],
+            "properties": {
+              "label": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 120
+              },
+              "value": {},
+              "unit": {
+                "type": "string",
+                "maxLength": 40
+              },
+              "conditions": {
+                "type": "string",
+                "maxLength": 300
+              }
+            }
+          }
+        },
+        "decisionImpact": {
+          "type": "string",
+          "maxLength": 600
+        },
+        "manufacturingRequirements": {
+          "type": "array",
+          "maxItems": 8,
+          "items": {
+            "type": "string",
+            "maxLength": 240
+          }
+        },
+        "evidenceGaps": {
+          "type": "array",
+          "maxItems": 8,
+          "items": {
+            "type": "string",
+            "maxLength": 240
+          }
+        },
+        "evidenceIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/EntityId"
+          },
+          "uniqueItems": true
+        },
+        "confidence": {
+          "type": "string",
+          "enum": [
+            "low",
+            "medium"
+          ]
+        },
+        "status": {
+          "const": "proposed-human-review"
+        }
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "$ref": "#/$defs/SourceDocument"
+    },
+    {
+      "$ref": "#/$defs/EvidenceClaim"
+    },
+    {
+      "$ref": "#/$defs/KnowledgeCandidate"
+    },
+    {
+      "$ref": "#/$defs/ConflictSet"
+    },
+    {
+      "$ref": "#/$defs/IngestionReview"
+    },
+    {
+      "$ref": "#/$defs/PublishedKnowledgeVersion"
+    },
+    {
+      "$ref": "#/$defs/IntelligenceAssessment"
+    },
+    {
+      "$ref": "#/$defs/AssessmentReview"
+    },
+    {
+      "$ref": "#/$defs/ValidationRound"
+    },
+    {
+      "$ref": "#/$defs/EvidenceGraphRevision"
+    },
+    {
+      "$ref": "#/$defs/OntologyAdmission"
+    },
+    {
+      "$ref": "#/$defs/IntelligenceRuntimeEnvelope"
+    }
+  ]
+}

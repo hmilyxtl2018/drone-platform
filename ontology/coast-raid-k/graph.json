@@ -1,0 +1,69 @@
+{
+  "package": "coast-raid-k",
+  "note": "岸上数据链是 C2 星形需求线，不是雷达波，不是 Link-16。机间不断。",
+  "owns": [
+    { "site": "RADAR_SHORE", "body": "SEARCH" },
+    { "site": "RADAR_SAM", "body": null, "beam": "pencil_to_nearest_lo" },
+    { "site": "SAM_TEL", "body": "B_SAM" },
+    { "site": "BMD_SILO", "body": "B_BMD" },
+    { "site": "SHIP", "body": "B_ship" },
+    { "site": "JAMMER", "body": "JAM_BLOOM" }
+  ],
+  "notSameAs": [
+    ["RADAR_SHORE", "SAM_TEL"],
+    ["RADAR_SAM", "SAM_TEL"],
+    ["RADAR_SHORE", "RADAR_SAM"],
+    ["BMD_SILO", "SAM_TEL"]
+  ],
+  "covers": [
+    { "sensor": "RADAR_SHORE", "body": "SEARCH", "mode": "2d_search_slab" },
+    { "sensor": "SHIP", "body": "B_ship", "mode": "surface_search_360" },
+    { "sensor": "RADAR_SAM", "mode": "fire_control_pencil" }
+  ],
+  "shoreTdl": {
+    "id": "G_t",
+    "label": "岸上数据链",
+    "kind": "needline",
+    "root": "C2",
+    "spokes": [
+      { "from": "C2", "to": "RADAR_SHORE", "km": 3.56, "role": "feeds" },
+      { "from": "C2", "to": "RADAR_SAM", "km": 3.28, "role": "feeds" },
+      { "from": "C2", "to": "SAM_TEL", "km": 3.95, "role": "commands" },
+      { "from": "C2", "to": "BMD_SILO", "km": 1.62, "role": "commands" }
+    ],
+    "notDrawn": ["SAM_TEL-BMD_SILO", "RADAR_SHORE-SAM_TEL", "SHIP-RADAR_SHORE"],
+    "deniedBy": "JAMMER",
+    "onDenied": "teamFusionUnavailable"
+  },
+  "otherLinks": [
+    {
+      "id": "air_station",
+      "label": "机站",
+      "from": "blue_uav.hi|mid",
+      "to": "RADAR_SHORE|RADAR_SAM",
+      "survivesJam": false
+    },
+    {
+      "id": "mesh",
+      "label": "机间",
+      "among": "blue_uav.sameLayer",
+      "survivesJam": true
+    },
+    {
+      "id": "ship_shore",
+      "label": "舰岸",
+      "from": "SHIP",
+      "to": "RADAR_SHORE",
+      "km": 5.28,
+      "drawOnCop": false,
+      "survivesJam": false
+    }
+  ],
+  "zoneActs": {
+    "out": "走廊/区外",
+    "cor": "跟踪",
+    "ship": "跟踪不打",
+    "edge": "压沿，不开门",
+    "in": "可过门当 p≥τ 且链通且 m>0"
+  }
+}

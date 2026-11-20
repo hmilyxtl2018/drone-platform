@@ -1,0 +1,1637 @@
+{
+  "package": "coast-raid-k",
+  "type": "TBox",
+  "language": "OWL2",
+  "iri": "https://local.ontology/coast-raid-k",
+  "note": "TBox。JSON 是 SoR；tbox.ttl 由校验生成。运行时 40ms 不推理。一切可指称者都是实体；用类、个体、对象属性、数据属性、公理说话，不用面向对象的方法表。",
+  "stateModel": {
+    "kind": "compile",
+    "structure": "frozen",
+    "states": [
+      "consistent"
+    ],
+    "illegal": [
+      "SPARQL every tick",
+      "reasoner in 40ms loop"
+    ]
+  },
+  "classes": [
+    {
+      "id": "Entity",
+      "label": "实体",
+      "subClassOf": [],
+      "comment": "一切可指称者。类与个体在本包中都作为实体被陈述。",
+      "synonyms": [
+        "可指称者",
+        "本体项"
+      ],
+      "enumCodes": [
+        "StateKind"
+      ],
+      "seeAlso": [
+        "http://purl.obolibrary.org/obo/BFO_0000001"
+      ]
+    },
+    {
+      "id": "Continuant",
+      "label": "持存体",
+      "subClassOf": [
+        "Entity"
+      ],
+      "comment": "在时间中持存，不作为过程本身发生。",
+      "synonyms": [
+        "持存者",
+        "静态体"
+      ],
+      "equivalentTo": [
+        "http://purl.obolibrary.org/obo/BFO_0000002"
+      ]
+    },
+    {
+      "id": "Occurrent",
+      "label": "发生体",
+      "subClassOf": [
+        "Entity"
+      ],
+      "comment": "过程与发生。",
+      "synonyms": [
+        "发生体",
+        "过程体"
+      ],
+      "equivalentTo": [
+        "http://purl.obolibrary.org/obo/BFO_0000003"
+      ]
+    },
+    {
+      "id": "IndependentContinuant",
+      "label": "独立持存体",
+      "subClassOf": [
+        "Continuant"
+      ],
+      "synonyms": [
+        "独立体"
+      ],
+      "equivalentTo": [
+        "http://purl.obolibrary.org/obo/BFO_0000004"
+      ],
+      "comment": "独立持存体：在其存在期间具有自身身份、不作为另一实体的质量或角色而存在的持存对象。本项目的物理平台和空间对象按各自子类进一步限定。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "DependentContinuant",
+      "label": "依赖持存体",
+      "subClassOf": [
+        "Continuant"
+      ],
+      "synonyms": [
+        "依存体",
+        "依附体"
+      ],
+      "seeAlso": [
+        "http://purl.obolibrary.org/obo/BFO_0000020",
+        "http://purl.obolibrary.org/obo/BFO_0000031"
+      ],
+      "comment": "依赖持存体：其存在依赖某个承载者的质量、角色或能力；不与承载它的物体混同。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "MaterialObject",
+      "label": "物质对象",
+      "subClassOf": [
+        "IndependentContinuant"
+      ],
+      "synonyms": [
+        "实物",
+        "装备实体"
+      ],
+      "equivalentTo": [
+        "http://purl.obolibrary.org/obo/BFO_0000040"
+      ],
+      "comment": "物质对象：在时间中保持身份并占据空间的物理实体；记录、模板和空间包络不因描述物体而成为物质对象。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "SpatialRegion",
+      "label": "空间区域",
+      "subClassOf": [
+        "IndependentContinuant"
+      ],
+      "comment": "可行集或海陆域。不是占领区。",
+      "synonyms": [
+        "空域/海域",
+        "可行集"
+      ],
+      "enumCodes": [
+        "Shape",
+        "Zone"
+      ],
+      "equivalentTo": [
+        "http://purl.obolibrary.org/obo/BFO_0000006"
+      ]
+    },
+    {
+      "id": "InformationEntity",
+      "label": "信息实体",
+      "subClassOf": [
+        "DependentContinuant"
+      ],
+      "comment": "规则、算法、产品、型。依赖承载，但自身可被指称。",
+      "synonyms": [
+        "信息对象",
+        "情报产品"
+      ],
+      "seeAlso": [
+        "https://www.commoncoreontologies.org/ont00000958",
+        "http://purl.obolibrary.org/obo/BFO_0000031",
+        "http://www.w3.org/ns/prov#Entity"
+      ]
+    },
+    {
+      "id": "Quality",
+      "label": "质量/状态",
+      "subClassOf": [
+        "DependentContinuant"
+      ],
+      "comment": "依存于实体的状态。不是方法。",
+      "synonyms": [
+        "状态量",
+        "品质"
+      ],
+      "enumCodes": [
+        "StateKind"
+      ],
+      "equivalentTo": [
+        "http://purl.obolibrary.org/obo/BFO_0000019"
+      ]
+    },
+    {
+      "id": "Role",
+      "label": "角色",
+      "subClassOf": [
+        "DependentContinuant"
+      ],
+      "comment": "职能与监视角色。角色不是 Agent 壳体。",
+      "synonyms": [
+        "职能",
+        "任务角色"
+      ],
+      "equivalentTo": [
+        "http://purl.obolibrary.org/obo/BFO_0000023"
+      ]
+    },
+    {
+      "id": "Relator",
+      "label": "关系体",
+      "subClassOf": [
+        "DependentContinuant"
+      ],
+      "comment": "把两端实体绑在一起的关系本身也是实体。",
+      "synonyms": [
+        "关系实体",
+        "绑定"
+      ],
+      "seeAlso": [
+        "http://purl.obolibrary.org/obo/BFO_0000020"
+      ]
+    },
+    {
+      "id": "Process",
+      "label": "过程",
+      "subClassOf": [
+        "Occurrent"
+      ],
+      "synonyms": [
+        "过程",
+        "作业"
+      ],
+      "equivalentTo": [
+        "http://purl.obolibrary.org/obo/BFO_0000015"
+      ],
+      "comment": "过程：在时间中发生、具有时间部分的活动或变化；过程规范和过程记录属于信息实体。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "Class",
+      "label": "类",
+      "subClassOf": [
+        "Entity"
+      ],
+      "comment": "owl:Class 在本包文档层也作为实体（punning），便于入库陈述。",
+      "synonyms": [
+        "类别",
+        "型"
+      ]
+    },
+    {
+      "id": "Package",
+      "label": "封皮包",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "synonyms": [
+        "任务包",
+        "封皮"
+      ],
+      "enumCodes": [
+        "EnvelopeModule"
+      ],
+      "seeAlso": [
+        "http://www.w3.org/ns/prov#Entity"
+      ],
+      "comment": "知识包：汇集词汇、事实目录、约束、来源与版本声明的信息对象；包级单位与坐标约定不自动成为包内每个对象的属性断言。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "Exclude",
+      "label": "排除项",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "synonyms": [
+        "禁项",
+        "不得启用"
+      ],
+      "enumCodes": [
+        "ExcludeId"
+      ],
+      "comment": "排除项：知识包对未建模或明确禁止纳入范围的功能/概念所作声明；不是场景物理对象。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "Shoreline",
+      "label": "岸线",
+      "subClassOf": [
+        "IndependentContinuant"
+      ],
+      "synonyms": [
+        "岸线",
+        "岸海分界"
+      ],
+      "seeAlso": [
+        "http://www.opengis.net/ont/geosparql#Feature",
+        "http://www.opengis.net/ont/geosparql#Geometry"
+      ],
+      "comment": "岸线：在指定工程坐标框架内界定海陆分界的空间曲线。采样折线是原参数曲线的近似表示。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "Region",
+      "label": "海陆域",
+      "subClassOf": [
+        "SpatialRegion"
+      ],
+      "synonyms": [
+        "海陆域",
+        "岸海分区"
+      ],
+      "enumerations": [
+        {
+          "id": "RegionId",
+          "label": "海陆域",
+          "values": [
+            "SEA",
+            "LAND"
+          ]
+        }
+      ],
+      "seeAlso": [
+        "http://www.opengis.net/ont/geosparql#Feature"
+      ],
+      "comment": "区域：按边界、坐标框架或分类约定界定的空间范围；区域成员关系不表示占领或控制事实。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "Membership",
+      "label": "隶属",
+      "subClassOf": [
+        "Relator"
+      ],
+      "synonyms": [
+        "隶属",
+        "配属"
+      ],
+      "enumCodes": [
+        "MembershipRule"
+      ],
+      "comment": "成员关系：明确记载某对象依据指定规则归属于某区域的关系体；关系本身与参与该关系的对象分别具有身份。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "Envelope",
+      "label": "交战包络",
+      "subClassOf": [
+        "SpatialRegion"
+      ],
+      "synonyms": [
+        "交战包络",
+        "杀伤泡",
+        "可行半球"
+      ],
+      "enumCodes": [
+        "Shape",
+        "BodyType",
+        "Zone"
+      ],
+      "seeAlso": [
+        "http://www.opengis.net/ont/geosparql#Feature"
+      ],
+      "comment": "空间包络：由参数定义的三维空间范围；用于描述覆盖或约束范围，不等同于产生该范围的设备或设备能力。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "Corridor",
+      "label": "走廊",
+      "subClassOf": [
+        "SpatialRegion"
+      ],
+      "synonyms": [
+        "走廊",
+        "突防廊道"
+      ],
+      "enumCodes": [
+        "Shape",
+        "BodyType"
+      ],
+      "seeAlso": [
+        "http://www.opengis.net/ont/geosparql#Feature"
+      ],
+      "comment": "走廊：具有边界和位置约定的通行或分析空间范围；其几何与实际对象是否位于其中是不同断言。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "SearchSector",
+      "label": "搜索扇",
+      "subClassOf": [
+        "SpatialRegion"
+      ],
+      "synonyms": [
+        "搜索扇",
+        "搜索扇面"
+      ],
+      "enumCodes": [
+        "Shape",
+        "BodyType"
+      ],
+      "seeAlso": [
+        "http://www.opengis.net/ont/geosparql#Feature"
+      ],
+      "comment": "搜索扇区：由中心、半径、方向及高度等参数限定的空间区域；矩形外包框不是扇区本身。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "DetectionDisk",
+      "label": "探测盘",
+      "subClassOf": [
+        "SpatialRegion"
+      ],
+      "synonyms": [
+        "探测盘",
+        "探测覆盖"
+      ],
+      "enumCodes": [
+        "Shape",
+        "BodyType"
+      ],
+      "seeAlso": [
+        "http://www.opengis.net/ont/geosparql#Feature"
+      ],
+      "comment": "探测盘：以中心与半径定义的圆盘空间范围；表示几何范围，不证明范围内目标已被探测。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "JamBloom",
+      "label": "干扰开花",
+      "subClassOf": [
+        "SpatialRegion"
+      ],
+      "synonyms": [
+        "干扰开花",
+        "干扰云"
+      ],
+      "enumCodes": [
+        "Shape",
+        "BodyType"
+      ],
+      "seeAlso": [
+        "http://www.opengis.net/ont/geosparql#Feature"
+      ],
+      "comment": "干扰范围：对干扰影响空间所作参数化区域描述；不等于已发生的电磁效果或对效果确定性的保证。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "CommandPost",
+      "label": "指挥所",
+      "subClassOf": [
+        "MaterialObject"
+      ],
+      "synonyms": [
+        "指挥所",
+        "C2节点"
+      ],
+      "enumCodes": [
+        "SiteType"
+      ],
+      "seeAlso": [
+        "https://www.commoncoreontologies.org/ont00000958"
+      ],
+      "comment": "指挥所：在场景中被登记为指挥设施的物质对象；软件 Agent、组织和授权角色分别建模。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "Sensor",
+      "label": "传感器阵地",
+      "subClassOf": [
+        "MaterialObject"
+      ],
+      "synonyms": [
+        "探测阵地",
+        "雷达站",
+        "ISR节点",
+        "传感节点"
+      ],
+      "enumCodes": [
+        "SiteType"
+      ],
+      "seeAlso": [
+        "http://www.opengis.net/ont/geosparql#Feature"
+      ],
+      "comment": "传感器：用于取得观测的物质设备；观测、感知算法和设备型谱分别表示。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "Shooter",
+      "label": "发射阵地",
+      "subClassOf": [
+        "MaterialObject"
+      ],
+      "synonyms": [
+        "发射阵地",
+        "火力点",
+        "拦截阵"
+      ],
+      "enumCodes": [
+        "SiteType"
+      ],
+      "seeAlso": [
+        "http://www.opengis.net/ont/geosparql#Feature"
+      ],
+      "comment": "效果设备：场景中登记的效果实施物质设备；设备记录及其通道数不表示实际授权或已执行动作。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "Platform",
+      "label": "平台",
+      "subClassOf": [
+        "MaterialObject"
+      ],
+      "synonyms": [
+        "载具",
+        "兵力单元",
+        "平台"
+      ],
+      "enumCodes": [
+        "SiteType",
+        "Side",
+        "Layer"
+      ],
+      "seeAlso": [
+        "http://www.opengis.net/ont/geosparql#Feature"
+      ],
+      "comment": "平台：可承载设备或 Agent 实现的物质对象；与平台型谱以及运行 Agent 实例分别具有身份。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "Emitter",
+      "label": "辐射源",
+      "subClassOf": [
+        "MaterialObject"
+      ],
+      "synonyms": [
+        "辐射源",
+        "照射源"
+      ],
+      "enumCodes": [
+        "SiteType"
+      ],
+      "seeAlso": [
+        "http://www.opengis.net/ont/geosparql#Feature"
+      ],
+      "comment": "发射设备：场景中登记的产生信号或辐射的物质设备；其状态、范围描述与具体发射过程分开表示。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "PlatformType",
+      "label": "平台型",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "synonyms": [
+        "平台型",
+        "装备型谱"
+      ],
+      "comment": "平台型谱：规定一类平台的类别与描述特征的信息对象；inScene 仅记录该型谱在当前场景中的使用标记，不把型谱个体变成物质平台，也不表示某一平台或批次已实例化。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json decision D05; existing class hierarchy; project source records"
+    },
+    {
+      "id": "Needline",
+      "label": "岸上数据链",
+      "subClassOf": [
+        "Relator"
+      ],
+      "synonyms": [
+        "岸上数据链",
+        "岸基链",
+        "G(t)"
+      ],
+      "seeAlso": [
+        "http://www.opengis.net/ont/geosparql#Feature"
+      ],
+      "comment": "信息需求关系：记录通信参与对象及其预期信息交换关系的关系体；不自动断言链路当前可用。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "Link",
+      "label": "链路",
+      "subClassOf": [
+        "Relator"
+      ],
+      "synonyms": [
+        "链路",
+        "通信边"
+      ],
+      "comment": "通信链路关系：对参与对象、链路方式或拓扑关系的登记；通道、消息与具体通信过程分别建模。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "Invariant",
+      "label": "交战镜像",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "synonyms": [
+        "交战镜像",
+        "硬约束镜像"
+      ],
+      "comment": "不变约束：在明确适用范围内要求持续成立的条件规范；是否满足需要针对输入和规则版本执行校验。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "Rule",
+      "label": "规则",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "synonyms": [
+        "交战条令",
+        "RoE条",
+        "约束规则"
+      ],
+      "enumCodes": [
+        "Modality"
+      ],
+      "seeAlso": [
+        "http://www.w3.org/ns/prov#Plan"
+      ],
+      "comment": "规则：以条件、模态和约束内容表达的规范信息对象；规则文本、机器执行器和某次检查结果是不同对象。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "Algorithm",
+      "label": "算法",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "synonyms": [
+        "工具算法",
+        "内环/外环算法"
+      ],
+      "enumerations": [
+        {
+          "id": "scope",
+          "label": "算法范围",
+          "values": [
+            "sense",
+            "know",
+            "decide",
+            "inner",
+            "roe",
+            "inject",
+            "tool"
+          ]
+        }
+      ],
+      "seeAlso": [
+        "http://purl.obolibrary.org/obo/BFO_0000034"
+      ],
+      "comment": "算法：可由实现执行的计算方法规范；名称或绑定不证明某次执行已发生，也不自动获得授权。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "CloudDef",
+      "label": "云定义",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "synonyms": [
+        "云定义",
+        "不确定云"
+      ],
+      "seeAlso": [
+        "https://doi.org/10.1002/int.20340"
+      ],
+      "comment": "云模型定义：以期望、熵、超熵等数字特征描述不确定性模型的信息对象；其所表征的质量与该定义本身不同。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "ShellTemplate",
+      "label": "壳体模板",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "synonyms": [
+        "壳体模板",
+        "Agent壳体"
+      ],
+      "comment": "壳体模板：描述阶段、平台型绑定及读写契约的可复用运行规范；不是某次运行中的 Agent 实例。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "Monitor",
+      "label": "授权监视",
+      "subClassOf": [
+        "Role"
+      ],
+      "synonyms": [
+        "授权监视",
+        "人在环监视"
+      ],
+      "comment": "监视角色：在规则目录中承担监视与检查责任的角色对象；角色不等同于软件主体或某次授权裁决。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "FunctionBind",
+      "label": "指挥职能",
+      "subClassOf": [
+        "Role"
+      ],
+      "synonyms": [
+        "指挥职能",
+        "CTDE职能"
+      ],
+      "enumCodes": [
+        "FunctionId"
+      ],
+      "comment": "职能绑定角色：某承载主体在指定组织或运行语境中承担的职能角色；输入、输出、约束及实现绑定描述该角色的履行条件，描述记录与角色本身分开。不因名称为 gate 而等同于 Rule/gate、授权规范或授权主体。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json decision D05; existing class hierarchy; project source records"
+    },
+    {
+      "id": "Stage",
+      "label": "壳体段",
+      "subClassOf": [
+        "Process"
+      ],
+      "synonyms": [
+        "壳体段",
+        "作业段"
+      ],
+      "enumerations": [
+        {
+          "id": "stageName",
+          "label": "壳体段",
+          "values": [
+            "感知",
+            "推理",
+            "决策",
+            "交互",
+            "行动"
+          ]
+        }
+      ],
+      "comment": "阶段：在一次具体运行中发生、并构成更大过程的有界过程片段；具有实际参与者与时间位置。壳体模板中的阶段名称、顺序及输入输出是阶段规范的描述，不凭模板记录断言该过程已经发生。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json decision D05; existing class hierarchy; project source records"
+    },
+    {
+      "id": "Track",
+      "label": "航迹",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "synonyms": [
+        "航迹",
+        "目标航迹"
+      ],
+      "enumCodes": [
+        "ProductTypeId"
+      ],
+      "seeAlso": [
+        "http://www.w3.org/ns/prov#Entity"
+      ],
+      "comment": "航迹记录：对观察或估计的目标状态及其关联作出的信息表述；不等于被跟踪物体或无误差真值。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "Identity",
+      "label": "身份",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "synonyms": [
+        "身份",
+        "敌我属性"
+      ],
+      "enumCodes": [
+        "Iden",
+        "Side"
+      ],
+      "seeAlso": [
+        "http://www.w3.org/ns/prov#Entity"
+      ],
+      "comment": "身份判断记录：对对象类别或归属的认定及其依据的信息表述；判断状态与实际对象身份不混同。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "Pair",
+      "label": "配对",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "synonyms": [
+        "配对",
+        "盯梢对"
+      ],
+      "enumCodes": [
+        "PairTask",
+        "BlueTask"
+      ],
+      "comment": "配对记录：对两个或多个参与对象之间候选/已选关联的表述；不是参与对象本身或执行结果。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "Slot",
+      "label": "槽位",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "synonyms": [
+        "槽位",
+        "编队槽"
+      ],
+      "enumCodes": [
+        "Layer"
+      ],
+      "comment": "资源槽记录：描述资源或时间安排的离散分配单元；记录存在不表示对应执行已发生。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "Permit",
+      "label": "许可",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "synonyms": [
+        "许可",
+        "交战许可"
+      ],
+      "enumCodes": [
+        "ProductTypeId"
+      ],
+      "seeAlso": [
+        "http://www.w3.org/ns/prov#Entity"
+      ],
+      "comment": "项目许可记录：旧模型中的许可产品，表达本包检查结果；与 Agent Authorization 的映射需显式说明，不自动等价。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "Wave",
+      "label": "波次",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "synonyms": [
+        "波次",
+        "突击波"
+      ],
+      "enumCodes": [
+        "Layer"
+      ],
+      "comment": "批次记录：描述一组有限任务或产品的组织单元；与真实过程的发生和完成状态分别登记。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "Channel",
+      "label": "通道",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "synonyms": [
+        "通道",
+        "拦截通道"
+      ],
+      "comment": "通道记录：描述可用于信息或资源交换的通道及相关容量状态；不是消息内容或通信行为。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "Inject",
+      "label": "注入",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "synonyms": [
+        "注入",
+        "事件注入"
+      ],
+      "enumCodes": [
+        "ProductTypeId"
+      ],
+      "comment": "实验注入记录：描述向模型输入的受控变化或事件规范；不表示外部世界已发生同一变化。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "Event",
+      "label": "事件记录",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "synonyms": [
+        "事件",
+        "态势事件"
+      ],
+      "comment": "事件记录：对发生事项的时间、主体及载荷所作的信息表述；记录不是它所描述的世界过程。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; project source records"
+    },
+    {
+      "id": "Equipment",
+      "label": "装备",
+      "subClassOf": [
+        "MaterialObject"
+      ],
+      "comment": "可被公开来源、测试事件或制造研究指称的装备实体；不表示已部署或具备未经核验的作战效果。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; public research extension"
+    },
+    {
+      "id": "EquipmentModel",
+      "label": "装备型号",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "comment": "装备型号或系统型号的信息对象；与具体物理装备实例分开。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; public research extension"
+    },
+    {
+      "id": "Technology",
+      "label": "技术",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "comment": "装备制造、软件、传感、通信或保障技术的信息对象。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; public research extension"
+    },
+    {
+      "id": "Organization",
+      "label": "组织",
+      "subClassOf": [
+        "IndependentContinuant"
+      ],
+      "comment": "制造商、采购方、研究机构或其他公开来源中的组织实体。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; public research extension"
+    },
+    {
+      "id": "Program",
+      "label": "项目",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "comment": "采购、研发、测试或生产项目的信息对象。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; public research extension"
+    },
+    {
+      "id": "SourceDocument",
+      "label": "来源文档",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "comment": "公开来源的不可变文档记录；正文、版本和哈希由证据层保存。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; public research extension"
+    },
+    {
+      "id": "EvidenceItem",
+      "label": "证据项",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "comment": "从来源文档定位出的证据片段或材料项。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; public research extension"
+    },
+    {
+      "id": "CapabilityObservation",
+      "label": "能力观测",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "comment": "在明确条件、时间和数据性质下对装备能力的来源绑定观测。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; public research extension"
+    },
+    {
+      "id": "CapabilityMetric",
+      "label": "能力指标",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "comment": "能力观测中的指标定义、数值、单位和限定词。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; public research extension"
+    },
+    {
+      "id": "TestEvent",
+      "label": "测试事件",
+      "subClassOf": [
+        "Event"
+      ],
+      "comment": "公开来源报告的测试、演示、试验或观察事件。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; public research extension"
+    },
+    {
+      "id": "ProcurementEvent",
+      "label": "采购事件",
+      "subClassOf": [
+        "Event"
+      ],
+      "comment": "公开来源报告的采购、合同授予或订购事件的信息记录；不表明已交付、部署或形成作战能力。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; public research extension"
+    },
+    {
+      "id": "ProductionEvent",
+      "label": "生产事件",
+      "subClassOf": [
+        "Event"
+      ],
+      "comment": "公开来源报告的生产启动、扩产、制造进度或交付事件的信息记录；与实际制造过程及其能力验证分开。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; public research extension"
+    },
+    {
+      "id": "ManufacturingProcess",
+      "label": "制造过程",
+      "subClassOf": [
+        "Process"
+      ],
+      "comment": "制造、装配、质检、维护或交付相关过程。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; public research extension"
+    },
+    {
+      "id": "TrendHypothesis",
+      "label": "趋势假设",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "comment": "跨来源形成的未来趋势推断；不是静态事实。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; public research extension"
+    },
+    {
+      "id": "ManufacturingDecision",
+      "label": "制造决定",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "comment": "人在具体需求和约束下形成的制造研究决定。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; public research extension"
+    },
+    {
+      "id": "AttributeObservation",
+      "label": "属性断言记录",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "comment": "对单个对象公开描述性属性的来源限定断言；保存原文值、规范展示、条件、时间及独立审核，不能代表实战效能。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; independently reviewed descriptive properties"
+    },
+    {
+      "id": "DecisionAssertion",
+      "label": "决策断言",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "comment": "由趋势研判形成的主体—关系—客体结构化决策断言；模型提出后必须经过人工审核。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; structured decision insight"
+    },
+    {
+      "id": "ManufacturingRequirement",
+      "label": "制造要求",
+      "subClassOf": [
+        "InformationEntity"
+      ],
+      "comment": "由装备能力趋势断言提出的制造或技术选型要求；不是已确认的工程规范。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; structured decision insight"
+    }
+  ],
+  "disjoint": [
+    [
+      "Continuant",
+      "Occurrent"
+    ],
+    [
+      "Rule",
+      "Algorithm"
+    ],
+    [
+      "Rule",
+      "ShellTemplate"
+    ],
+    [
+      "Algorithm",
+      "ShellTemplate"
+    ],
+    [
+      "FunctionBind",
+      "ShellTemplate"
+    ],
+    [
+      "FunctionBind",
+      "Rule"
+    ],
+    [
+      "Role",
+      "InformationEntity"
+    ],
+    [
+      "MaterialObject",
+      "SpatialRegion"
+    ],
+    [
+      "Envelope",
+      "Region"
+    ]
+  ],
+  "objectProperties": [
+    {
+      "id": "hasState",
+      "domain": "Entity",
+      "range": "Quality",
+      "comment": "状态作为质量依存于实体。每一实体都有。"
+    },
+    {
+      "id": "inheresIn",
+      "domain": "Quality",
+      "range": "Entity",
+      "inverseOf": "hasState"
+    },
+    {
+      "id": "rdf_type",
+      "domain": "Entity",
+      "range": "Class",
+      "comment": "个体属于类。JSON 字段 type。"
+    },
+    {
+      "id": "boundTo",
+      "domain": "Algorithm",
+      "range": "FunctionBind"
+    },
+    {
+      "id": "gives",
+      "domain": "FunctionBind",
+      "range": "InformationEntity"
+    },
+    {
+      "id": "evaluatesOn",
+      "domain": "Rule",
+      "range": "Entity"
+    },
+    {
+      "id": "memberOf",
+      "domain": "IndependentContinuant",
+      "range": "Region"
+    },
+    {
+      "id": "owns",
+      "domain": "MaterialObject",
+      "range": "SpatialRegion"
+    },
+    {
+      "id": "covers",
+      "domain": "Sensor",
+      "range": "SpatialRegion"
+    },
+    {
+      "id": "commands",
+      "domain": "CommandPost",
+      "range": "Platform"
+    },
+    {
+      "id": "notSameAs",
+      "domain": "Entity",
+      "range": "Entity"
+    },
+    {
+      "id": "bindsPlatformType",
+      "domain": "ShellTemplate",
+      "range": "PlatformType"
+    },
+    {
+      "id": "reads",
+      "domain": "Entity",
+      "range": "InformationEntity",
+      "comment": "过程或角色读取产品。"
+    },
+    {
+      "id": "writes",
+      "domain": "Entity",
+      "range": "InformationEntity",
+      "comment": "仅 Monitor 可写 Permit；壳体禁止。"
+    },
+    {
+      "id": "participatesIn",
+      "domain": "IndependentContinuant",
+      "range": "Process"
+    },
+    {
+      "id": "specifiedBy",
+      "domain": "Process",
+      "range": "ShellTemplate"
+    },
+    {
+      "id": "of",
+      "domain": "Relator",
+      "range": "Entity"
+    },
+    {
+      "id": "region",
+      "domain": "Membership",
+      "range": "Region"
+    },
+    {
+      "id": "hasCapabilityObservation",
+      "domain": "Entity",
+      "range": "CapabilityObservation",
+      "comment": "仅用于装备实例 Equipment 或装备型号 EquipmentModel 与来源绑定能力观测的关联；宽域避免将信息型谱误推为物理装备。",
+      "definitionStatus": "project-definition-pending-domain-review"
+    },
+    {
+      "id": "observesSubject",
+      "domain": "CapabilityObservation",
+      "range": "Entity",
+      "comment": "能力观测所指称的装备实例 Equipment 或装备型号 EquipmentModel；宽值域避免将型号信息对象误推为物理装备。",
+      "definitionStatus": "project-definition-pending-domain-review"
+    },
+    {
+      "id": "hasMetric",
+      "domain": "CapabilityObservation",
+      "range": "CapabilityMetric",
+      "comment": "能力观测所使用的指标。",
+      "definitionStatus": "project-definition-pending-domain-review"
+    },
+    {
+      "id": "measuredIn",
+      "domain": "CapabilityObservation",
+      "range": "TestEvent",
+      "comment": "能力观测所关联的测试或观察事件。",
+      "definitionStatus": "project-definition-pending-domain-review"
+    },
+    {
+      "id": "reportedBy",
+      "domain": "CapabilityObservation",
+      "range": "SourceDocument",
+      "comment": "能力观测的来源文档。",
+      "definitionStatus": "project-definition-pending-domain-review"
+    },
+    {
+      "id": "supportedBy",
+      "domain": "Entity",
+      "range": "EvidenceItem",
+      "comment": "实体、关系或结论的证据支持。",
+      "definitionStatus": "project-definition-pending-domain-review"
+    },
+    {
+      "id": "manufacturedBy",
+      "domain": "Entity",
+      "range": "Organization",
+      "comment": "仅用于装备实例 Equipment 或装备型号 EquipmentModel 与公开制造组织的来源绑定关联。",
+      "definitionStatus": "project-definition-pending-domain-review"
+    },
+    {
+      "id": "participatesInProgram",
+      "domain": "Entity",
+      "range": "Program",
+      "comment": "仅用于装备实例 Equipment 或装备型号 EquipmentModel 关联的研发、采购或生产项目。",
+      "definitionStatus": "project-definition-pending-domain-review"
+    },
+    {
+      "id": "supportsApplication",
+      "domain": "Entity",
+      "range": "InformationEntity",
+      "comment": "仅用于装备实例 Equipment 或装备型号 EquipmentModel 所关联的应用角色或场景描述。",
+      "definitionStatus": "project-definition-pending-domain-review"
+    },
+    {
+      "id": "derivedFrom",
+      "domain": "Entity",
+      "range": "SourceDocument",
+      "comment": "研究对象从来源文档派生。",
+      "definitionStatus": "project-definition-pending-domain-review"
+    },
+    {
+      "id": "contradicts",
+      "domain": "Entity",
+      "range": "Entity",
+      "comment": "两个证据化对象之间的冲突关系。",
+      "definitionStatus": "project-definition-pending-domain-review"
+    },
+    {
+      "id": "hasManufacturingProcess",
+      "domain": "Entity",
+      "range": "ManufacturingProcess",
+      "comment": "仅用于装备实例 Equipment 或装备型号 EquipmentModel 关联的制造或保障过程；型号关联不表示该型号是过程的物理参与者。",
+      "definitionStatus": "project-definition-pending-domain-review"
+    },
+    {
+      "id": "hasTrendHypothesis",
+      "domain": "Entity",
+      "range": "TrendHypothesis",
+      "comment": "仅用于装备实例 Equipment 或装备型号 EquipmentModel 关联的趋势假设。",
+      "definitionStatus": "project-definition-pending-domain-review"
+    },
+    {
+      "id": "develops",
+      "domain": "Organization",
+      "range": "InformationEntity",
+      "comment": "公开来源报告的组织研发型号、技术或项目关系；不推定已投入使用。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; source-bound graph admission"
+    },
+    {
+      "id": "procures",
+      "domain": "Organization",
+      "range": "EquipmentModel",
+      "comment": "公开来源报告的采购组织与装备型号的关系；计划、合同和交付阶段由证据区分。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; source-bound graph admission"
+    },
+    {
+      "id": "supplies",
+      "domain": "Organization",
+      "range": "EquipmentModel",
+      "comment": "公开来源报告的供应组织与装备型号关系；不推定产量或实际交付。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; source-bound graph admission"
+    },
+    {
+      "id": "testsEquipment",
+      "domain": "TestEvent",
+      "range": "EquipmentModel",
+      "comment": "来源绑定测试事件涉及的装备型号；不推定测试结论或实战能力。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; source-bound graph admission"
+    },
+    {
+      "id": "usesTechnology",
+      "domain": "Entity",
+      "range": "Technology",
+      "comment": "仅用于装备型号 EquipmentModel 或项目 Program 对公开技术的来源绑定关联。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; source-bound graph admission"
+    },
+    {
+      "id": "announcedBy",
+      "domain": "Event",
+      "range": "Organization",
+      "comment": "来源绑定公开试验、采购或生产事件的发布组织。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; source-bound graph admission"
+    },
+    {
+      "id": "involvesEquipment",
+      "domain": "Event",
+      "range": "EquipmentModel",
+      "comment": "来源绑定公开试验、采购或生产事件所涉及的装备型号。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; source-bound graph admission"
+    },
+    {
+      "id": "involvesOrganization",
+      "domain": "Event",
+      "range": "Organization",
+      "comment": "来源绑定公开试验、采购或生产事件所涉及的组织。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; source-bound graph admission"
+    },
+    {
+      "id": "participatesInEventRecord",
+      "domain": "Organization",
+      "range": "Event",
+      "comment": "组织与来源绑定公开事件记录的参与关联；Event 是信息记录，不等同于组织参与实际 Process。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; source-bound graph admission"
+    },
+    {
+      "id": "hasAttributeObservation",
+      "domain": "Entity",
+      "range": "AttributeObservation",
+      "comment": "对象关联独立人工审核及发布的描述性属性断言记录；对象身份审核不连带批准属性。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; independently reviewed descriptive properties"
+    },
+    {
+      "id": "hasDecisionAssertion",
+      "domain": "TrendHypothesis",
+      "range": "DecisionAssertion",
+      "comment": "趋势假设关联结构化主体—关系—客体决策断言；断言仍待人工审核。",
+      "definitionStatus": "project-definition-pending-domain-review"
+    },
+    {
+      "id": "impliesManufacturingRequirement",
+      "domain": "DecisionAssertion",
+      "range": "ManufacturingRequirement",
+      "comment": "决策断言提出的制造要求；不表示已经批准或形成工程规范。",
+      "definitionStatus": "project-definition-pending-domain-review"
+    }
+  ],
+  "dataProperties": [
+    {
+      "id": "claims",
+      "domain": "Algorithm",
+      "range": "xsd:boolean",
+      "comment": "永假。算法不是权利要求。"
+    },
+    {
+      "id": "hasModality",
+      "domain": "Rule",
+      "range": "xsd:string"
+    },
+    {
+      "id": "hasText",
+      "domain": "Rule",
+      "range": "xsd:string"
+    },
+    {
+      "id": "tau",
+      "domain": "Rule",
+      "range": "xsd:decimal"
+    },
+    {
+      "id": "iden",
+      "domain": "Identity",
+      "range": "xsd:string"
+    },
+    {
+      "id": "listable",
+      "domain": "Identity",
+      "range": "xsd:boolean"
+    },
+    {
+      "id": "p_belief",
+      "domain": "Identity",
+      "range": "xsd:decimal"
+    },
+    {
+      "id": "human",
+      "domain": "FunctionBind",
+      "range": "xsd:boolean"
+    },
+    {
+      "id": "metricName",
+      "domain": "CapabilityMetric",
+      "range": "xsd:string",
+      "comment": "指标名称。"
+    },
+    {
+      "id": "numericValue",
+      "domain": "CapabilityMetric",
+      "range": "xsd:decimal",
+      "comment": "来源原值；禁止无证据换算。"
+    },
+    {
+      "id": "unit",
+      "domain": "CapabilityMetric",
+      "range": "xsd:string",
+      "comment": "来源单位。"
+    },
+    {
+      "id": "qualifier",
+      "domain": "CapabilityMetric",
+      "range": "xsd:string",
+      "comment": "约数、上下限或精确值限定词。"
+    },
+    {
+      "id": "basis",
+      "domain": "CapabilityObservation",
+      "range": "xsd:string",
+      "comment": "reported-test、manufacturer-claim、program-target 或 reported-observation。"
+    },
+    {
+      "id": "conditions",
+      "domain": "CapabilityObservation",
+      "range": "xsd:string",
+      "comment": "测试或观察条件。"
+    },
+    {
+      "id": "validTime",
+      "domain": "Entity",
+      "range": "xsd:string",
+      "comment": "有效时间或来源观察时间范围。"
+    },
+    {
+      "id": "reviewStatus",
+      "domain": "Entity",
+      "range": "xsd:string",
+      "comment": "pending、accepted、rejected 或 withdrawn。"
+    },
+    {
+      "id": "reportedStandard",
+      "label": "公开标准",
+      "domain": "Entity",
+      "range": "xsd:string",
+      "allowedSubjectClasses": [
+        "EquipmentModel",
+        "Program",
+        "Technology"
+      ],
+      "comment": "来源限定的公开描述性原文值；以AttributeObservation保存出处与审核，不推算性能或补造缺失值。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; independently reviewed descriptive properties"
+    },
+    {
+      "id": "reportedInterface",
+      "label": "公开接口",
+      "domain": "Entity",
+      "range": "xsd:string",
+      "allowedSubjectClasses": [
+        "EquipmentModel",
+        "Program",
+        "Technology"
+      ],
+      "comment": "来源限定的公开描述性原文值；以AttributeObservation保存出处与审核，不推算性能或补造缺失值。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; independently reviewed descriptive properties"
+    },
+    {
+      "id": "reportedArchitecture",
+      "label": "公开架构",
+      "domain": "Entity",
+      "range": "xsd:string",
+      "allowedSubjectClasses": [
+        "EquipmentModel",
+        "Program",
+        "Technology"
+      ],
+      "comment": "来源限定的公开描述性原文值；以AttributeObservation保存出处与审核，不推算性能或补造缺失值。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; independently reviewed descriptive properties"
+    },
+    {
+      "id": "reportedHumanOversight",
+      "label": "人工监督",
+      "domain": "Entity",
+      "range": "xsd:string",
+      "allowedSubjectClasses": [
+        "EquipmentModel",
+        "Program",
+        "Technology",
+        "TestEvent"
+      ],
+      "comment": "来源限定的公开描述性原文值；以AttributeObservation保存出处与审核，不推算性能或补造缺失值。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; independently reviewed descriptive properties"
+    },
+    {
+      "id": "reportedTestStatus",
+      "label": "公开试验状态",
+      "domain": "Entity",
+      "range": "xsd:string",
+      "allowedSubjectClasses": [
+        "EquipmentModel",
+        "Program",
+        "Technology",
+        "TestEvent"
+      ],
+      "comment": "来源限定的公开描述性原文值；以AttributeObservation保存出处与审核，不推算性能或补造缺失值。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; independently reviewed descriptive properties"
+    },
+    {
+      "id": "reportedMaturity",
+      "label": "公开成熟度描述",
+      "domain": "Entity",
+      "range": "xsd:string",
+      "allowedSubjectClasses": [
+        "EquipmentModel",
+        "Program",
+        "Technology"
+      ],
+      "comment": "来源限定的公开描述性原文值；以AttributeObservation保存出处与审核，不推算性能或补造缺失值。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; independently reviewed descriptive properties"
+    },
+    {
+      "id": "reportedContractStage",
+      "label": "公开合同阶段",
+      "domain": "Entity",
+      "range": "xsd:string",
+      "allowedSubjectClasses": [
+        "EquipmentModel",
+        "ProcurementEvent",
+        "ProductionEvent",
+        "Program",
+        "Technology"
+      ],
+      "comment": "来源限定的公开描述性原文值；以AttributeObservation保存出处与审核，不推算性能或补造缺失值。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; independently reviewed descriptive properties"
+    },
+    {
+      "id": "reportedEventDate",
+      "label": "公开事件日期",
+      "domain": "Entity",
+      "range": "xsd:string",
+      "allowedSubjectClasses": [
+        "ProcurementEvent",
+        "ProductionEvent",
+        "TestEvent"
+      ],
+      "comment": "来源限定的公开描述性原文值；以AttributeObservation保存出处与审核，不推算性能或补造缺失值。",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "intelligence-contract.json; independently reviewed descriptive properties"
+    }
+  ],
+  "axioms": [
+    {
+      "id": "entity-has-quality",
+      "manchester": "Entity SubClassOf hasState some Quality",
+      "comment": "每个实体都有状态机制。状态是 Quality，不是方法。"
+    },
+    {
+      "id": "algorithm-no-claim",
+      "manchester": "Algorithm SubClassOf claims value false",
+      "comment": "MAPPO 等工具个体同样继承。"
+    },
+    {
+      "id": "shell-no-permit",
+      "manchester": "ShellTemplate SubClassOf not (writes some Permit)"
+    },
+    {
+      "id": "monitor-writes-permit",
+      "manchester": "Monitor SubClassOf writes some Permit"
+    },
+    {
+      "id": "unk-not-listable",
+      "manchester": "Identity and (iden value 不明) SubClassOf listable value false"
+    },
+    {
+      "id": "inner-loop",
+      "manchester": "spherical_code rdf:type Algorithm . Algorithm and (boundTo value form) and (scope value inner) DisjointWith (claims value true)"
+    }
+  ]
+}

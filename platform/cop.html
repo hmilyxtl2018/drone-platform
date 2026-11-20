@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>指挥共同图</title>
+    <link rel="stylesheet" href="./cop.css?v=5" />
+  </head>
+  <body>
+    <div class="layout" id="layout">
+      <header>
+        <p class="kicker"><a href="./index.html#read">本体</a> · 平面态势</p>
+        <h1>共同图</h1>
+        <p class="lead">平面共同图：航迹清单与情报档案。体积态势在岸海态势页。000°=向陆。黄四叶=不明，不打。</p>
+      </header>
+
+      <div class="stage" id="stage">
+        <div class="pane plan">
+          <p class="tag">平面图 · 陆北海上 · 东距 / 距岸 · 1 格 = 1 km</p>
+          <canvas id="plan" aria-label="平面图"></canvas>
+          <div class="dock" id="dock">
+            <aside class="drawer" id="drawer" aria-hidden="true">
+              <p class="drawer-h">
+                <span id="drawer-title">情报</span>
+                <button id="drawer-close" type="button" aria-label="收起">›</button>
+              </p>
+              <article class="card" id="card-intel">
+                <div class="card-b">
+                  <div id="intel-body">
+                    <div id="intel-brief"></div>
+                    <div id="intel-list"></div>
+                    <div id="intel-file"></div>
+                  </div>
+                </div>
+              </article>
+              <article class="card" id="card-cmd">
+                <div class="card-b">
+                  <div id="branches"></div>
+                  <div class="events">
+                    <h2>情况</h2>
+                    <ol id="events"></ol>
+                  </div>
+                </div>
+              </article>
+              <article class="card" id="card-tracks">
+                <div class="card-b">
+                  <p class="card-tools">
+                    <button id="view-list" class="on" type="button">表</button>
+                    <button id="view-vol" type="button">体积</button>
+                  </p>
+                  <div id="track-wrap" class="track-wrap">
+                    <table>
+                      <thead>
+                        <tr><th>批</th><th>高</th><th>p</th><th>身份</th><th>意图</th><th>距界</th><th>处置</th></tr>
+                      </thead>
+                      <tbody id="track-body"></tbody>
+                    </table>
+                  </div>
+                  <canvas id="vol" aria-label="三维体积" hidden></canvas>
+                </div>
+              </article>
+            </aside>
+            <nav class="rail" aria-label="侧栏">
+              <button class="rail-btn" type="button" data-drawer="intel" title="情报" aria-label="情报">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3.5h7.5L19 8v12.5H7z" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M14.5 3.5V8H19" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="11.2" cy="14" r="2.4" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M13 16.2 16.2 19.4" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+              </button>
+              <button class="rail-btn" type="button" data-drawer="cmd" title="指挥" aria-label="指挥">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5 20 8v8l-8 4.5L4 16V8z" fill="none" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="2" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M12 5.2v4.6M12 14.2v4.6M6.2 9.2l3.4 2M14.4 12.8l3.4 2M17.8 9.2l-3.4 2M9.6 12.8l-3.4 2" fill="none" stroke="currentColor" stroke-width="1.3"/></svg>
+              </button>
+              <button class="rail-btn" type="button" data-drawer="tracks" title="航迹" aria-label="航迹">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 7h14M5 12h14M5 17h9" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="18.2" cy="17" r="2.1" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
+              </button>
+            </nav>
+          </div>
+        </div>
+        <div class="pane cut">
+          <p class="tag">高度剖面 · 沿来袭轴 · 距岸 km / 高 m</p>
+          <canvas id="cut" aria-label="高度剖面"></canvas>
+        </div>
+      </div>
+
+      <p class="say" id="say">走廊空 · 等有限波次</p>
+
+      <nav class="bar">
+        <button id="play" type="button">演</button>
+        <span id="freeze" class="freeze" hidden>冻 · 后台已暂停，点演继续</span>
+        <button id="wave" type="button">下一波</button>
+        <button id="reset" type="button">复位</button>
+        <span class="rule"></span>
+        <button type="button" data-inject="jam">拒止</button>
+        <button type="button" data-inject="restore">复通</button>
+        <button type="button" data-inject="attrition">减员</button>
+        <span class="rule"></span>
+        <button id="ly-all" class="on" type="button">全</button>
+        <button id="ly-lo" type="button">低</button>
+        <button id="ly-mid" type="button">中</button>
+        <button id="ly-hi" type="button">高</button>
+        <span class="rule"></span>
+        <a class="quiet" href="./space.html">岸海态势</a>
+        <a class="quiet" href="./kb.html">知识库</a>
+        <a class="quiet" href="./field.html">Ontology based Agent 作战协同</a>
+        <img class="brand" src="./img/logo-mark.jpg" alt="灵云智" />
+      </nav>
+    </div>
+    <script>
+      if (location.protocol === "file:") {
+        document.write(
+          "<div style='position:fixed;inset:0;z-index:99;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;background:#0b0e14;color:#ece6d4;font:16px/1.7 Segoe UI,PingFang SC,sans-serif;text-align:center'>不要双击本地 html。<br>请打开 <b style='color:#e2c36a'>http://127.0.0.1:8765/cop.html</b></div>",
+        );
+      }
+    </script>
+    <script type="module" src="./cop.js?v=29"></script>
+  </body>
+</html>

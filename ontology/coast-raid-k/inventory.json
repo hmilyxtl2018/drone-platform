@@ -1,0 +1,1007 @@
+{
+  "package": "coast-raid-k",
+  "generated": true,
+  "entries": [
+    {
+      "id": "coast-raid-k",
+      "type": "Package",
+      "module": "领域本体",
+      "file": "catalog.json",
+      "label": "分层交战本体 · 海岸有限波次"
+    },
+    {
+      "id": "satelliteSensor",
+      "type": "Exclude",
+      "module": "战场",
+      "file": "catalog.json"
+    },
+    {
+      "id": "link16",
+      "type": "Exclude",
+      "module": "战场",
+      "file": "catalog.json"
+    },
+    {
+      "id": "ibcsIfcn",
+      "type": "Exclude",
+      "module": "战场",
+      "file": "catalog.json"
+    },
+    {
+      "id": "meanField",
+      "type": "Exclude",
+      "module": "战场",
+      "file": "catalog.json"
+    },
+    {
+      "id": "personAutoEngage",
+      "type": "Exclude",
+      "module": "战场",
+      "file": "catalog.json"
+    },
+    {
+      "id": "occupationZone",
+      "type": "Exclude",
+      "module": "战场",
+      "file": "catalog.json"
+    },
+    {
+      "id": "Entity",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "实体"
+    },
+    {
+      "id": "Continuant",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "持存体"
+    },
+    {
+      "id": "Occurrent",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "发生体"
+    },
+    {
+      "id": "IndependentContinuant",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "独立持存体"
+    },
+    {
+      "id": "DependentContinuant",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "依赖持存体"
+    },
+    {
+      "id": "MaterialObject",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "物质对象"
+    },
+    {
+      "id": "SpatialRegion",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "空间区域"
+    },
+    {
+      "id": "InformationEntity",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "信息实体"
+    },
+    {
+      "id": "Quality",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "质量/状态"
+    },
+    {
+      "id": "Role",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "角色"
+    },
+    {
+      "id": "Relator",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "关系体"
+    },
+    {
+      "id": "Process",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "过程"
+    },
+    {
+      "id": "Class",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "类"
+    },
+    {
+      "id": "Package",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "封皮包"
+    },
+    {
+      "id": "Exclude",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "排除项"
+    },
+    {
+      "id": "Shoreline",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "岸线"
+    },
+    {
+      "id": "Region",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "海陆域"
+    },
+    {
+      "id": "Membership",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "隶属"
+    },
+    {
+      "id": "Envelope",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "交战包络"
+    },
+    {
+      "id": "Corridor",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "走廊"
+    },
+    {
+      "id": "SearchSector",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "搜索扇"
+    },
+    {
+      "id": "DetectionDisk",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "探测盘"
+    },
+    {
+      "id": "JamBloom",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "干扰开花"
+    },
+    {
+      "id": "CommandPost",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "指挥所"
+    },
+    {
+      "id": "Sensor",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "传感器阵地"
+    },
+    {
+      "id": "Shooter",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "发射阵地"
+    },
+    {
+      "id": "Platform",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "平台"
+    },
+    {
+      "id": "Emitter",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "辐射源"
+    },
+    {
+      "id": "PlatformType",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "平台型"
+    },
+    {
+      "id": "Needline",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "岸上数据链"
+    },
+    {
+      "id": "Link",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "链路"
+    },
+    {
+      "id": "Invariant",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "交战镜像"
+    },
+    {
+      "id": "Rule",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "规则"
+    },
+    {
+      "id": "Algorithm",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "算法"
+    },
+    {
+      "id": "CloudDef",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "云定义"
+    },
+    {
+      "id": "ShellTemplate",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "壳体模板"
+    },
+    {
+      "id": "Monitor",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "授权监视"
+    },
+    {
+      "id": "FunctionBind",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "指挥职能"
+    },
+    {
+      "id": "Stage",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "壳体段"
+    },
+    {
+      "id": "Track",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "航迹"
+    },
+    {
+      "id": "Identity",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "身份"
+    },
+    {
+      "id": "Pair",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "配对"
+    },
+    {
+      "id": "Slot",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "槽位"
+    },
+    {
+      "id": "Permit",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "许可"
+    },
+    {
+      "id": "Wave",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "波次"
+    },
+    {
+      "id": "Channel",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "通道"
+    },
+    {
+      "id": "Inject",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "注入"
+    },
+    {
+      "id": "Event",
+      "type": "Class",
+      "module": "领域本体",
+      "file": "tbox.json",
+      "label": "事件"
+    },
+    {
+      "id": "SHORE_0",
+      "type": "Shoreline",
+      "module": "战场",
+      "file": "gis.json"
+    },
+    {
+      "id": "SEA",
+      "type": "Region",
+      "module": "战场",
+      "file": "gis.json",
+      "label": "z < shoreline(x)"
+    },
+    {
+      "id": "LAND",
+      "type": "Region",
+      "module": "战场",
+      "file": "gis.json",
+      "label": "z >= shoreline(x)"
+    },
+    {
+      "id": "C_low∈SEA",
+      "type": "Membership",
+      "module": "战场",
+      "file": "gis.json",
+      "label": "subset"
+    },
+    {
+      "id": "B_ship∈SEA",
+      "type": "Membership",
+      "module": "战场",
+      "file": "gis.json",
+      "label": "subset"
+    },
+    {
+      "id": "JAM_BLOOM∈SEA",
+      "type": "Membership",
+      "module": "战场",
+      "file": "gis.json",
+      "label": "subset"
+    },
+    {
+      "id": "B_BMD∈LAND",
+      "type": "Membership",
+      "module": "战场",
+      "file": "gis.json",
+      "label": "spans"
+    },
+    {
+      "id": "B_SAM∈LAND",
+      "type": "Membership",
+      "module": "战场",
+      "file": "gis.json",
+      "label": "spans"
+    },
+    {
+      "id": "SEARCH∈LAND",
+      "type": "Membership",
+      "module": "战场",
+      "file": "gis.json",
+      "label": "spans"
+    },
+    {
+      "id": "SHIP∈SEA",
+      "type": "Membership",
+      "module": "战场",
+      "file": "gis.json",
+      "label": "in"
+    },
+    {
+      "id": "JAMMER∈SEA",
+      "type": "Membership",
+      "module": "战场",
+      "file": "gis.json",
+      "label": "in"
+    },
+    {
+      "id": "C2∈LAND",
+      "type": "Membership",
+      "module": "战场",
+      "file": "gis.json",
+      "label": "in"
+    },
+    {
+      "id": "RADAR_SHORE∈LAND",
+      "type": "Membership",
+      "module": "战场",
+      "file": "gis.json",
+      "label": "in"
+    },
+    {
+      "id": "RADAR_SAM∈LAND",
+      "type": "Membership",
+      "module": "战场",
+      "file": "gis.json",
+      "label": "in"
+    },
+    {
+      "id": "SAM_TEL∈LAND",
+      "type": "Membership",
+      "module": "战场",
+      "file": "gis.json",
+      "label": "in"
+    },
+    {
+      "id": "BMD_SILO∈LAND",
+      "type": "Membership",
+      "module": "战场",
+      "file": "gis.json",
+      "label": "in"
+    },
+    {
+      "id": "B_BMD",
+      "type": "Envelope",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "B_BMD 高层拦截"
+    },
+    {
+      "id": "B_SAM",
+      "type": "Envelope",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "B_SAM 中层交战"
+    },
+    {
+      "id": "C_low",
+      "type": "Corridor",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "低空走廊 60–420 m"
+    },
+    {
+      "id": "B_ship",
+      "type": "DetectionDisk",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "舰载探测"
+    },
+    {
+      "id": "SEARCH",
+      "type": "SearchSector",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "岸搜低空空域"
+    },
+    {
+      "id": "JAM_BLOOM",
+      "type": "JamBloom",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "干扰"
+    },
+    {
+      "id": "C2",
+      "type": "CommandPost",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "C2"
+    },
+    {
+      "id": "RADAR_SHORE",
+      "type": "Sensor",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "岸搜"
+    },
+    {
+      "id": "RADAR_SAM",
+      "type": "Sensor",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "制导"
+    },
+    {
+      "id": "SAM_TEL",
+      "type": "Shooter",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "发射"
+    },
+    {
+      "id": "BMD_SILO",
+      "type": "Shooter",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "井"
+    },
+    {
+      "id": "SHIP",
+      "type": "Platform",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "军舰"
+    },
+    {
+      "id": "JAMMER",
+      "type": "Emitter",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "干扰"
+    },
+    {
+      "id": "blue_uav",
+      "type": "PlatformType",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "blue"
+    },
+    {
+      "id": "host_lo",
+      "type": "PlatformType",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "低空突防无人机"
+    },
+    {
+      "id": "unk_lo",
+      "type": "PlatformType",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "小型空中平台"
+    },
+    {
+      "id": "uas-micro",
+      "type": "PlatformType",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "微型无人机"
+    },
+    {
+      "id": "uas-mini",
+      "type": "PlatformType",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "迷你无人机"
+    },
+    {
+      "id": "uas-small",
+      "type": "PlatformType",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "小型无人机"
+    },
+    {
+      "id": "uas-tactical",
+      "type": "PlatformType",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "战术无人机"
+    },
+    {
+      "id": "uas-male",
+      "type": "PlatformType",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "中空长航时"
+    },
+    {
+      "id": "uas-hale",
+      "type": "PlatformType",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "高空长航时"
+    },
+    {
+      "id": "uas-vtol",
+      "type": "PlatformType",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "垂直起降无人机"
+    },
+    {
+      "id": "uas-ew",
+      "type": "PlatformType",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "电子战无人机"
+    },
+    {
+      "id": "uas-decoy",
+      "type": "PlatformType",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "诱饵无人机"
+    },
+    {
+      "id": "uas-sea-skimming",
+      "type": "PlatformType",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "贴海突防无人机"
+    },
+    {
+      "id": "uas-cargo",
+      "type": "PlatformType",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "运补无人机"
+    },
+    {
+      "id": "uas-civilian",
+      "type": "PlatformType",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "民用无人机"
+    },
+    {
+      "id": "uas-relay",
+      "type": "PlatformType",
+      "module": "战场",
+      "file": "theater.json",
+      "label": "中继无人机"
+    },
+    {
+      "id": "G_t",
+      "type": "Needline",
+      "module": "战场",
+      "file": "graph.json",
+      "label": "岸上数据链"
+    },
+    {
+      "id": "air_station",
+      "type": "Link",
+      "module": "战场",
+      "file": "graph.json",
+      "label": "机站"
+    },
+    {
+      "id": "mesh",
+      "type": "Link",
+      "module": "战场",
+      "file": "graph.json",
+      "label": "机间"
+    },
+    {
+      "id": "ship_shore",
+      "type": "Link",
+      "module": "战场",
+      "file": "graph.json",
+      "label": "舰岸"
+    },
+    {
+      "id": "N_bound",
+      "type": "Rule",
+      "module": "规则",
+      "file": "rules.json",
+      "label": "第 k 波 N_k ≤ N_max，分层上限同时成立"
+    },
+    {
+      "id": "lo_in_corridor",
+      "type": "Rule",
+      "module": "规则",
+      "file": "rules.json",
+      "label": "低空梯队轨迹 ⊂ C_low"
+    },
+    {
+      "id": "gate",
+      "type": "Rule",
+      "module": "规则",
+      "file": "rules.json",
+      "label": "过门 ⇔ 区内 ∧ p≥τ ∧ 岸上数据链通 ∧ m>0 ∧ 身份可分"
+    },
+    {
+      "id": "unk_no_list",
+      "type": "Rule",
+      "module": "规则",
+      "file": "rules.json",
+      "label": "不明不进交战清单"
+    },
+    {
+      "id": "saturate_no_open",
+      "type": "Rule",
+      "module": "规则",
+      "file": "rules.json",
+      "label": "饱和（λN_lo > m_SAM）不是开门理由"
+    },
+    {
+      "id": "ship_no_shoot",
+      "type": "Rule",
+      "module": "规则",
+      "file": "rules.json",
+      "label": "舰载探测区内跟踪不打"
+    },
+    {
+      "id": "envelope_not_occupy",
+      "type": "Rule",
+      "module": "规则",
+      "file": "rules.json",
+      "label": "交战本体是可行集，不是占领区"
+    },
+    {
+      "id": "no_person_auto",
+      "type": "Rule",
+      "module": "规则",
+      "file": "rules.json",
+      "label": "不把人员选为类别并自动交战；授权门留下"
+    },
+    {
+      "id": "no_mean_field",
+      "type": "Rule",
+      "module": "规则",
+      "file": "rules.json",
+      "label": "N 有限，均值场不进问题"
+    },
+    {
+      "id": "no_satellite_sensor",
+      "type": "Rule",
+      "module": "规则",
+      "file": "rules.json",
+      "label": "本幕情报源不含天基传感器"
+    },
+    {
+      "id": "fusion_split",
+      "type": "Rule",
+      "module": "规则",
+      "file": "rules.json",
+      "label": "G(t) 断则队级融合不可用，只用局部 p；机间不断"
+    },
+    {
+      "id": "type_not_item",
+      "type": "Rule",
+      "module": "规则",
+      "file": "rules.json",
+      "label": "inScene=false 的平台型不得进本幕波次"
+    },
+    {
+      "id": "hale_not_scene",
+      "type": "Rule",
+      "module": "规则",
+      "file": "rules.json",
+      "label": "HALE/G5 不进本幕；它不是天基传感器，但超出本幕包络"
+    },
+    {
+      "id": "inSam",
+      "type": "CloudDef",
+      "module": "知识",
+      "file": "constraints.json",
+      "label": "Ex 0.72"
+    },
+    {
+      "id": "nEnv",
+      "type": "CloudDef",
+      "module": "知识",
+      "file": "constraints.json",
+      "label": "Ex 4"
+    },
+    {
+      "id": "threatSam",
+      "type": "CloudDef",
+      "module": "知识",
+      "file": "constraints.json",
+      "label": "Ex 0.8"
+    },
+    {
+      "id": "monitor.gate",
+      "type": "Monitor",
+      "module": "Agent",
+      "file": "shells.json",
+      "label": "Permit writer"
+    },
+    {
+      "id": "shell-blue-uav",
+      "type": "ShellTemplate",
+      "module": "Agent",
+      "file": "shells.json",
+      "label": "blue_uav"
+    },
+    {
+      "id": "layer_detect",
+      "type": "Algorithm",
+      "module": "算法",
+      "file": "algorithms.json",
+      "label": "层相关检测 / CFAR"
+    },
+    {
+      "id": "track_filter",
+      "type": "Algorithm",
+      "module": "算法",
+      "file": "algorithms.json",
+      "label": "航迹滤波 EKF/IMM"
+    },
+    {
+      "id": "cloud_shadow",
+      "type": "Algorithm",
+      "module": "算法",
+      "file": "algorithms.json",
+      "label": "云影合成"
+    },
+    {
+      "id": "iff_logic",
+      "type": "Algorithm",
+      "module": "算法",
+      "file": "algorithms.json",
+      "label": "敌我/不明逻辑"
+    },
+    {
+      "id": "finite_wave_assign",
+      "type": "Algorithm",
+      "module": "算法",
+      "file": "algorithms.json",
+      "label": "有限波次分配"
+    },
+    {
+      "id": "reactBlue_tasks",
+      "type": "Algorithm",
+      "module": "算法",
+      "file": "algorithms.json",
+      "label": "盯梢/压沿任务"
+    },
+    {
+      "id": "spherical_code",
+      "type": "Algorithm",
+      "module": "算法",
+      "file": "algorithms.json",
+      "label": "分层球面码"
+    },
+    {
+      "id": "MAPPO",
+      "type": "Algorithm",
+      "module": "算法",
+      "file": "algorithms.json",
+      "label": "MAPPO（工具，非主张）"
+    },
+    {
+      "id": "HAPPO",
+      "type": "Algorithm",
+      "module": "算法",
+      "file": "algorithms.json",
+      "label": "HAPPO（工具，非主张）"
+    },
+    {
+      "id": "QMIX",
+      "type": "Algorithm",
+      "module": "算法",
+      "file": "algorithms.json",
+      "label": "QMIX（工具，非主张）"
+    },
+    {
+      "id": "mayGate",
+      "type": "Algorithm",
+      "module": "算法",
+      "file": "algorithms.json",
+      "label": "过门判定"
+    },
+    {
+      "id": "RoE",
+      "type": "Algorithm",
+      "module": "算法",
+      "file": "algorithms.json",
+      "label": "交战规则检查"
+    },
+    {
+      "id": "bounded_inject",
+      "type": "Algorithm",
+      "module": "算法",
+      "file": "algorithms.json",
+      "label": "有界注入"
+    },
+    {
+      "id": "see",
+      "type": "FunctionBind",
+      "module": "交战",
+      "file": "algorithms.json",
+      "label": "Track"
+    },
+    {
+      "id": "read",
+      "type": "FunctionBind",
+      "module": "交战",
+      "file": "algorithms.json",
+      "label": "Identity"
+    },
+    {
+      "id": "assign",
+      "type": "FunctionBind",
+      "module": "交战",
+      "file": "algorithms.json",
+      "label": "Pair"
+    },
+    {
+      "id": "form",
+      "type": "FunctionBind",
+      "module": "交战",
+      "file": "algorithms.json",
+      "label": "Slot"
+    },
+    {
+      "id": "gate",
+      "type": "FunctionBind",
+      "module": "交战",
+      "file": "algorithms.json",
+      "label": "Permit"
+    },
+    {
+      "id": "foe",
+      "type": "FunctionBind",
+      "module": "交战",
+      "file": "algorithms.json",
+      "label": "Inject"
+    },
+    {
+      "id": "agent.monitor.gate",
+      "type": "AgentInstance",
+      "module": "Agent",
+      "file": "agent.instances.json",
+      "label": "gate-service"
+    },
+    {
+      "id": "agent.options.planner",
+      "type": "AgentInstance",
+      "module": "Agent",
+      "file": "agent.instances.json",
+      "label": "options-planner"
+    },
+    {
+      "id": "agent.fusion.c2",
+      "type": "AgentInstance",
+      "module": "Agent",
+      "file": "agent.instances.json",
+      "label": "cloud-belief"
+    }
+  ]
+}

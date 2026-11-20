@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>球面码 · 编队内环</title>
+    <link rel="stylesheet" href="./style.css?v=8" />
+  </head>
+  <body class="touring">
+    <canvas id="world" aria-label="三层球面码内环"></canvas>
+
+    <header>
+      <p class="kicker">
+        <a href="./space.html">岸海态势</a> · 编队内环
+      </p>
+      <h1>球面码</h1>
+      <p class="lead">
+        三套码 · 一层一套 · <i>N(E) ≤ N<sub>max</sub></i>
+        · 减员只重算该层 · 这页只收敛，<i>p</i> 只读，不开门
+      </p>
+    </header>
+
+    <aside class="readout" id="readout" aria-label="分层内环量">
+      <p id="spot-k"><i>k</i> <b id="v-k">—</b></p>
+      <p id="spot-n"><i>N</i> <b id="v-n">—</b></p>
+      <div id="spot-eps">
+        <p><i>ε<sub>hi</sub></i> <b id="v-eh">—</b></p>
+        <p><i>ε<sub>mid</sub></i> <b id="v-em">—</b></p>
+        <p><i>ε<sub>lo</sub></i> <b id="v-el">—</b></p>
+        <canvas id="spark" width="148" height="40" aria-hidden="true"></canvas>
+        <p class="spark-lab"><i>ε<sub>hi</sub></i> · <i>ε<sub>mid</sub></i> · <i>ε<sub>lo</sub></i></p>
+      </div>
+    </aside>
+
+    <aside id="guide" class="guide" aria-label="解说漫游">
+      <p class="guide-k">解说 <b id="guide-idx">1 / 10</b></p>
+      <h2 id="guide-title"></h2>
+      <p id="guide-body"></p>
+      <p class="guide-look" id="guide-look"></p>
+      <div class="guide-nav">
+        <button id="guide-prev" type="button">上一步</button>
+        <button id="guide-next" type="button">下一步</button>
+        <button id="guide-skip" type="button">跳过</button>
+      </div>
+    </aside>
+
+    <p id="caption" class="caption"></p>
+
+    <nav class="bar">
+      <button id="play" type="button">演</button>
+      <span id="freeze" class="freeze" hidden>冻 · 后台已暂停，点演继续</span>
+      <button id="wave" type="button">下一波</button>
+      <button id="reset" type="button">复位</button>
+      <button id="guide-open" type="button">解说</button>
+      <span class="rule"></span>
+      <button type="button" data-inject="jam" id="btn-jam">拒止</button>
+      <button type="button" data-inject="restore" id="btn-restore">复通</button>
+      <button type="button" data-inject="attrition" id="btn-attrition">减员</button>
+      <span class="rule"></span>
+      <button id="ly-all" class="on" type="button">全</button>
+      <button id="ly-hi" type="button">高</button>
+      <button id="ly-mid" type="button">中</button>
+      <button id="ly-lo" type="button">低</button>
+      <span class="rule"></span>
+      <a class="quiet" href="./space.html">岸海态势</a>
+      <a class="quiet" href="./cop.html">共同图</a>
+      <a class="quiet" href="./kb.html">知识库</a>
+      <a class="quiet" href="./field.html">Ontology based Agent 作战协同</a>
+      <img class="brand" src="./img/logo-mark.jpg" alt="灵云智" />
+    </nav>
+
+    <script>
+      if (location.protocol === "file:") {
+        document.write(
+          "<div style='position:fixed;inset:0;z-index:99;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;background:#0b0e14;color:#ece6d4;font:16px/1.7 Segoe UI,PingFang SC,sans-serif;text-align:center'>不要双击本地 html。<br>请打开 <b style='color:#e2c36a'>http://127.0.0.1:8765/swarm.html</b></div>",
+        );
+      }
+    </script>
+    <script type="module" src="./swarm.js?v=5"></script>
+  </body>
+</html>

@@ -1,0 +1,160 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.ontology/coast-raid-k/intelligence/1.0.0/schema.signal-intelligence.json",
+  "title": "信号情报与能力断言契约",
+  "description": "将观测、发射源特征、证据包、装备能力断言和核验运行保持在候选层；验证或模型输出不能绕过人工发布门槛。",
+  "oneOf": [
+    { "$ref": "#/$defs/SignalObservation" },
+    { "$ref": "#/$defs/EmitterSignature" },
+    { "$ref": "#/$defs/CapabilityClaim" },
+    { "$ref": "#/$defs/EvidenceBundle" },
+    { "$ref": "#/$defs/VerificationRun" }
+  ],
+  "$defs": {
+    "Id": { "type": "string", "minLength": 1, "maxLength": 200, "pattern": "^[A-Za-z0-9._:-]+$" },
+    "Hash": { "type": "string", "pattern": "^[A-Fa-f0-9]{64}$" },
+    "DateTime": { "type": "string", "format": "date-time" },
+    "Confidence": { "type": ["number", "null"], "minimum": 0, "maximum": 1 },
+    "EvidenceLevel": { "enum": ["E0", "E1", "E2", "E3", "E4", "E5"] },
+    "VerificationStatus": { "enum": ["unverified", "under-review", "verified", "conflict", "rejected"] },
+    "ClaimState": { "enum": ["reported", "observed", "derived", "inference", "unknown", "conflict", "rejected"] },
+    "EvidenceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidenceId", "sourceUri", "contentHash"],
+      "properties": {
+        "evidenceId": { "$ref": "#/$defs/Id" },
+        "sourceUri": { "type": "string", "minLength": 1, "maxLength": 4000 },
+        "sourceVersion": { "type": ["string", "null"], "maxLength": 200 },
+        "contentHash": { "$ref": "#/$defs/Hash" },
+        "quote": { "type": ["string", "null"], "maxLength": 10000 },
+        "locator": { "type": "object" },
+        "sourceType": { "type": ["string", "null"], "maxLength": 80 },
+        "independenceKey": { "type": ["string", "null"], "maxLength": 300 }
+      }
+    },
+    "SignalObservation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["recordType", "observationId", "observationType", "collectedAt", "features", "sourceRefs", "claimState", "verificationStatus", "evidenceLevel", "contentHash"],
+      "properties": {
+        "recordType": { "const": "SignalObservation" },
+        "observationId": { "$ref": "#/$defs/Id" },
+        "entityId": { "$ref": "#/$defs/Id" },
+        "auditRunId": { "$ref": "#/$defs/Id" },
+        "observationType": { "enum": ["COMINT", "ELINT", "FISINT", "EW", "MASINT", "IMAGERY", "TELEMETRY", "OSINT"] },
+        "collectedAt": { "$ref": "#/$defs/DateTime" },
+        "collectionLocation": { "type": "object" },
+        "conditions": { "type": "object" },
+        "features": { "type": "object" },
+        "emitterSignatureId": { "$ref": "#/$defs/Id" },
+        "sourceRefs": { "type": "array", "minItems": 1, "maxItems": 100, "items": { "$ref": "#/$defs/EvidenceRef" } },
+        "claimState": { "$ref": "#/$defs/ClaimState" },
+        "confidence": { "$ref": "#/$defs/Confidence" },
+        "verificationStatus": { "$ref": "#/$defs/VerificationStatus" },
+        "evidenceLevel": { "$ref": "#/$defs/EvidenceLevel" },
+        "contentHash": { "$ref": "#/$defs/Hash" },
+        "createdAt": { "$ref": "#/$defs/DateTime" }
+      }
+    },
+    "EmitterSignature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["recordType", "signatureId", "signatureType", "features", "attribution", "sourceRefs", "verificationStatus", "contentHash"],
+      "properties": {
+        "recordType": { "const": "EmitterSignature" },
+        "signatureId": { "$ref": "#/$defs/Id" },
+        "entityId": { "$ref": "#/$defs/Id" },
+        "signatureType": { "enum": ["communications", "radar", "telemetry", "infrared", "acoustic", "imagery", "other"] },
+        "features": { "type": "object" },
+        "attribution": { "type": "object" },
+        "sourceRefs": { "type": "array", "items": { "$ref": "#/$defs/EvidenceRef" } },
+        "confidence": { "$ref": "#/$defs/Confidence" },
+        "verificationStatus": { "$ref": "#/$defs/VerificationStatus" },
+        "contentHash": { "$ref": "#/$defs/Hash" },
+        "createdAt": { "$ref": "#/$defs/DateTime" }
+      }
+    },
+    "CapabilityClaim": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["recordType", "claimId", "entityId", "capabilityDomain", "metric", "rawValue", "valueType", "conditions", "sourceObservationIds", "evidenceBundleIds", "claimState", "verificationStatus", "evidenceLevel", "reviewStatus", "truthVerified", "contentHash"],
+      "properties": {
+        "recordType": { "const": "CapabilityClaim" },
+        "claimId": { "$ref": "#/$defs/Id" },
+        "entityId": { "$ref": "#/$defs/Id" },
+        "entityRevisionId": { "$ref": "#/$defs/Id" },
+        "auditRunId": { "$ref": "#/$defs/Id" },
+        "capabilityDomain": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "metric": { "type": "string", "minLength": 1, "maxLength": 200 },
+        "rawValue": { "type": "string", "minLength": 1, "maxLength": 4000 },
+        "valueType": { "enum": ["number", "quantity", "range", "text", "enum", "boolean", "reference", "list", "object"] },
+        "normalizedValue": {},
+        "unit": { "type": ["string", "null"], "maxLength": 80 },
+        "qualifier": { "enum": ["exact", "approximately", "at-least", "at-most", "greater-than", "less-than", "unknown"] },
+        "conditions": { "type": "object" },
+        "variant": { "type": ["string", "null"], "maxLength": 300 },
+        "configuration": { "type": ["string", "null"], "maxLength": 300 },
+        "operationalEffect": { "type": ["string", "null"], "maxLength": 4000 },
+        "sourceObservationIds": { "type": "array", "items": { "$ref": "#/$defs/Id" }, "uniqueItems": true },
+        "evidenceBundleIds": { "type": "array", "items": { "$ref": "#/$defs/Id" }, "uniqueItems": true },
+        "claimState": { "$ref": "#/$defs/ClaimState" },
+        "verificationStatus": { "$ref": "#/$defs/VerificationStatus" },
+        "evidenceLevel": { "$ref": "#/$defs/EvidenceLevel" },
+        "confidence": { "$ref": "#/$defs/Confidence" },
+        "reviewStatus": { "enum": ["pending", "under-review", "accepted", "rejected", "withdrawn", "superseded", "published"] },
+        "truthVerified": { "type": "boolean" },
+        "contentHash": { "$ref": "#/$defs/Hash" },
+        "createdAt": { "$ref": "#/$defs/DateTime" }
+      },
+      "allOf": [
+        { "if": { "properties": { "reviewStatus": { "const": "accepted" } }, "required": ["reviewStatus"] }, "then": { "properties": { "truthVerified": { "const": true }, "verificationStatus": { "const": "verified" } } } },
+        { "if": { "properties": { "reviewStatus": { "const": "published" } }, "required": ["reviewStatus"] }, "then": { "properties": { "truthVerified": { "const": true }, "verificationStatus": { "const": "verified" } } } }
+      ]
+    },
+    "EvidenceBundle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["recordType", "evidenceBundleId", "claimIds", "observationIds", "evidenceIds", "sourceIndependence", "validity", "counterEvidenceIds", "evidenceLevel", "verificationStatus", "contentHash"],
+      "properties": {
+        "recordType": { "const": "EvidenceBundle" },
+        "evidenceBundleId": { "$ref": "#/$defs/Id" },
+        "entityId": { "$ref": "#/$defs/Id" },
+        "auditRunId": { "$ref": "#/$defs/Id" },
+        "claimIds": { "type": "array", "items": { "$ref": "#/$defs/Id" }, "uniqueItems": true },
+        "observationIds": { "type": "array", "items": { "$ref": "#/$defs/Id" }, "uniqueItems": true },
+        "evidenceIds": { "type": "array", "items": { "$ref": "#/$defs/Id" }, "uniqueItems": true },
+        "sourceIndependence": { "type": "object" },
+        "validity": { "type": "object" },
+        "counterEvidenceIds": { "type": "array", "items": { "$ref": "#/$defs/Id" }, "uniqueItems": true },
+        "evidenceLevel": { "$ref": "#/$defs/EvidenceLevel" },
+        "verificationStatus": { "$ref": "#/$defs/VerificationStatus" },
+        "contentHash": { "$ref": "#/$defs/Hash" },
+        "createdAt": { "$ref": "#/$defs/DateTime" }
+      }
+    },
+    "VerificationRun": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["recordType", "verificationRunId", "entityId", "runType", "status", "methodVersion", "inputRefs", "result", "checks", "evidenceLevel", "contentHash", "createdAt"],
+      "properties": {
+        "recordType": { "const": "VerificationRun" },
+        "verificationRunId": { "$ref": "#/$defs/Id" },
+        "entityId": { "$ref": "#/$defs/Id" },
+        "auditRunId": { "$ref": "#/$defs/Id" },
+        "runType": { "enum": ["source-validation", "signal-correlation", "claim-verification", "periodic-audit"] },
+        "status": { "enum": ["queued", "running", "completed", "completed-with-gaps", "failed", "cancelled"] },
+        "methodVersion": { "type": "string", "minLength": 1, "maxLength": 120 },
+        "inputRefs": { "type": "object" },
+        "result": { "type": "object" },
+        "checks": { "type": "array" },
+        "evidenceLevel": { "$ref": "#/$defs/EvidenceLevel" },
+        "confidence": { "$ref": "#/$defs/Confidence" },
+        "startedAt": { "$ref": "#/$defs/DateTime" },
+        "completedAt": { "$ref": "#/$defs/DateTime" },
+        "contentHash": { "$ref": "#/$defs/Hash" },
+        "createdAt": { "$ref": "#/$defs/DateTime" }
+      }
+    }
+  }
+}

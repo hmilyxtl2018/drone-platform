@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>交战本体 · 作战 Agent</title>
+    <link rel="stylesheet" href="./tree.css?v=17" />
+  </head>
+  <body>
+    <canvas id="collab" aria-label="作战 Agent 壳体"></canvas>
+
+    <header>
+      <p class="kicker">壳体是 Agent · 知识在本体上</p>
+      <h1>交战本体</h1>
+      <p class="lead">圆点是作战 Agent。右侧是本波影。往上写；非法写入被拒绝。</p>
+    </header>
+
+    <aside class="dock" aria-label="交战本体">
+      <section class="pane">
+        <h2 class="pane-h">本波影 <b id="wave-lab"></b></h2>
+        <div id="body"></div>
+      </section>
+      <section class="pane pane-pick">
+        <h2 class="pane-h">选中</h2>
+        <div id="detail" class="detail" aria-live="polite"></div>
+      </section>
+    </aside>
+    <p class="so" id="so-what">走廊空 · 等有限波次</p>
+
+    <p class="legend" id="legend">
+      <button type="button" data-kind="gold">金线 · 队影合成</button>
+      <button type="button" data-kind="form">编队 · 同层阵位</button>
+      <button type="button" data-kind="pair">盯梢 · 谁盯谁</button>
+      <button type="button" data-kind="gate">授权 · 过门许可</button>
+    </p>
+
+    <nav class="bar" aria-label="本场注入">
+      <button id="play" type="button">演</button>
+      <button id="wave" type="button">下一波</button>
+      <button id="reset" type="button">复位</button>
+      <span class="rule"></span>
+      <button type="button" data-inject="jam">拒止</button>
+      <button type="button" data-inject="restore">复通</button>
+      <button type="button" data-inject="attrition">减员</button>
+      <span class="rule"></span>
+      <a class="quiet" href="./space.html">岸海态势</a>
+      <a class="quiet" href="./cop.html">共同图</a>
+      <a class="quiet" href="./swarm.html">球面码</a>
+      <a class="quiet" href="./kb.html">知识库</a>
+      <a class="quiet" href="./agents.html?api">Agents 工作台</a>
+      <a class="quiet" href="./intelligence.html?api">情报采集</a>
+      <a class="quiet" href="./osint.html">开源情报</a>
+      <a class="quiet" href="./field.html">Ontology based Agent 作战协同</a>
+      <img class="brand" src="./img/logo-mark.jpg" alt="灵云智" />
+    </nav>
+
+    <script>
+      if (location.protocol === "file:") {
+        document.write(
+          "<div style='position:fixed;inset:0;z-index:99;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px;background:#0b0e14;color:#ece6d4;font:16px/1.7 Segoe UI,PingFang SC,sans-serif;text-align:center'>不要双击本地 html。<br>请打开 <b style='color:#e2c36a'>http://127.0.0.1:8765/index.html</b></div>",
+        );
+      }
+    </script>
+    <script type="module" src="./tree.js?v=22"></script>
+  </body>
+</html>

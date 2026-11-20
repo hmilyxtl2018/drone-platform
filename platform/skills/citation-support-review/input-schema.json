@@ -1,0 +1,73 @@
+{
+  "type": "object",
+  "required": [
+    "question",
+    "scope",
+    "proposals"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "question": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "scope": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "proposals": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 8,
+      "items": {
+        "type": "object",
+        "required": [
+          "perspective",
+          "proposal",
+          "evidence"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "perspective": {
+            "type": "object"
+          },
+          "proposal": {
+            "type": "object",
+            "required": [
+              "perspectiveKey",
+              "statement",
+              "supportingClaims"
+            ]
+          },
+          "evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "object",
+              "required": [
+                "evidenceId",
+                "quote",
+                "sourceUri",
+                "publishedAt"
+              ],
+              "properties": {
+                "evidenceId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "quote": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

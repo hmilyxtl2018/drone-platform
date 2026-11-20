@@ -1,0 +1,245 @@
+{
+  "package": "coast-raid-k",
+  "type": "RuleCatalog",
+  "note": "封皮模块。规则结构冻结；每拍只评估 pass/fail/n/a，不得豁免 hard 与 roe。",
+  "stateModel": {
+    "kind": "runtime-eval",
+    "structure": "frozen",
+    "states": [
+      "pass",
+      "fail",
+      "n/a"
+    ],
+    "illegal": [
+      "waive",
+      "edit frozen_logic at run",
+      "open gate because saturate"
+    ]
+  },
+  "rules": [
+    {
+      "id": "N_bound",
+      "type": "Rule",
+      "modality": "hard",
+      "text": "第 k 波 N_k ≤ N_max，分层上限同时成立",
+      "params": {
+        "N_max": {
+          "hi": 3,
+          "mid": 3,
+          "lo": 6
+        },
+        "K_max": 4
+      },
+      "evalOn": "wave spawn",
+      "states": [
+        "pass",
+        "fail"
+      ],
+      "illegal": [
+        "N→∞",
+        "meanField"
+      ],
+      "enforce": "compile + wave spawn. fail ⇒ do not spawn.",
+      "sbvr": "It is necessary that N_k ≤ N_max per layer."
+    },
+    {
+      "id": "lo_in_corridor",
+      "type": "Rule",
+      "modality": "hard",
+      "text": "低空梯队轨迹 ⊂ C_low",
+      "evalOn": "each tick lo",
+      "states": [
+        "pass",
+        "fail"
+      ],
+      "illegal": [
+        "leave C_low"
+      ],
+      "enforce": "each tick lo. fail ⇒ trajectory illegal.",
+      "sbvr": "It is necessary that lo-track is subset of C_low."
+    },
+    {
+      "id": "gate",
+      "type": "Rule",
+      "modality": "roe",
+      "text": "过门 ⇔ 区内 ∧ p≥τ ∧ 岸上数据链通 ∧ m>0 ∧ 身份可分",
+      "params": {
+        "tau": 0.85,
+        "zone": "in",
+        "denied_blocks": true
+      },
+      "evalOn": "Permit insert",
+      "states": [
+        "pass",
+        "fail"
+      ],
+      "illegal": [
+        "waive when jammed",
+        "shell writes Permit"
+      ],
+      "enforce": "Permit insert. fail ⇒ no Permit.",
+      "sbvr": "It is obligatory that Permit only if in ∧ p≥τ ∧ G_up ∧ m>0 ∧ identity separable."
+    },
+    {
+      "id": "unk_no_list",
+      "type": "Rule",
+      "modality": "roe",
+      "text": "不明不进交战清单",
+      "evalOn": "Identity / Permit",
+      "states": [
+        "pass",
+        "fail"
+      ],
+      "illegal": [
+        "listable true for 不明"
+      ],
+      "enforce": "Identity / Permit. fail ⇒ not listable.",
+      "sbvr": "It is prohibited that 不明 is listable."
+    },
+    {
+      "id": "saturate_no_open",
+      "type": "Rule",
+      "modality": "roe",
+      "text": "饱和（λN_lo > m_SAM）不是开门理由",
+      "evalOn": "Permit insert",
+      "states": [
+        "pass",
+        "fail"
+      ],
+      "illegal": [
+        "m=0 still issue Permit"
+      ],
+      "enforce": "Permit insert. fail ⇒ still closed.",
+      "sbvr": "It is prohibited that saturation opens the gate."
+    },
+    {
+      "id": "ship_no_shoot",
+      "type": "Rule",
+      "modality": "roe",
+      "text": "舰载探测区内跟踪不打",
+      "evalOn": "zoneOf=ship",
+      "states": [
+        "pass",
+        "fail"
+      ],
+      "illegal": [
+        "Permit in B_ship"
+      ],
+      "enforce": "zoneOf=ship. fail ⇒ no Permit in B_ship.",
+      "sbvr": "It is prohibited that Permit occurs in B_ship."
+    },
+    {
+      "id": "envelope_not_occupy",
+      "type": "Rule",
+      "modality": "hard",
+      "text": "交战本体是可行集，不是占领区",
+      "evalOn": "compile + depict",
+      "states": [
+        "pass",
+        "fail"
+      ],
+      "illegal": [
+        "paint envelope as occupied"
+      ],
+      "enforce": "compile + depict. fail ⇒ package rejected.",
+      "sbvr": "It is necessary that Envelope is a feasible set, not an occupation zone."
+    },
+    {
+      "id": "no_person_auto",
+      "type": "Rule",
+      "modality": "roe",
+      "text": "不把人员选为类别并自动交战；授权门留下",
+      "evalOn": "compile",
+      "states": [
+        "pass",
+        "fail"
+      ],
+      "illegal": [
+        "person class as engageable"
+      ],
+      "enforce": "compile. fail ⇒ package rejected.",
+      "sbvr": "It is prohibited that person is an engageable class with automatic fire."
+    },
+    {
+      "id": "no_mean_field",
+      "type": "Rule",
+      "modality": "hard",
+      "text": "N 有限，均值场不进问题",
+      "evalOn": "compile",
+      "states": [
+        "pass",
+        "fail"
+      ],
+      "illegal": [
+        "N_max unbounded"
+      ],
+      "enforce": "compile. fail ⇒ package rejected.",
+      "sbvr": "It is necessary that N is finite. Mean-field is excluded."
+    },
+    {
+      "id": "no_satellite_sensor",
+      "type": "Rule",
+      "modality": "hard",
+      "text": "本幕情报源不含天基传感器",
+      "evalOn": "compile",
+      "states": [
+        "pass",
+        "fail"
+      ],
+      "illegal": [
+        "Sensor kind satellite"
+      ],
+      "enforce": "compile. fail ⇒ package rejected.",
+      "sbvr": "It is prohibited that Sensor kind is satellite."
+    },
+    {
+      "id": "fusion_split",
+      "type": "Rule",
+      "modality": "comm",
+      "text": "G(t) 断则队级融合不可用，只用局部 p；机间不断",
+      "evalOn": "each tick vis",
+      "states": [
+        "G_up",
+        "G_denied"
+      ],
+      "illegal": [
+        "team Permit while jammed"
+      ],
+      "enforce": "each tick vis. G_denied ⇒ local p only.",
+      "sbvr": "If G(t) is denied then team fusion is unavailable."
+    },
+    {
+      "id": "type_not_item",
+      "type": "Rule",
+      "modality": "hard",
+      "text": "inScene=false 的平台型不得进本幕波次",
+      "evalOn": "compile + wave spawn",
+      "states": [
+        "pass",
+        "fail"
+      ],
+      "illegal": [
+        "spawn catalog type"
+      ],
+      "enforce": "compile。型库只在 型谱，不进 N_k。",
+      "sbvr": "It is necessary that only inScene PlatformType appears in a wave."
+    },
+    {
+      "id": "hale_not_scene",
+      "type": "Rule",
+      "modality": "hard",
+      "text": "HALE/G5 不进本幕；它不是天基传感器，但超出本幕包络",
+      "evalOn": "compile",
+      "states": [
+        "pass",
+        "fail"
+      ],
+      "illegal": [
+        "HALE in wave",
+        "treat HALE as satelliteSensor"
+      ],
+      "enforce": "compile。uas-hale.inScene 必须为 false。",
+      "sbvr": "It is prohibited that HALE/G5 is an inScene type in this package."
+    }
+  ]
+}

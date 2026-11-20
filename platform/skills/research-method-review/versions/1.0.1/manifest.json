@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "agent-skill.v1",
+  "skillKey": "research-method-review",
+  "version": "1.0.1",
+  "name": "研究方法证据复核",
+  "description": "研究方法证据复核；不足时弃权。",
+  "applicability": {
+    "agentKeys": [
+      "scenario-analysis-action"
+    ],
+    "stepKeys": [
+      "structure-scenario-judgment"
+    ],
+    "stages": [
+      "research-method-review"
+    ]
+  },
+  "validatorRefs": [
+    "exact-evidence-id",
+    "immutable-method-input",
+    "no-probability-from-compatibility"
+  ]
+}

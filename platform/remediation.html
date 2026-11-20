@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>本体整改与验收</title>
+  <link rel="stylesheet" href="./kb-semantic.css">
+  <link rel="stylesheet" href="./remediation.css">
+</head>
+<body>
+  <header><a href="./kb.html">← 返回知识库</a><span>知识库质量记录 · 2026-09-29</span></header>
+  <main>
+    <p class="eyebrow">ONTOLOGY / QUALITY REVIEW</p>
+    <h1>本体整改与验收</h1>
+    <p class="lead">本轮处理全部导航对象的主体归属、类与实例表述、字段映射及验证证据。每项记录都区分已经修改的内容与仍需补齐的条件。</p>
+    <p class="notice" id="release-state">正在读取当前发布的验证报告…</p>
+    <section aria-label="覆盖与结果" id="metrics" class="metrics"></section>
+    <section class="report-section"><h2>当前数据的验证结果</h2><div id="validation"></div></section>
+    <section class="report-section"><h2>仍需补齐</h2><div id="residuals"></div></section>
+    <section class="report-section">
+      <div class="section-heading"><h2>21 项整改记录</h2><label>筛选 <select id="filter"><option value="all">全部</option><option value="implemented">已实施</option><option value="partial">有待完成项</option></select></label></div>
+      <p class="semantic-note">“已实施”表示工程修改已落地；最终关闭还需对应数据与领域验收。原来的“10项能力问题”是另一份运行能力清单。</p>
+      <div id="issues"></div>
+    </section>
+    <section class="report-section"><h2>本发布的可核对证据</h2><div id="evidence"></div><p id="version" class="semantic-note"></p></section>
+  </main>
+  <script type="module" src="./remediation.js"></script>
+</body>
+</html>

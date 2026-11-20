@@ -1,0 +1,39 @@
+{
+  "workspaceId": "future-battlefield",
+  "name": "未来战场研判",
+  "description": "围绕未来战争形态、关键特征、驱动因素、约束条件与演化趋势开展可审计多视角研判。",
+  "agentKey": "future-battlefield-analyst",
+  "profileVersion": "1.0.0",
+  "perspectives": [
+    {"key": "war-system", "name": "作战体系", "question": "指挥、编组、跨域协同和决策链如何变化？", "enabled": true},
+    {"key": "unmanned-autonomy", "name": "无人化与自主化", "question": "无人平台、自主决策和人机协同如何发展？", "enabled": true},
+    {"key": "sensing-data-link", "name": "传感器与数据链", "question": "感知、通信、融合和决策周期如何变化？", "enabled": true},
+    {"key": "electromagnetic-cyber", "name": "电磁与网络对抗", "question": "干扰、欺骗和网络攻击如何改变作战效果？", "enabled": true},
+    {"key": "industrial-logistics", "name": "工业与后勤", "question": "生产、补充、维修和消耗交换比如何变化？", "enabled": true},
+    {"key": "countermeasure-iteration", "name": "反制与技术迭代", "question": "攻防技术如何相互推动和快速迭代？", "enabled": true},
+    {"key": "cognitive-information", "name": "认知与信息战", "question": "信息优势、欺骗和认知影响如何作用？", "enabled": false},
+    {"key": "law-escalation", "name": "法律与升级风险", "question": "自主武器、误判、责任和冲突升级风险是什么？", "enabled": false}
+  ],
+  "resources": {
+    "maxToolCalls": 80,
+    "maxModelCalls": 24,
+    "maxRuntimeSeconds": 1800,
+    "maxConcurrentTasks": 3,
+    "maxRounds": 5,
+    "noNewFindingRounds": 2,
+    "nodeBudgets": {
+      "collect-public-evidence": {"firecrawl": {"maxSearchCalls": 18, "maxScrapeCalls": 30}, "deepseek": {"maxModelCalls": 2, "maxRounds": 1}},
+      "extract-facts": {"firecrawl": {"maxSearchCalls": 4, "maxScrapeCalls": 8}, "deepseek": {"maxModelCalls": 6, "maxRounds": 3}},
+      "extract-war-system": {"firecrawl": {"maxSearchCalls": 4, "maxScrapeCalls": 8}, "deepseek": {"maxModelCalls": 5, "maxRounds": 3}},
+      "fuse-evidence-and-conflicts": {"firecrawl": {"maxSearchCalls": 4, "maxScrapeCalls": 8}, "deepseek": {"maxModelCalls": 4, "maxRounds": 2}},
+      "analyze-by-perspective": {"firecrawl": {"maxSearchCalls": 0, "maxScrapeCalls": 0}, "deepseek": {"maxModelCalls": 3, "maxRounds": 2}},
+      "red-team-challenge": {"firecrawl": {"maxSearchCalls": 2, "maxScrapeCalls": 4}, "deepseek": {"maxModelCalls": 3, "maxRounds": 2}}
+    }
+  },
+  "materials": [],
+  "requirements": {
+    "evidenceLayers": ["fact", "judgment", "assumption", "unknown"],
+    "humanReviewRequired": true,
+    "conflictAction": "retain-and-escalate"
+  }
+}

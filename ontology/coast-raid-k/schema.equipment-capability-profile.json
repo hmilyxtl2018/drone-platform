@@ -1,0 +1,742 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "entityId",
+    "objectRevision",
+    "profileId",
+    "contentHash",
+    "identity",
+    "missionRoles",
+    "capabilities",
+    "quality",
+    "lineage",
+    "events",
+    "sources",
+    "insights",
+    "graph",
+    "limitations"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "equipment-capability-profile.v1"
+    },
+    "entityId": {
+      "type": "string"
+    },
+    "objectRevision": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "profileId": {
+      "type": "string"
+    },
+    "contentHash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "entityType",
+        "category",
+        "manufacturer",
+        "originCountry",
+        "variant",
+        "configuration",
+        "updatedAt"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "entityType": {
+          "type": "string"
+        },
+        "category": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "manufacturer": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "originCountry": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "variant": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "configuration": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "updatedAt": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "missionRoles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "label",
+          "basis",
+          "evidenceRefs"
+        ],
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "basis": {
+            "enum": [
+              "classification",
+              "source"
+            ]
+          },
+          "evidenceRefs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/EvidenceRef"
+            }
+          }
+        }
+      }
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/Capability"
+      }
+    },
+    "quality": {
+      "$ref": "#/$defs/Quality"
+    },
+    "lineage": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "insights": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "kind",
+          "statement",
+          "supportingRecordIds",
+          "limitations"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "kind": {
+            "enum": [
+              "fact",
+              "hypothesis",
+              "dependency",
+              "verification-need"
+            ]
+          },
+          "statement": {
+            "type": "string"
+          },
+          "supportingRecordIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "limitations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "graph": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "nodes",
+        "edges"
+      ],
+      "properties": {
+        "nodes": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        },
+        "edges": {
+          "type": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.ontology/schema/equipment-capability-profile.v1",
+  "$defs": {
+    "EvidenceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidenceId",
+        "sourceType",
+        "sourceRef",
+        "quote",
+        "locator",
+        "snapshotMatched"
+      ],
+      "properties": {
+        "evidenceId": {
+          "type": "string"
+        },
+        "sourceType": {
+          "enum": [
+            "workbook",
+            "web-page",
+            "osint-item",
+            "source-document",
+            "media"
+          ]
+        },
+        "sourceRef": {
+          "type": "string"
+        },
+        "sourceVersion": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "contentHash": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "quote": {
+          "type": "string"
+        },
+        "locator": {
+          "type": "object"
+        },
+        "snapshotMatched": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Metric": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "attributeKey",
+        "label",
+        "assertionId",
+        "origin",
+        "rawValue",
+        "value",
+        "unit",
+        "qualifier",
+        "lowerBound",
+        "upperBound",
+        "conditions",
+        "validTime",
+        "variant",
+        "configuration",
+        "claimState",
+        "verificationStatus",
+        "reviewStatus",
+        "extractionConfidence",
+        "evidenceRefs",
+        "missingReason",
+        "comparability",
+        "derivation"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "attributeKey": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "assertionId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "claimId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "auditRunId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "origin": {
+          "enum": [
+            "archive",
+            "candidate",
+            "gap"
+          ]
+        },
+        "rawValue": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "value": {
+          "type": [
+            "string",
+            "number",
+            "boolean",
+            "array",
+            "object",
+            "null"
+          ]
+        },
+        "unit": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "qualifier": {
+          "enum": [
+            "exact",
+            "approximate",
+            "range",
+            "at-least",
+            "at-most",
+            "greater-than",
+            "less-than",
+            "unspecified"
+          ]
+        },
+        "lowerBound": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "upperBound": {
+          "type": [
+            "number",
+            "null"
+          ]
+        },
+        "conditions": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "validTime": {
+          "type": [
+            "object",
+            "string",
+            "null"
+          ]
+        },
+        "variant": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "configuration": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "capabilityRole": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "mechanism",
+            "effect",
+            "constraint",
+            null
+          ]
+        },
+        "claimState": {
+          "enum": [
+            "observed",
+            "derived",
+            "assessed",
+            "unknown",
+            "conflict",
+            "rejected"
+          ]
+        },
+        "verificationStatus": {
+          "enum": [
+            "unverified",
+            "verified",
+            "conflict",
+            "unknown",
+            "rejected"
+          ]
+        },
+        "reviewStatus": {
+          "type": "string"
+        },
+        "extractionConfidence": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "evidenceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EvidenceRef"
+          }
+        },
+        "sourceObservationIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "evidenceBundleIds": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "evidenceLevel": {
+          "enum": [
+            "E0",
+            "E1",
+            "E2",
+            "E3",
+            "E4",
+            "E5"
+          ]
+        },
+        "truthVerified": {
+          "type": "boolean"
+        },
+        "missingReason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "comparability": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "eligible",
+            "reasons"
+          ],
+          "properties": {
+            "eligible": {
+              "type": "boolean"
+            },
+            "reasons": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "derivation": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "importConfidence": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "Capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "code",
+        "label",
+        "missionRole",
+        "operationalEffects",
+        "technicalMechanisms",
+        "metrics",
+        "constraints",
+        "questions",
+        "summary"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "code": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "missionRole": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "operationalEffects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SupportedStatement"
+          }
+        },
+        "technicalMechanisms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SupportedStatement"
+          }
+        },
+        "metrics": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Metric"
+          }
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SupportedStatement"
+          }
+        },
+        "questions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "summary": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "recordCount",
+            "presentCount",
+            "unknownCount",
+            "verifiedCount",
+            "conflictCount"
+          ],
+          "properties": {
+            "recordCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "presentCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "unknownCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "verifiedCount": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "conflictCount": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        }
+      }
+    },
+    "Quality": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "expectedFieldCount",
+        "presentFieldCount",
+        "valueCount",
+        "referencedCount",
+        "publicSourceCount",
+        "verifiedCount",
+        "conflictCount",
+        "fieldCoverage",
+        "referenceCoverage",
+        "publicSourceCoverage",
+        "verifiedCoverage"
+      ],
+      "properties": {
+        "historicalRejectedCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "expectedFieldCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "presentFieldCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "valueCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "referencedCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "publicSourceCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "verifiedCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "conflictCount": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "fieldCoverage": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "referenceCoverage": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "publicSourceCoverage": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        },
+        "verifiedCoverage": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
+    "SupportedStatement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "text",
+        "claimState",
+        "evidenceRefs",
+        "supportingRecordIds"
+      ],
+      "properties": {
+        "text": {
+          "type": "string"
+        },
+        "claimState": {
+          "enum": [
+            "observed",
+            "derived",
+            "assessed"
+          ]
+        },
+        "evidenceRefs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EvidenceRef"
+          }
+        },
+        "supportingRecordIds": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

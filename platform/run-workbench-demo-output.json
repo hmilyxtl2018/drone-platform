@@ -1,0 +1,1596 @@
+{
+  "summary": {
+    "runId": "run-workbench-demo",
+    "triggerCount": 1,
+    "eventCounts": {
+      "observations": 1,
+      "beliefs": 1,
+      "decisionDrafts": 1,
+      "approvalRequests": 5,
+      "humanDecisions": 5,
+      "authorizations": 5,
+      "executions": 5,
+      "audits": 30
+    },
+    "outcomes": {
+      "approved": {
+        "authorization": "allow",
+        "execution": "executed"
+      },
+      "rejected": {
+        "authorization": "deny",
+        "execution": "aborted"
+      },
+      "revoked": {
+        "authorization": "revoked",
+        "execution": "aborted"
+      },
+      "expired": {
+        "authorization": "expired",
+        "execution": "aborted"
+      },
+      "disconnected": {
+        "authorization": "active",
+        "execution": "aborted"
+      }
+    },
+    "replay": {
+      "runId": "run-workbench-demo",
+      "firstAudit": "run-started",
+      "lastAudit": "safe-fallback-triggered",
+      "auditKinds": [
+        "run-started",
+        "trigger-fired",
+        "human-review-requested",
+        "human-decision-recorded",
+        "authorization-issued",
+        "execution-started",
+        "effect-recorded",
+        "execution-completed",
+        "execution-aborted",
+        "authorization-revoked",
+        "safe-fallback-triggered"
+      ]
+    }
+  },
+  "trace": {
+    "run": {
+      "type": "Run",
+      "id": "run-workbench-demo",
+      "iri": "https://local.ontology/coast-raid-k/run/run-workbench-demo",
+      "modelId": "workbench-demo",
+      "modelRevision": "demo-v1"
+    },
+    "agents": [
+      {
+        "type": "AgentInstance",
+        "id": "world",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-world",
+        "agentType": "https://local.ontology/coast-raid-k/agent/1.0.0#agent-type-neutral-knowledge",
+        "implementedOn": "https://local.ontology/coast-raid-k/agent/1.0.0#platform-neutral",
+        "organization": "https://local.ontology/coast-raid-k/agent/1.0.0#org-red",
+        "roles": [],
+        "capabilities": [],
+        "runId": "run-workbench-demo",
+        "modelId": "workbench-demo",
+        "modelRevision": "demo-v1",
+        "decisionMode": "hybrid",
+        "autonomyLevel": "delegated",
+        "functionDomain": [
+          "World"
+        ],
+        "timeScale": [],
+        "humanControlMode": "on-the-loop",
+        "connectivityMode": "online",
+        "failureContainment": "local-action",
+        "safeFallbackPolicy": "deny-new-authorization",
+        "reversibility": "reversible",
+        "authorizationTtlSeconds": 8,
+        "lifecycleState": "active",
+        "authorityScope": [],
+        "validTime": {
+          "from": 0,
+          "to": null,
+          "clock": "sim",
+          "unit": "tick"
+        },
+        "provenance": {
+          "source": "platform/battle.js#makeAgent",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AgentInstance",
+        "id": "options",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-options",
+        "agentType": "https://local.ontology/coast-raid-k/agent/1.0.0#agent-type-neutral-reasoning",
+        "implementedOn": "https://local.ontology/coast-raid-k/agent/1.0.0#platform-neutral",
+        "organization": "https://local.ontology/coast-raid-k/agent/1.0.0#org-red",
+        "roles": [],
+        "capabilities": [],
+        "runId": "run-workbench-demo",
+        "modelId": "workbench-demo",
+        "modelRevision": "demo-v1",
+        "decisionMode": "hybrid",
+        "autonomyLevel": "delegated",
+        "functionDomain": [
+          "Options"
+        ],
+        "timeScale": [],
+        "humanControlMode": "in-the-loop",
+        "connectivityMode": "online",
+        "failureContainment": "local-action",
+        "safeFallbackPolicy": "deny-new-authorization",
+        "reversibility": "reversible",
+        "authorizationTtlSeconds": 8,
+        "lifecycleState": "active",
+        "authorityScope": [],
+        "validTime": {
+          "from": 0,
+          "to": null,
+          "clock": "sim",
+          "unit": "tick"
+        },
+        "provenance": {
+          "source": "platform/battle.js#makeAgent",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AgentInstance",
+        "id": "gate",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-gate",
+        "agentType": "https://local.ontology/coast-raid-k/agent/1.0.0#agent-type-neutral-control",
+        "implementedOn": "https://local.ontology/coast-raid-k/agent/1.0.0#platform-neutral",
+        "organization": "https://local.ontology/coast-raid-k/agent/1.0.0#org-red",
+        "roles": [],
+        "capabilities": [],
+        "runId": "run-workbench-demo",
+        "modelId": "workbench-demo",
+        "modelRevision": "demo-v1",
+        "decisionMode": "hybrid",
+        "autonomyLevel": "delegated",
+        "functionDomain": [
+          "Gate"
+        ],
+        "timeScale": [],
+        "humanControlMode": "in-the-loop",
+        "connectivityMode": "online",
+        "failureContainment": "local-action",
+        "safeFallbackPolicy": "deny-new-authorization",
+        "reversibility": "reversible",
+        "authorizationTtlSeconds": 4,
+        "lifecycleState": "active",
+        "authorityScope": [],
+        "validTime": {
+          "from": 0,
+          "to": null,
+          "clock": "sim",
+          "unit": "tick"
+        },
+        "provenance": {
+          "source": "platform/battle.js#makeAgent",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AgentInstance",
+        "id": "evidence-effector",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-evidence-effector",
+        "agentType": "https://local.ontology/coast-raid-k/agent/1.0.0#agent-type-neutral-execution",
+        "implementedOn": "https://local.ontology/coast-raid-k/agent/1.0.0#platform-neutral",
+        "organization": "https://local.ontology/coast-raid-k/agent/1.0.0#org-red",
+        "roles": [],
+        "capabilities": [],
+        "runId": "run-workbench-demo",
+        "modelId": "workbench-demo",
+        "modelRevision": "demo-v1",
+        "decisionMode": "hybrid",
+        "autonomyLevel": "delegated",
+        "functionDomain": [
+          "Effectors"
+        ],
+        "timeScale": [],
+        "humanControlMode": "on-the-loop",
+        "connectivityMode": "online",
+        "failureContainment": "local-action",
+        "safeFallbackPolicy": "deny-new-authorization",
+        "reversibility": "reversible",
+        "authorizationTtlSeconds": 8,
+        "lifecycleState": "active",
+        "authorityScope": [],
+        "validTime": {
+          "from": 0,
+          "to": null,
+          "clock": "sim",
+          "unit": "tick"
+        },
+        "provenance": {
+          "source": "platform/battle.js#makeAgent",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      }
+    ],
+    "observations": [
+      {
+        "type": "Observation",
+        "id": "obs-1",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1",
+        "assertedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-world",
+        "observedEntity": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-record-17",
+        "observationKind": "source-evidence",
+        "observedAt": "2026-01-01T00:00:00.040Z",
+        "sourceIri": "kb:source-registry",
+        "confidence": 0.81,
+        "frame": "coast-raid-k-local",
+        "payload": {
+          "subject": "record-17",
+          "version": "v3",
+          "completeness": 0.62
+        },
+        "runId": "run-workbench-demo",
+        "provenance": {
+          "source": "platform/battle.js#step",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      }
+    ],
+    "beliefs": [
+      {
+        "type": "BeliefAssertion",
+        "id": "belief-1",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-belief-1",
+        "assertedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-world",
+        "aboutIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1",
+        "predicate": "hasBeliefProbability",
+        "proposition": "source-evidence-is-incomplete",
+        "objectValue": true,
+        "derivedFrom": [
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1"
+        ],
+        "derivedBy": "cloud-belief-revision",
+        "confidence": 0.63,
+        "probability": 0.63,
+        "validTime": {
+          "from": 2,
+          "to": null,
+          "clock": "sim",
+          "unit": "tick"
+        },
+        "runId": "run-workbench-demo",
+        "provenance": {
+          "source": "platform/knowledge.js#belief-revision",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      }
+    ],
+    "decisions": [],
+    "decisionDrafts": [
+      {
+        "type": "DecisionDraft",
+        "id": "draft-1",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-draft-1",
+        "proposedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-options",
+        "recommendation": {
+          "action": "collect-evidence",
+          "targetIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1",
+          "rationale": "证据不足以支持动作请求，建议继续观测并补充身份/位置证据。"
+        },
+        "rationale": "证据不足以支持动作请求，建议继续观测并补充身份/位置证据。",
+        "alternatives": [
+          {
+            "action": "continue-tracking"
+          },
+          {
+            "action": "request-more-evidence"
+          }
+        ],
+        "evidenceUris": [
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1",
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-belief-1"
+        ],
+        "uncertainties": [
+          "identity-evidence-insufficient"
+        ],
+        "status": "draft",
+        "provider": "deterministic-recommendation",
+        "modelId": "rules-only",
+        "modelRevision": "demo-v1",
+        "contextHash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "createdAt": "2026-01-01T00:00:00.120Z",
+        "runId": "run-workbench-demo",
+        "provenance": {
+          "source": "platform/runtime#recommendation",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      }
+    ],
+    "actionRequests": [
+      {
+        "type": "ActionRequest",
+        "id": "request-1",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-1",
+        "requestedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-options",
+        "action": "collect-evidence",
+        "targetIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1",
+        "decisionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-draft-1",
+        "parameters": {
+          "scope": "record-17",
+          "maxItems": 5
+        },
+        "requestedAt": "2026-01-01T00:00:00.160Z",
+        "runId": "run-workbench-demo",
+        "status": "executed",
+        "provenance": {
+          "source": "platform/battle.js#action-request",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        },
+        "approvalRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-review-1",
+        "humanDecisionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-human-1",
+        "authorizationIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-auth-1",
+        "executionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-exec-1"
+      },
+      {
+        "type": "ActionRequest",
+        "id": "request-2",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-2",
+        "requestedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-options",
+        "action": "collect-evidence",
+        "targetIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1",
+        "decisionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-draft-1",
+        "parameters": {
+          "scope": "record-17",
+          "maxItems": 5
+        },
+        "requestedAt": "2026-01-01T00:00:00.400Z",
+        "runId": "run-workbench-demo",
+        "status": "aborted",
+        "provenance": {
+          "source": "platform/battle.js#action-request",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        },
+        "approvalRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-review-2",
+        "humanDecisionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-human-2",
+        "authorizationIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-auth-2",
+        "executionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-exec-2"
+      },
+      {
+        "type": "ActionRequest",
+        "id": "request-3",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-3",
+        "requestedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-options",
+        "action": "collect-evidence",
+        "targetIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1",
+        "decisionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-draft-1",
+        "parameters": {
+          "scope": "record-17",
+          "maxItems": 5
+        },
+        "requestedAt": "2026-01-01T00:00:00.800Z",
+        "runId": "run-workbench-demo",
+        "status": "aborted",
+        "provenance": {
+          "source": "platform/battle.js#action-request",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        },
+        "approvalRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-review-3",
+        "humanDecisionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-human-3",
+        "authorizationIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-auth-3",
+        "executionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-exec-3"
+      },
+      {
+        "type": "ActionRequest",
+        "id": "request-4",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-4",
+        "requestedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-options",
+        "action": "collect-evidence",
+        "targetIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1",
+        "decisionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-draft-1",
+        "parameters": {
+          "scope": "record-17",
+          "maxItems": 5
+        },
+        "requestedAt": "2026-01-01T00:00:01.200Z",
+        "runId": "run-workbench-demo",
+        "status": "aborted",
+        "provenance": {
+          "source": "platform/battle.js#action-request",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        },
+        "approvalRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-review-4",
+        "humanDecisionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-human-4",
+        "authorizationIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-auth-4",
+        "executionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-exec-4"
+      },
+      {
+        "type": "ActionRequest",
+        "id": "request-5",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-5",
+        "requestedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-options",
+        "action": "collect-evidence",
+        "targetIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1",
+        "decisionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-draft-1",
+        "parameters": {
+          "scope": "record-17",
+          "maxItems": 5
+        },
+        "requestedAt": "2026-01-01T00:00:02.000Z",
+        "runId": "run-workbench-demo",
+        "status": "aborted",
+        "provenance": {
+          "source": "platform/battle.js#action-request",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        },
+        "approvalRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-review-5",
+        "humanDecisionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-human-5",
+        "authorizationIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-auth-5",
+        "executionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-exec-5"
+      }
+    ],
+    "approvalRequests": [
+      {
+        "type": "ApprovalRequest",
+        "id": "review-1",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-review-1",
+        "actionRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-1",
+        "recommendationIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-draft-1",
+        "requestedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-options",
+        "requiredHumanControlMode": "in-the-loop",
+        "risk": "low",
+        "status": "approved",
+        "reviewStatus": "approved",
+        "reason": "需要人工确认范围受限的证据采集。",
+        "evidenceUris": [
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1",
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-belief-1"
+        ],
+        "submittedAt": "2026-01-01T00:00:00.160Z",
+        "requestedAt": "2026-01-01T00:00:00.160Z",
+        "expiresAtTick": 14,
+        "expiresAt": "2026-01-01T00:00:00.560Z",
+        "runId": "run-workbench-demo",
+        "provenance": {
+          "source": "platform/runtime#human-review",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        },
+        "decisionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-human-1"
+      },
+      {
+        "type": "ApprovalRequest",
+        "id": "review-2",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-review-2",
+        "actionRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-2",
+        "recommendationIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-draft-1",
+        "requestedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-options",
+        "requiredHumanControlMode": "in-the-loop",
+        "risk": "low",
+        "status": "rejected",
+        "reviewStatus": "rejected",
+        "reason": "需要人工确认范围受限的证据采集。",
+        "evidenceUris": [
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1",
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-belief-1"
+        ],
+        "submittedAt": "2026-01-01T00:00:00.400Z",
+        "requestedAt": "2026-01-01T00:00:00.400Z",
+        "expiresAtTick": 20,
+        "expiresAt": "2026-01-01T00:00:00.800Z",
+        "runId": "run-workbench-demo",
+        "provenance": {
+          "source": "platform/runtime#human-review",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        },
+        "decisionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-human-2"
+      },
+      {
+        "type": "ApprovalRequest",
+        "id": "review-3",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-review-3",
+        "actionRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-3",
+        "recommendationIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-draft-1",
+        "requestedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-options",
+        "requiredHumanControlMode": "in-the-loop",
+        "risk": "low",
+        "status": "approved",
+        "reviewStatus": "approved",
+        "reason": "需要人工确认范围受限的证据采集。",
+        "evidenceUris": [
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1",
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-belief-1"
+        ],
+        "submittedAt": "2026-01-01T00:00:00.800Z",
+        "requestedAt": "2026-01-01T00:00:00.800Z",
+        "expiresAtTick": 30,
+        "expiresAt": "2026-01-01T00:00:01.200Z",
+        "runId": "run-workbench-demo",
+        "provenance": {
+          "source": "platform/runtime#human-review",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        },
+        "decisionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-human-3"
+      },
+      {
+        "type": "ApprovalRequest",
+        "id": "review-4",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-review-4",
+        "actionRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-4",
+        "recommendationIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-draft-1",
+        "requestedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-options",
+        "requiredHumanControlMode": "in-the-loop",
+        "risk": "low",
+        "status": "approved",
+        "reviewStatus": "approved",
+        "reason": "需要人工确认范围受限的证据采集。",
+        "evidenceUris": [
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1",
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-belief-1"
+        ],
+        "submittedAt": "2026-01-01T00:00:01.200Z",
+        "requestedAt": "2026-01-01T00:00:01.200Z",
+        "expiresAtTick": 40,
+        "expiresAt": "2026-01-01T00:00:01.600Z",
+        "runId": "run-workbench-demo",
+        "provenance": {
+          "source": "platform/runtime#human-review",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        },
+        "decisionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-human-4"
+      },
+      {
+        "type": "ApprovalRequest",
+        "id": "review-5",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-review-5",
+        "actionRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-5",
+        "recommendationIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-draft-1",
+        "requestedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-options",
+        "requiredHumanControlMode": "in-the-loop",
+        "risk": "low",
+        "status": "approved",
+        "reviewStatus": "approved",
+        "reason": "需要人工确认范围受限的证据采集。",
+        "evidenceUris": [
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1",
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-belief-1"
+        ],
+        "submittedAt": "2026-01-01T00:00:02.000Z",
+        "requestedAt": "2026-01-01T00:00:02.000Z",
+        "expiresAtTick": 60,
+        "expiresAt": "2026-01-01T00:00:02.400Z",
+        "runId": "run-workbench-demo",
+        "provenance": {
+          "source": "platform/runtime#human-review",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        },
+        "decisionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-human-5"
+      }
+    ],
+    "humanDecisions": [
+      {
+        "type": "HumanDecision",
+        "id": "human-1",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-human-1",
+        "approvalRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-review-1",
+        "actionRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-1",
+        "decidedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-operator:hmily",
+        "decision": "approved",
+        "reason": "批准低风险、范围受限的证据采集。",
+        "decidedAt": "2026-01-01T00:00:00.200Z",
+        "evidenceUris": [
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1",
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-belief-1"
+        ],
+        "runId": "run-workbench-demo",
+        "provenance": {
+          "source": "platform/runtime#human-decision",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "HumanDecision",
+        "id": "human-2",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-human-2",
+        "approvalRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-review-2",
+        "actionRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-2",
+        "decidedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-operator:hmily",
+        "decision": "rejected",
+        "reason": "暂不接受该来源范围。",
+        "decidedAt": "2026-01-01T00:00:00.440Z",
+        "evidenceUris": [
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1",
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-belief-1"
+        ],
+        "runId": "run-workbench-demo",
+        "provenance": {
+          "source": "platform/runtime#human-decision",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "HumanDecision",
+        "id": "human-3",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-human-3",
+        "approvalRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-review-3",
+        "actionRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-3",
+        "decidedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-operator:hmily",
+        "decision": "approved",
+        "reason": "批准后续证据采集。",
+        "decidedAt": "2026-01-01T00:00:00.840Z",
+        "evidenceUris": [
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1",
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-belief-1"
+        ],
+        "runId": "run-workbench-demo",
+        "provenance": {
+          "source": "platform/runtime#human-decision",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "HumanDecision",
+        "id": "human-4",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-human-4",
+        "approvalRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-review-4",
+        "actionRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-4",
+        "decidedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-operator:hmily",
+        "decision": "approved",
+        "reason": "批准短时证据采集。",
+        "decidedAt": "2026-01-01T00:00:01.240Z",
+        "evidenceUris": [
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1",
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-belief-1"
+        ],
+        "runId": "run-workbench-demo",
+        "provenance": {
+          "source": "platform/runtime#human-decision",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "HumanDecision",
+        "id": "human-5",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-human-5",
+        "approvalRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-review-5",
+        "actionRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-5",
+        "decidedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-operator:hmily",
+        "decision": "approved",
+        "reason": "批准，但失联时必须中止。",
+        "decidedAt": "2026-01-01T00:00:02.040Z",
+        "evidenceUris": [
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1",
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-belief-1"
+        ],
+        "runId": "run-workbench-demo",
+        "provenance": {
+          "source": "platform/runtime#human-decision",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      }
+    ],
+    "authorizations": [
+      {
+        "type": "Authorization",
+        "id": "auth-1",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-auth-1",
+        "requestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-1",
+        "decidedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-gate",
+        "result": "allow",
+        "authorizationStatus": "active",
+        "reasonCode": "bounded-reversible-evidence",
+        "checks": {
+          "scope": true
+        },
+        "decisionTime": "2026-01-01T00:00:00.240Z",
+        "issuedAt": "2026-01-01T00:00:00.240Z",
+        "expiresAt": "2026-01-01T00:00:00.400Z",
+        "expiresAtTick": 10,
+        "revocable": true,
+        "scope": [
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1"
+        ],
+        "abortConditions": [
+          "authorization-invalid",
+          "link-lost",
+          "unsafe-state"
+        ],
+        "safeFallbackPolicy": "deny-new-authorization",
+        "reversibility": "reversible",
+        "failureContainment": "local-action",
+        "requiredHumanControlMode": "in-the-loop",
+        "ruleVersion": "gate-demo-v1",
+        "policyVersion": "gate-demo-v1",
+        "evidenceUris": [
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1"
+        ],
+        "approvalRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-review-1",
+        "humanDecisionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-human-1",
+        "decidedByFunctionDomain": "Gate",
+        "runId": "run-workbench-demo",
+        "provenance": {
+          "source": "platform/knowledge.js#authorize",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "Authorization",
+        "id": "auth-2",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-auth-2",
+        "requestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-2",
+        "decidedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-gate",
+        "result": "deny",
+        "authorizationStatus": "active",
+        "reasonCode": "human-review-denied",
+        "checks": {
+          "scope": true,
+          "evidence": true,
+          "connectivity": true
+        },
+        "decisionTime": "2026-01-01T00:00:00.480Z",
+        "issuedAt": "2026-01-01T00:00:00.480Z",
+        "expiresAt": "2026-01-01T00:00:00.640Z",
+        "expiresAtTick": 16,
+        "revocable": true,
+        "scope": [
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1"
+        ],
+        "abortConditions": [
+          "authorization-invalid",
+          "link-lost",
+          "unsafe-state"
+        ],
+        "safeFallbackPolicy": "deny-new-authorization",
+        "reversibility": "reversible",
+        "failureContainment": "local-action",
+        "requiredHumanControlMode": "in-the-loop",
+        "ruleVersion": "gate-demo-v1",
+        "policyVersion": "gate-demo-v1",
+        "evidenceUris": [
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1",
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-belief-1"
+        ],
+        "approvalRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-review-2",
+        "humanDecisionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-human-2",
+        "decidedByFunctionDomain": "Gate",
+        "runId": "run-workbench-demo",
+        "provenance": {
+          "source": "platform/knowledge.js#authorize",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "Authorization",
+        "id": "auth-3",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-auth-3",
+        "requestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-3",
+        "decidedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-gate",
+        "result": "allow",
+        "authorizationStatus": "revoked",
+        "reasonCode": "bounded-reversible-evidence",
+        "checks": {
+          "scope": true,
+          "evidence": true,
+          "connectivity": true
+        },
+        "decisionTime": "2026-01-01T00:00:00.880Z",
+        "issuedAt": "2026-01-01T00:00:00.880Z",
+        "expiresAt": "2026-01-01T00:00:01.200Z",
+        "expiresAtTick": 30,
+        "revocable": true,
+        "scope": [
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1"
+        ],
+        "abortConditions": [
+          "authorization-invalid",
+          "link-lost",
+          "unsafe-state"
+        ],
+        "safeFallbackPolicy": "deny-new-authorization",
+        "reversibility": "reversible",
+        "failureContainment": "local-action",
+        "requiredHumanControlMode": "in-the-loop",
+        "ruleVersion": "gate-demo-v1",
+        "policyVersion": "gate-demo-v1",
+        "evidenceUris": [
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1",
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-belief-1"
+        ],
+        "approvalRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-review-3",
+        "humanDecisionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-human-3",
+        "decidedByFunctionDomain": "Gate",
+        "runId": "run-workbench-demo",
+        "provenance": {
+          "source": "platform/knowledge.js#authorize",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        },
+        "revokedAt": "2026-01-01T00:00:00.920Z",
+        "revocationReason": "operator-revoked"
+      },
+      {
+        "type": "Authorization",
+        "id": "auth-4",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-auth-4",
+        "requestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-4",
+        "decidedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-gate",
+        "result": "allow",
+        "authorizationStatus": "expired",
+        "reasonCode": "bounded-reversible-evidence",
+        "checks": {
+          "scope": true,
+          "evidence": true,
+          "connectivity": true
+        },
+        "decisionTime": "2026-01-01T00:00:01.280Z",
+        "issuedAt": "2026-01-01T00:00:01.280Z",
+        "expiresAt": "2026-01-01T00:00:01.320Z",
+        "expiresAtTick": 33,
+        "revocable": true,
+        "scope": [
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1"
+        ],
+        "abortConditions": [
+          "authorization-invalid",
+          "link-lost",
+          "unsafe-state"
+        ],
+        "safeFallbackPolicy": "deny-new-authorization",
+        "reversibility": "reversible",
+        "failureContainment": "local-action",
+        "requiredHumanControlMode": "in-the-loop",
+        "ruleVersion": "gate-demo-v1",
+        "policyVersion": "gate-demo-v1",
+        "evidenceUris": [
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1",
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-belief-1"
+        ],
+        "approvalRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-review-4",
+        "humanDecisionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-human-4",
+        "decidedByFunctionDomain": "Gate",
+        "runId": "run-workbench-demo",
+        "provenance": {
+          "source": "platform/knowledge.js#authorize",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "Authorization",
+        "id": "auth-5",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-auth-5",
+        "requestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-5",
+        "decidedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-gate",
+        "result": "allow",
+        "authorizationStatus": "active",
+        "reasonCode": "bounded-reversible-evidence",
+        "checks": {
+          "scope": true,
+          "evidence": true,
+          "connectivity": true
+        },
+        "decisionTime": "2026-01-01T00:00:02.080Z",
+        "issuedAt": "2026-01-01T00:00:02.080Z",
+        "expiresAt": "2026-01-01T00:00:02.400Z",
+        "expiresAtTick": 60,
+        "revocable": true,
+        "scope": [
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1"
+        ],
+        "abortConditions": [
+          "authorization-invalid",
+          "link-lost",
+          "unsafe-state"
+        ],
+        "safeFallbackPolicy": "deny-new-authorization",
+        "reversibility": "reversible",
+        "failureContainment": "local-action",
+        "requiredHumanControlMode": "in-the-loop",
+        "ruleVersion": "gate-demo-v1",
+        "policyVersion": "gate-demo-v1",
+        "evidenceUris": [
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-obs-1",
+          "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-belief-1"
+        ],
+        "approvalRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-review-5",
+        "humanDecisionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-human-5",
+        "decidedByFunctionDomain": "Gate",
+        "runId": "run-workbench-demo",
+        "provenance": {
+          "source": "platform/knowledge.js#authorize",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      }
+    ],
+    "executions": [
+      {
+        "type": "ActionExecution",
+        "id": "exec-1",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-exec-1",
+        "requestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-1",
+        "realizedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-evidence-effector",
+        "result": "evidence-recorded",
+        "executionStatus": "executed",
+        "authorizationIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-auth-1",
+        "expiresAt": "2026-01-01T00:00:00.400Z",
+        "abortCondition": "authorization-invalid; link-lost; unsafe-state",
+        "safeFallbackPolicy": "deny-new-authorization",
+        "reversibility": "reversible",
+        "failureContainment": "local-action",
+        "effect": {
+          "record": "record-17",
+          "version": "v4"
+        },
+        "executedAt": "2026-01-01T00:00:00.280Z",
+        "runId": "run-workbench-demo",
+        "provenance": {
+          "source": "platform/battle.js#action-execution",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "ActionExecution",
+        "id": "exec-2",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-exec-2",
+        "requestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-2",
+        "realizedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-evidence-effector",
+        "result": "blocked-unsafe",
+        "executionStatus": "aborted",
+        "authorizationIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-auth-2",
+        "expiresAt": "2026-01-01T00:00:00.640Z",
+        "abortCondition": "authorization-invalid; link-lost; unsafe-state",
+        "safeFallbackPolicy": "deny-new-authorization",
+        "reversibility": "reversible",
+        "failureContainment": "local-action",
+        "effect": {
+          "safeFallbackApplied": true
+        },
+        "executedAt": "2026-01-01T00:00:00.520Z",
+        "runId": "run-workbench-demo",
+        "provenance": {
+          "source": "platform/battle.js#action-execution",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "ActionExecution",
+        "id": "exec-3",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-exec-3",
+        "requestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-3",
+        "realizedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-evidence-effector",
+        "result": "blocked-unsafe",
+        "executionStatus": "aborted",
+        "authorizationIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-auth-3",
+        "expiresAt": "2026-01-01T00:00:01.200Z",
+        "abortCondition": "authorization-invalid; link-lost; unsafe-state",
+        "safeFallbackPolicy": "deny-new-authorization",
+        "reversibility": "reversible",
+        "failureContainment": "local-action",
+        "effect": {
+          "safeFallbackApplied": true
+        },
+        "executedAt": "2026-01-01T00:00:00.960Z",
+        "runId": "run-workbench-demo",
+        "provenance": {
+          "source": "platform/battle.js#action-execution",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "ActionExecution",
+        "id": "exec-4",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-exec-4",
+        "requestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-4",
+        "realizedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-evidence-effector",
+        "result": "blocked-unsafe",
+        "executionStatus": "aborted",
+        "authorizationIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-auth-4",
+        "expiresAt": "2026-01-01T00:00:01.320Z",
+        "abortCondition": "authorization-invalid; link-lost; unsafe-state",
+        "safeFallbackPolicy": "deny-new-authorization",
+        "reversibility": "reversible",
+        "failureContainment": "local-action",
+        "effect": {
+          "safeFallbackApplied": true
+        },
+        "executedAt": "2026-01-01T00:00:01.600Z",
+        "runId": "run-workbench-demo",
+        "provenance": {
+          "source": "platform/battle.js#action-execution",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "ActionExecution",
+        "id": "exec-5",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-exec-5",
+        "requestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-5",
+        "realizedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-evidence-effector",
+        "result": "blocked-unsafe",
+        "executionStatus": "aborted",
+        "authorizationIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-auth-5",
+        "expiresAt": "2026-01-01T00:00:02.400Z",
+        "abortCondition": "authorization-invalid; link-lost; unsafe-state",
+        "safeFallbackPolicy": "deny-new-authorization",
+        "reversibility": "reversible",
+        "failureContainment": "local-action",
+        "effect": {
+          "safeFallbackApplied": true
+        },
+        "executedAt": "2026-01-01T00:00:02.120Z",
+        "runId": "run-workbench-demo",
+        "provenance": {
+          "source": "platform/battle.js#action-execution",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      }
+    ],
+    "auditEvents": [
+      {
+        "type": "AuditEvent",
+        "id": "audit-1",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-1",
+        "kind": "run-started",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-run-workbench-demo",
+        "occurredAt": "2026-01-01T00:00:00.000Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "packageId": "coast-raid-k",
+          "packageVersion": "0.9.4",
+          "mode": "replayable-demo"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-2",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-2",
+        "kind": "trigger-fired",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-run-workbench-demo",
+        "occurredAt": "2026-01-01T00:00:00.000Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "triggerId": "trigger-observation-to-options",
+          "eventId": "obs-1"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-3",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-3",
+        "kind": "human-review-requested",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-1",
+        "occurredAt": "2026-01-01T00:00:00.160Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "approvalRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-review-1"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-4",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-4",
+        "kind": "human-decision-recorded",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-1",
+        "occurredAt": "2026-01-01T00:00:00.200Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "decision": "approved",
+          "humanDecisionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-human-1"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-5",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-5",
+        "kind": "authorization-issued",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-1",
+        "occurredAt": "2026-01-01T00:00:00.240Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "authorizationIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-auth-1",
+          "result": "allow"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-6",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-6",
+        "kind": "execution-started",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-1",
+        "occurredAt": "2026-01-01T00:00:00.280Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "executor": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-evidence-effector",
+          "authorizationIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-auth-1"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-7",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-7",
+        "kind": "effect-recorded",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-1",
+        "occurredAt": "2026-01-01T00:00:00.280Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "executionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-exec-1",
+          "effect": {
+            "record": "record-17",
+            "version": "v4"
+          }
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-8",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-8",
+        "kind": "execution-completed",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-1",
+        "occurredAt": "2026-01-01T00:00:00.280Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "executionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-exec-1",
+          "status": "executed"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-9",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-9",
+        "kind": "human-review-requested",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-2",
+        "occurredAt": "2026-01-01T00:00:00.400Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "approvalRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-review-2"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-10",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-10",
+        "kind": "human-decision-recorded",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-2",
+        "occurredAt": "2026-01-01T00:00:00.440Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "decision": "rejected",
+          "humanDecisionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-human-2"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-11",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-11",
+        "kind": "authorization-issued",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-2",
+        "occurredAt": "2026-01-01T00:00:00.480Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "authorizationIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-auth-2",
+          "result": "deny"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-12",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-12",
+        "kind": "execution-started",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-2",
+        "occurredAt": "2026-01-01T00:00:00.520Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "executor": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-evidence-effector",
+          "authorizationIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-auth-2"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-13",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-13",
+        "kind": "execution-aborted",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-2",
+        "occurredAt": "2026-01-01T00:00:00.520Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "executionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-exec-2",
+          "status": "aborted"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-14",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-14",
+        "kind": "human-review-requested",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-3",
+        "occurredAt": "2026-01-01T00:00:00.800Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "approvalRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-review-3"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-15",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-15",
+        "kind": "human-decision-recorded",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-3",
+        "occurredAt": "2026-01-01T00:00:00.840Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "decision": "approved",
+          "humanDecisionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-human-3"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-16",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-16",
+        "kind": "authorization-issued",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-3",
+        "occurredAt": "2026-01-01T00:00:00.880Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "authorizationIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-auth-3",
+          "result": "allow"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-17",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-17",
+        "kind": "authorization-revoked",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-auth-3",
+        "occurredAt": "2026-01-01T00:00:00.920Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "reason": "operator-revoked"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-18",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-18",
+        "kind": "execution-started",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-3",
+        "occurredAt": "2026-01-01T00:00:00.960Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "executor": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-evidence-effector",
+          "authorizationIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-auth-3"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-19",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-19",
+        "kind": "execution-aborted",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-3",
+        "occurredAt": "2026-01-01T00:00:00.960Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "executionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-exec-3",
+          "status": "aborted"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-20",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-20",
+        "kind": "human-review-requested",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-4",
+        "occurredAt": "2026-01-01T00:00:01.200Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "approvalRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-review-4"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-21",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-21",
+        "kind": "human-decision-recorded",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-4",
+        "occurredAt": "2026-01-01T00:00:01.240Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "decision": "approved",
+          "humanDecisionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-human-4"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-22",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-22",
+        "kind": "authorization-issued",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-4",
+        "occurredAt": "2026-01-01T00:00:01.280Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "authorizationIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-auth-4",
+          "result": "allow"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-23",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-23",
+        "kind": "execution-started",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-4",
+        "occurredAt": "2026-01-01T00:00:01.600Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "executor": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-evidence-effector",
+          "authorizationIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-auth-4"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-24",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-24",
+        "kind": "execution-aborted",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-4",
+        "occurredAt": "2026-01-01T00:00:01.600Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "executionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-exec-4",
+          "status": "aborted"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-25",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-25",
+        "kind": "human-review-requested",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-5",
+        "occurredAt": "2026-01-01T00:00:02.000Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "approvalRequestIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-review-5"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-26",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-26",
+        "kind": "human-decision-recorded",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-5",
+        "occurredAt": "2026-01-01T00:00:02.040Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "decision": "approved",
+          "humanDecisionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-human-5"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-27",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-27",
+        "kind": "authorization-issued",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-5",
+        "occurredAt": "2026-01-01T00:00:02.080Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "authorizationIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-auth-5",
+          "result": "allow"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-28",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-28",
+        "kind": "execution-started",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-5",
+        "occurredAt": "2026-01-01T00:00:02.120Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "executor": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-evidence-effector",
+          "authorizationIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-auth-5"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-29",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-29",
+        "kind": "execution-aborted",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-request-5",
+        "occurredAt": "2026-01-01T00:00:02.120Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "executionIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-exec-5",
+          "status": "aborted"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      },
+      {
+        "type": "AuditEvent",
+        "id": "audit-30",
+        "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-audit-30",
+        "kind": "safe-fallback-triggered",
+        "subjectIri": "https://local.ontology/coast-raid-k/agent/1.0.0#run-workbench-demo-run-workbench-demo",
+        "occurredAt": "2026-01-01T00:00:02.120Z",
+        "runId": "run-workbench-demo",
+        "payload": {
+          "reason": "connectivity-lost",
+          "policy": "deny-new-authorization"
+        },
+        "provenance": {
+          "source": "platform/runtime#audit",
+          "hashStatus": "not-computed",
+          "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#runtime-ledger"
+        }
+      }
+    ]
+  }
+}

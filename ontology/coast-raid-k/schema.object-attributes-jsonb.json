@@ -1,0 +1,838 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.ontology/coast-raid-k/intelligence/1.0.0/schema.object-attributes-jsonb.json",
+  "title": "统一对象属性 JSONB 快照",
+  "description": "用于 ontology_entity.attributes 的统一 JSONB 契约。每个属性键可以保存多个来源断言；原始值、规范值、证据和审核状态必须同时保留。该结构校验形状和字段完整性，跨来源语义、单位量纲和引文逐字匹配仍由运行时及人工审核完成。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "objectId",
+    "objectType",
+    "objectRevision",
+    "attributes",
+    "completeness",
+    "provenance"
+  ],
+  "properties": {
+    "schemaVersion": {
+      "const": "equipment-attributes.v1"
+    },
+    "objectId": {
+      "$ref": "#/$defs/EntityId"
+    },
+    "objectType": {
+      "enum": [
+        "EquipmentModel",
+        "Organization",
+        "Technology",
+        "Program",
+        "TestEvent",
+        "ProcurementEvent",
+        "ProductionEvent",
+        "CombatEvent",
+        "LossEvent",
+        "SortieEvent",
+        "ExportEvent"
+      ]
+    },
+    "objectRevision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "attributes": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"
+      },
+      "patternProperties": {
+        "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$": {
+          "$ref": "#/$defs/AttributeBucket"
+        }
+      },
+      "additionalProperties": false
+    },
+    "completeness": {
+      "$ref": "#/$defs/Completeness"
+    },
+    "provenance": {
+      "$ref": "#/$defs/Provenance"
+    }
+  },
+  "$defs": {
+    "EntityId": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "DateTimeOrNull": {
+      "oneOf": [
+        {
+          "type": "null"
+        },
+        {
+          "type": "string",
+          "format": "date-time"
+        }
+      ]
+    },
+    "TimeInterval": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "start",
+        "end"
+      ],
+      "properties": {
+        "start": {
+          "$ref": "#/$defs/DateTimeOrNull"
+        },
+        "end": {
+          "$ref": "#/$defs/DateTimeOrNull"
+        }
+      }
+    },
+    "EvidenceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidenceId",
+        "sourceType",
+        "sourceRef",
+        "sourceVersion",
+        "quote",
+        "contentHash",
+        "locator"
+      ],
+      "properties": {
+        "evidenceId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "sourceType": {
+          "enum": [
+            "workbook",
+            "osint-item",
+            "source-document",
+            "web-page",
+            "media"
+          ]
+        },
+        "sourceRef": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "sourceVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "quote": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "contentHash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "locator": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "sheetName": {
+              "type": "string",
+              "minLength": 1
+            },
+            "rowNumber": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "cellRange": {
+              "type": "string",
+              "minLength": 1
+            },
+            "lineStart": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "lineEnd": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "charStart": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "charEnd": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "page": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "anyOf": [
+            {
+              "required": [
+                "sheetName",
+                "rowNumber",
+                "cellRange"
+              ]
+            },
+            {
+              "required": [
+                "lineStart",
+                "lineEnd"
+              ]
+            },
+            {
+              "required": [
+                "page"
+              ]
+            }
+          ]
+        },
+        "publishedAt": {
+          "$ref": "#/$defs/DateTimeOrNull"
+        },
+        "retrievedAt": {
+          "$ref": "#/$defs/DateTimeOrNull"
+        },
+        "sourceReliability": {
+          "enum": [
+            "unknown",
+            "primary",
+            "secondary"
+          ]
+        }
+      }
+    },
+    "AttributeValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "assertionId",
+        "rawValue",
+        "valueType",
+        "value",
+        "normalizedValue",
+        "unit",
+        "qualifier",
+        "conditions",
+        "validTime",
+        "observedAt",
+        "claimKind",
+        "basis",
+        "evidenceRefs",
+        "confidence",
+        "reviewStatus",
+        "truthVerified"
+      ],
+      "properties": {
+        "assertionId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "rawValue": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000
+        },
+        "valueType": {
+          "enum": [
+            "number",
+            "quantity",
+            "range",
+            "text",
+            "enum",
+            "boolean",
+            "reference",
+            "list",
+            "object"
+          ]
+        },
+        "value": {},
+        "normalizedValue": {},
+        "unit": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 80
+        },
+        "qualifier": {
+          "enum": [
+            "exact",
+            "approximately",
+            "at-least",
+            "at-most",
+            "greater-than",
+            "less-than",
+            "unknown"
+          ]
+        },
+        "conditions": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 1000
+        },
+        "validTime": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/$defs/TimeInterval"
+            }
+          ]
+        },
+        "observedAt": {
+          "$ref": "#/$defs/DateTimeOrNull"
+        },
+        "claimKind": {
+          "enum": [
+            "imported",
+            "reported",
+            "reported-test",
+            "manufacturer-claim",
+            "program-target",
+            "reported-observation",
+            "derived",
+            "inference"
+          ]
+        },
+        "basis": {
+          "enum": [
+            "workbook",
+            "source-document",
+            "reported-test",
+            "manufacturer-claim",
+            "program-target",
+            "reported-observation",
+            "analyst-derived"
+          ]
+        },
+        "evidenceRefs": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 30,
+          "items": {
+            "$ref": "#/$defs/EvidenceRef"
+          }
+        },
+        "confidence": {
+          "oneOf": [
+            {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            {
+              "enum": [
+                "low",
+                "medium",
+                "high"
+              ]
+            }
+          ]
+        },
+        "reviewStatus": {
+          "enum": [
+            "pending",
+            "under-review",
+            "accepted",
+            "rejected",
+            "withdrawn",
+            "superseded"
+          ]
+        },
+        "truthVerified": {
+          "type": "boolean"
+        },
+        "verifiedConfidence": {
+          "enum": ["low", "medium", "high"]
+        },
+        "reviewer": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "reviewedAt": {
+          "$ref": "#/$defs/DateTimeOrNull"
+        },
+        "reviewId": {
+          "$ref": "#/$defs/EntityId"
+        },
+        "ontologyPredicate": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 240
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "reviewStatus": {
+                "const": "accepted"
+              }
+            },
+            "required": ["reviewStatus"]
+          },
+          "then": {
+            "required": ["reviewer", "reviewedAt", "verifiedConfidence"],
+            "properties": {
+              "truthVerified": {"const": true},
+              "verifiedConfidence": {"const": "high"},
+              "reviewedAt": {"type": "string", "format": "date-time"}
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "reviewStatus": {
+                "enum": ["pending", "under-review"]
+              }
+            },
+            "required": ["reviewStatus"]
+          },
+          "then": {
+            "properties": {
+              "truthVerified": {"const": false}
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "valueType": {
+                "enum": [
+                  "number",
+                  "quantity"
+                ]
+              }
+            },
+            "required": [
+              "valueType"
+            ]
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "number"
+              },
+              "normalizedValue": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "valueType": {
+                "const": "quantity"
+              }
+            },
+            "required": [
+              "valueType"
+            ]
+          },
+          "then": {
+            "properties": {
+              "unit": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "valueType": {
+                "const": "range"
+              }
+            },
+            "required": [
+              "valueType"
+            ]
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "$ref": "#/$defs/RangeValue"
+              },
+              "normalizedValue": {
+                "$ref": "#/$defs/RangeValue"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "valueType": {
+                "enum": [
+                  "text",
+                  "enum",
+                  "reference"
+                ]
+              }
+            },
+            "required": [
+              "valueType"
+            ]
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "string",
+                "minLength": 1
+              },
+              "normalizedValue": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "valueType": {
+                "const": "boolean"
+              }
+            },
+            "required": [
+              "valueType"
+            ]
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "boolean"
+              },
+              "normalizedValue": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "valueType": {
+                "const": "list"
+              }
+            },
+            "required": [
+              "valueType"
+            ]
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "array",
+                "minItems": 1
+              },
+              "normalizedValue": {
+                "type": "array",
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "valueType": {
+                "const": "object"
+              }
+            },
+            "required": [
+              "valueType"
+            ]
+          },
+          "then": {
+            "properties": {
+              "value": {
+                "type": "object"
+              },
+              "normalizedValue": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      ]
+    },
+    "RangeValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lower",
+        "upper"
+      ],
+      "properties": {
+        "lower": {
+          "type": "number"
+        },
+        "upper": {
+          "type": "number"
+        }
+      }
+    },
+    "AttributeBucket": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "state",
+        "values"
+      ],
+      "properties": {
+        "state": {
+          "enum": [
+            "reported",
+            "verified",
+            "inferred",
+            "unknown",
+            "not-applicable",
+            "withheld",
+            "conflict",
+            "rejected"
+          ]
+        },
+        "values": {
+          "type": "array",
+          "maxItems": 30,
+          "items": {
+            "$ref": "#/$defs/AttributeValue"
+          }
+        },
+        "notes": {
+          "type": "string",
+          "maxLength": 1000
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "enum": ["unknown", "not-applicable", "withheld", "rejected"]
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "values": {
+                "maxItems": 0
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "enum": [
+                  "reported",
+                  "verified",
+                  "inferred"
+                ]
+              }
+            },
+            "required": [
+              "state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "values": {
+                "minItems": 1
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "state": {
+                "const": "conflict"
+              }
+            },
+            "required": ["state"]
+          },
+          "then": {
+            "properties": {
+              "values": {
+                "minItems": 2
+              }
+            }
+          }
+        }
+      ]
+    },
+    "Completeness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mode",
+        "expectedKeys",
+        "presentKeys",
+        "unknownKeys",
+        "notApplicableKeys",
+        "conflictKeys",
+        "missingRequiredKeys",
+        "coverageRatio",
+        "status",
+        "checkedAt",
+        "validatorVersion"
+      ],
+      "properties": {
+        "mode": {
+          "enum": [
+            "observed",
+            "template"
+          ]
+        },
+        "templateId": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 120
+        },
+        "expectedKeys": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"
+          }
+        },
+        "presentKeys": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"
+          }
+        },
+        "unknownKeys": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"
+          }
+        },
+        "notApplicableKeys": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"
+          }
+        },
+        "conflictKeys": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"
+          }
+        },
+        "missingRequiredKeys": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "pattern": "^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$"
+          }
+        },
+        "coverageRatio": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "status": {
+          "enum": ["valid", "incomplete", "invalid"]
+        },
+        "checkedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "validatorVersion": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "errors": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 500
+          }
+        }
+      }
+    },
+    "Provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "sourceSnapshotIds",
+        "sourceRecordIds",
+        "generatedBy",
+        "createdAt",
+        "updatedAt",
+        "contentHash"
+      ],
+      "properties": {
+        "sourceSnapshotIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EntityId"
+          },
+          "uniqueItems": true
+        },
+        "sourceRecordIds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EntityId"
+          },
+          "uniqueItems": true
+        },
+        "generatedBy": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "contentHash": {
+          "type": "string",
+          "pattern": "^[A-Fa-f0-9]{64}$"
+        },
+        "schemaVersion": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

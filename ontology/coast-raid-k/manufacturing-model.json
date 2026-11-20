@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "uav-manufacturing-model.v1",
+  "categories": {
+    "composition": {"class": "AssemblyItem", "required": ["partName", "relation", "evidence"], "relations": ["partOfAircraft", "partOfGroundSegment", "installedOn", "compatibleWith"]},
+    "process": {"class": "ManufacturingProcess", "required": ["processName", "processType", "evidence"], "processTypes": ["design", "fabrication", "assembly", "inspection", "ground-test", "flight-test", "maintenance"]},
+    "organization": {"class": "ManufacturingOrganizationRole", "required": ["organizationName", "role", "evidence"], "roles": ["designer", "manufacturer", "assembler", "supplier", "integrator", "operator"]},
+    "production": {"class": "ProductionBatch", "required": ["recordType", "quantity", "evidence"], "recordTypes": ["production", "delivery", "order"]},
+    "cost": {"class": "CostRecord", "required": ["costType", "amount", "currency", "evidence"], "costTypes": ["unit-production", "flyaway", "system-procurement", "development", "operating", "lifecycle", "other"]}
+  },
+  "rules": [
+    "合同总额不得自动改写为单机制造成本。",
+    "生产、订购、交付数量必须保留原始数量类型。",
+    "组成和流程只记录来源明确披露的内容；未知字段保持 unknown。",
+    "模型提取结果只能进入候选审核层，不能直接发布。"
+  ]
+}

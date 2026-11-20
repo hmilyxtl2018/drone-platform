@@ -1,0 +1,14 @@
+@prefix r: <urn:research-report:> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+r:EntityShape a sh:NodeShape ; sh:targetClass r:Entity ;
+  sh:property [ sh:path r:label ; sh:minCount 1 ; sh:datatype xsd:string ] .
+r:AssertionShape a sh:NodeShape ; sh:targetClass r:Assertion ;
+  sh:property [ sh:path r:subject ; sh:minCount 1 ; sh:maxCount 1 ; sh:class r:Entity ] ;
+  sh:property [ sh:path r:object ; sh:minCount 1 ; sh:maxCount 1 ; sh:class r:Entity ] ;
+  sh:property [ sh:path r:predicate ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ("depends-on" "constrains" "enables" "changes" "part-of" "associated-with") ] ;
+  sh:property [ sh:path r:evidence ; sh:minCount 1 ; sh:class r:Evidence ] .
+r:EvidenceShape a sh:NodeShape ; sh:targetClass r:Evidence ;
+  sh:property [ sh:path r:source ; sh:minCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path r:quote ; sh:minCount 1 ; sh:minLength 1 ] ;
+  sh:property [ sh:path r:contentHash ; sh:minCount 1 ; sh:pattern "^[0-9a-f]{64}$" ] .

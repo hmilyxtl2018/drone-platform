@@ -1,0 +1,458 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.ontology/coast-raid-k/schema.common.json",
+  "title": "coast-raid-k common $defs",
+  "description": "Units, frame, enumerations, package envelope. Shared by every module.",
+  "$defs": {
+    "Vec3": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "items": {
+        "type": "number"
+      },
+      "description": "[east x, up y, shore-distance z] km. Land +z, sea −z."
+    },
+    "Layer": {
+      "enum": [
+        "hi",
+        "mid",
+        "lo"
+      ]
+    },
+    "Side": {
+      "enum": [
+        "blue",
+        "red",
+        "unk"
+      ]
+    },
+    "ExcludeId": {
+      "enum": [
+        "satelliteSensor",
+        "link16",
+        "ibcsIfcn",
+        "meanField",
+        "personAutoEngage",
+        "occupationZone"
+      ]
+    },
+    "ProductTypeId": {
+      "enum": [
+        "Track",
+        "Identity",
+        "Pair",
+        "Slot",
+        "Permit",
+        "Inject"
+      ]
+    },
+    "FunctionId": {
+      "enum": [
+        "see",
+        "read",
+        "assign",
+        "form",
+        "gate",
+        "foe"
+      ]
+    },
+    "Visibility": {
+      "enum": [
+        "team",
+        "local",
+        "any"
+      ]
+    },
+    "Iden": {
+      "enum": [
+        "敌",
+        "我",
+        "不明"
+      ]
+    },
+    "PairTask": {
+      "enum": [
+        "盯梢",
+        "压沿",
+        "识别"
+      ]
+    },
+    "BlueTask": {
+      "enum": [
+        "巡逻",
+        "警戒",
+        "盯梢",
+        "压沿",
+        "识别"
+      ]
+    },
+    "Zone": {
+      "enum": [
+        "out",
+        "cor",
+        "ship",
+        "edge",
+        "in"
+      ]
+    },
+    "Unit": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "length",
+        "one",
+        "speed",
+        "tick_s"
+      ],
+      "properties": {
+        "length": {
+          "const": "km"
+        },
+        "one": {
+          "const": 1
+        },
+        "speed": {
+          "const": "km/h"
+        },
+        "tick_s": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        }
+      }
+    },
+    "Crs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "unit"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "unit": {
+          "type": "string",
+          "description": "QUDT unit IRI. Default KiloM."
+        },
+        "epsg": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Null: sand-table is not a geographic CRS."
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "Sidc": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "std"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "pattern": "^[0-9]{20}$"
+        },
+        "std": {
+          "enum": [
+            "2525D",
+            "APP-6D"
+          ]
+        },
+        "symbolSet": {
+          "type": "string"
+        },
+        "entity": {
+          "type": "string"
+        },
+        "identity": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "src": {
+          "type": "string"
+        }
+      }
+    },
+    "SpatialFrame": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "origin",
+        "x",
+        "y",
+        "z"
+      ],
+      "properties": {
+        "origin": {
+          "type": "string"
+        },
+        "x": {
+          "type": "string"
+        },
+        "y": {
+          "type": "string"
+        },
+        "z": {
+          "type": "string"
+        },
+        "heading000_deg": {
+          "type": "number"
+        },
+        "heading000": {
+          "type": "string"
+        },
+        "heading180": {
+          "type": "string"
+        }
+      }
+    },
+    "NMax": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "hi",
+        "mid",
+        "lo"
+      ],
+      "properties": {
+        "hi": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "mid": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "lo": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "StateModel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "states"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "static",
+            "compile",
+            "runtime",
+            "runtime-eval",
+            "ephemeral"
+          ]
+        },
+        "structure": {
+          "type": "string"
+        },
+        "states": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "illegal": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evalOn": {
+          "type": "string"
+        }
+      }
+    },
+    "MapGrid": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "step_km": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "seaGrid": {
+          "type": "boolean"
+        },
+        "landGrid": {
+          "enum": [
+            false,
+            "faint",
+            true
+          ]
+        }
+      }
+    },
+    "Presentation": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Sand-table view config. Not scene TBox.",
+      "properties": {
+        "kind": {
+          "const": "sandTable"
+        },
+        "excludes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "PackageCatalog": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "kind",
+        "version",
+        "unit",
+        "envelope",
+        "parts",
+        "schemaModules",
+        "excludes"
+      ],
+      "properties": {
+        "id": {
+          "const": "coast-raid-k"
+        },
+        "title": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "kind": {
+          "const": "engagement-body-package"
+        },
+        "unit": {
+          "$ref": "#/$defs/Unit"
+        },
+        "frame": {
+          "$ref": "#/$defs/SpatialFrame"
+        },
+        "envelope": {
+          "type": "array",
+          "minItems": 6,
+          "maxItems": 6,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "Scene",
+              "Rule",
+              "Algorithm",
+              "Engagement",
+              "Agent",
+              "Knowledge"
+            ]
+          }
+        },
+        "parts": {
+          "type": "object",
+          "required": [
+            "context",
+            "theater",
+            "graph",
+            "constraints",
+            "schema",
+            "rules",
+            "algorithms",
+            "tbox"
+          ],
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "runtime": {
+          "type": "object"
+        },
+        "schemaModules": {
+          "type": "array",
+          "minItems": 10,
+          "maxItems": 10,
+          "items": {
+            "type": "string"
+          }
+        },
+        "excludes": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ExcludeId"
+          }
+        }
+      }
+    },
+    "Snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "packageId",
+        "version",
+        "hash"
+      ],
+      "description": "Compile output. Runtime loads only this. Do not hand-edit.",
+      "properties": {
+        "packageId": {
+          "const": "coast-raid-k"
+        },
+        "version": {
+          "type": "string"
+        },
+        "hash": {
+          "type": "string"
+        },
+        "unit": {
+          "$ref": "#/$defs/Unit"
+        },
+        "frame": {
+          "$ref": "#/$defs/SpatialFrame"
+        },
+        "bodies": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/Body"
+          }
+        },
+        "sites": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/Site"
+          }
+        },
+        "invariants": {
+          "type": "object"
+        },
+        "clouds": {
+          "type": "object"
+        },
+        "graph": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

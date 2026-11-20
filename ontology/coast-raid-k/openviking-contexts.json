@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.ontology/coast-raid-k/openviking-contexts.json",
+  "package": "coast-raid-k",
+  "version": "1.0.0",
+  "type": "OpenVikingContextContract",
+  "purpose": "把 OpenViking 的目录式上下文检索接入作战 Agent 本体，同时保持作战事实、Agent 信念和助手会话的主体边界。",
+  "subjectRule": {
+    "operational": "Run/Scenario 是共享态势上下文主体；AgentInstance 是消费者和部分产品的生产者。",
+    "agentLocal": "AgentInstance 是局部上下文主体；Observation、BeliefState、Goal、Task、Intention、Plan 和经验只能按 Agent 身份及授权读取。",
+    "assistantSession": "Operator + AssistantSession 是问答上下文主体；助手只能查询、解释和提交 ActionRequest，不能直接生成 BeliefAssertion、Authorization 或 ActionExecution。"
+  },
+  "uriRoots": {
+    "operational": "viking://resources/coast-raid-k/runs/{runId}/",
+    "agentLocal": "viking://users/{accountId}/agents/{agentIri}/runs/{runId}/",
+    "assistantSession": "viking://users/{accountId}/sessions/{sessionId}/"
+  },
+  "contextTypes": [
+    {
+      "id": "OperationalContext",
+      "ownerClass": "https://local.ontology/coast-raid-k/agent/1.0.0#Run",
+      "producerClasses": ["Sensor", "ScenarioController", "FusionAgent", "SimulationEngine"],
+      "consumerClasses": ["AgentInstance", "Operator", "AssistantSession"],
+      "allowedKinds": ["ontology", "scenario", "rule", "shared-observation", "run-summary", "audit-index"],
+      "writePolicy": "只允许仿真器、传感器适配器、融合服务和审计管道按事件追加；助手会话只读。"
+    },
+    {
+      "id": "AgentLocalContext",
+      "ownerClass": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance",
+      "producerClasses": ["AgentInstance", "BeliefRevisionService", "ExperienceRecorder"],
+      "consumerClasses": ["AgentInstance", "GateMonitor"],
+      "allowedKinds": ["observation", "belief", "goal", "task", "intention", "plan", "experience", "local-link-state"],
+      "writePolicy": "只能由对应 AgentInstance 或受托的本体运行时服务写入；共享上下文不可反向写入 Agent 信念。"
+    },
+    {
+      "id": "AssistantSessionContext",
+      "ownerClass": "https://local.ontology/coast-raid-k/agent/1.0.0#AssistantSession",
+      "producerClasses": ["Operator", "Assistant"],
+      "consumerClasses": ["Operator", "Assistant"],
+      "allowedKinds": ["query", "explanation", "retrieval-trace", "task-request", "approval-request"],
+      "writePolicy": "会话可产生查询和请求草案；任何作战事实、信念、授权和执行结果必须回到作战运行接口，由其写入对应本体对象。"
+    }
+  ],
+  "recordEnvelope": {
+    "required": ["iri", "contextType", "contextOwner", "runId", "producer", "visibility", "ontologyVersion", "validTime", "provenance"],
+    "fields": {
+      "iri": "作战对象的 stable IRI；不得使用 OpenViking URI 替代。",
+      "contextType": "OperationalContext | AgentLocalContext | AssistantSessionContext",
+      "contextOwner": "Run、AgentInstance 或 AssistantSession 的 stable IRI。",
+      "consumerAgent": "可选；若存在，必须是 AgentInstance IRI。",
+      "producer": "实际产生记录的 Agent、服务或操作员身份。",
+      "assistantActor": "可选；仅表示助手代办，不替代 producer/assertedBy/decidedBy。",
+      "visibility": "shared | agent-private | operator-private | audit",
+      "validTime": "事实或信念的仿真有效时间，不是检索相关度。",
+      "provenance": "源 IRI、模型版本、派生关系和载荷哈希。"
+    }
+  },
+  "retrievalRules": [
+    "先按 account、runId、contextType 和 owner 做目录范围过滤，再做语义检索。",
+    "L0/L1 摘要只能用于相关性判断；生成 BeliefAssertion 或 Authorization 必须读取 L2 原始证据。",
+    "OpenViking 的相似度分数不得写入作战 confidence/probability 字段。",
+    "助手引用的上下文必须保留 retrievalTrace 和 evidenceUris，不能把自然语言回答当作事实。",
+    "Permit/Authorization 的裁决只能由 Gate Monitor/Authorization Service 依照 Policy 生成。"
+  ],
+  "retention": {
+    "operational": "按 Run 归档，支持回放和审计；禁止会话覆盖。",
+    "agentLocal": "按 AgentInstance 和 Run 隔离，允许经验合并但必须保留来源及版本。",
+    "assistantSession": "按 sessionId 归档；会话记忆升级为共享知识前必须通过人工或规则审核。"
+  },
+  "openvikingReferences": [
+    "https://github.com/volcengine/OpenViking",
+    "https://docs.openviking.ai/en/concepts/02-context-types",
+    "https://docs.openviking.ai/en/concepts/03-context-layers",
+    "https://docs.openviking.ai/en/concepts/04-viking-uri",
+    "https://docs.openviking.ai/en/concepts/11-multi-tenant",
+    "https://docs.openviking.ai/en/concepts/15-acl"
+  ]
+}

@@ -1,0 +1,2021 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.ontology/coast-raid-k/agent/1.0.0/agent.extension.json",
+  "package": "coast-raid-k",
+  "type": "TBoxExtension",
+  "version": "1.0.0",
+  "status": "proposed",
+  "baseIri": "https://local.ontology/coast-raid-k/agent/1.0.0#",
+  "extends": [
+    "https://local.ontology/coast-raid-k/tbox.json"
+  ],
+  "note": "Additive Agent ontology. Existing tbox.json remains the source of record; this module only adds Agent agency, cognition, coordination and authorization vocabulary.",
+  "provenance": {
+    "method": "research synthesis",
+    "sources": [
+      {
+        "id": "wooldridge-jennings-1995",
+        "iri": "https://doi.org/10.1017/S0269888900008122",
+        "use": "autonomy, reactivity, pro-activeness and social ability"
+      },
+      {
+        "id": "rao-georgeff-bdi",
+        "iri": "https://doi.org/10.1007/3-540-49057-4_1",
+        "use": "belief, desire/goal and intention reasoning"
+      },
+      {
+        "id": "grimm-odd-2010",
+        "iri": "https://doi.org/10.1016/j.ecolmodel.2010.08.019",
+        "use": "agent-based model purpose, state, process and scheduling documentation"
+      },
+      {
+        "id": "c2sim",
+        "iri": "https://openc2sim.github.io/",
+        "use": "interoperable command, task, report, time and provenance exchange"
+      },
+      {
+        "id": "prov-o",
+        "iri": "https://www.w3.org/TR/prov-o/",
+        "use": "entity derivation and activity provenance"
+      },
+      {
+        "id": "mana-assignment-case",
+        "iri": "https://doi.org/10.1109/computationworld.2009.31",
+        "use": "multi-agent assignment and interaction case; not a canonical military ontology"
+      },
+      {
+        "id": "devs-zeigler-2000",
+        "iri": "https://doi.org/10.1201/9781420053371.ch2",
+        "use": "discrete-event system specification, state transitions and event scheduling"
+      },
+      {
+        "id": "boyd-ooda",
+        "iri": "https://doi.org/10.4135/9781452229805.n473",
+        "use": "OODA cycle as an operational process view; not a BDI state model"
+      }
+    ],
+    "localResearch": "ontology/coast-raid-k/agent-modeling-research.md"
+  },
+  "classes": [
+    {
+      "id": "Agent",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "label": "作战Agent",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#IndependentContinuant"
+      ],
+      "comment": "在环境中接收局部观测、维护信念、形成目标或任务、选择并请求动作且承担可追溯责任的决策主体。",
+      "provenance": "wooldridge-jennings-1995"
+    },
+    {
+      "id": "AgentInstance",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance",
+      "label": "Agent实例",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k/agent/1.0.0#Agent"
+      ],
+      "comment": "某一次Run中具有生命周期、版本和权限边界的具体Agent。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "AgentFunction",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentFunction",
+      "label": "Agent责任功能域",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#InformationEntity"
+      ],
+      "comment": "可组合的作战责任边界：World、Self、Adversary、Options、Gate、Effectors、Learn。功能域不是互斥Agent子类，也不自动授予权限。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "OperationalTimeScale",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#OperationalTimeScale",
+      "label": "作战时间尺度",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#Quality"
+      ],
+      "comment": "Agent责任所处时间尺度：Immediate、Tactical、Operational 或 Strategic。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "OrganizationModel",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#OrganizationModel",
+      "label": "组织模型",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#InformationEntity"
+      ],
+      "comment": "描述Agent类所属组织、编组和指挥关系的模型。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "AgentClass",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentClass",
+      "label": "Agent类模型",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#InformationEntity"
+      ],
+      "comment": "OrgMAS形式 AgentClass=<name,R,G,MO> 的规范化表示，分别由名称、角色集合、目标集合和组织模型构成。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "AgentType",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentType",
+      "label": "Agent类型",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#InformationEntity"
+      ],
+      "comment": "Agent架构、能力、阶段、状态转移和失败模式的规范；ShellTemplate是其现有项目表示。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "AgentRole",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentRole",
+      "label": "Agent角色",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#Role"
+      ],
+      "comment": "传感、融合、分配、编队、执行、监视和授权等依存角色。角色不是Agent实体。",
+      "provenance": "wooldridge-jennings-1995"
+    },
+    {
+      "id": "Organization",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Organization",
+      "label": "组织",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#IndependentContinuant"
+      ],
+      "comment": "指挥层级、团队或编组；组织成员关系与通信关系分开建模。",
+      "provenance": "c2sim"
+    },
+    {
+      "id": "RoleAssignment",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#RoleAssignment",
+      "label": "角色分配",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#Relator"
+      ],
+      "comment": "把Agent、角色、组织和任务绑定到有效时间的关系实体。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "PlatformBinding",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#PlatformBinding",
+      "label": "平台绑定",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#Relator"
+      ],
+      "comment": "Agent与物理Platform的时态绑定；Platform不自动等同于Agent。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "Observation",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Observation",
+      "label": "观测",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#InformationEntity"
+      ],
+      "comment": "Agent从局部传感器、消息或环境获得的观测；观测不是全局真值。",
+      "provenance": "mana-assignment-case"
+    },
+    {
+      "id": "BeliefState",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#BeliefState",
+      "label": "信念状态",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#InformationEntity"
+      ],
+      "comment": "某Agent在指定时间窗口内维护的内部信念集合。",
+      "provenance": "rao-georgeff-bdi"
+    },
+    {
+      "id": "BeliefAssertion",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#BeliefAssertion",
+      "label": "信念断言",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#InformationEntity"
+      ],
+      "comment": "关于实体或命题的一条带来源、置信度和有效时间的断言。",
+      "provenance": "rao-georgeff-bdi"
+    },
+    {
+      "id": "Goal",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Goal",
+      "label": "目标",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#InformationEntity"
+      ],
+      "comment": "Agent或组织期望达到的状态；不等同于已执行的Task。",
+      "provenance": "rao-georgeff-bdi"
+    },
+    {
+      "id": "Task",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Task",
+      "label": "任务",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#Process"
+      ],
+      "comment": "任务：在时间中可执行、可分配并具有完成状态的过程；任务描述和前提规范由 ProcessSpecification 表示。当前保持 Process 上位类。",
+      "provenance": "c2sim",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; c2sim"
+    },
+    {
+      "id": "Plan",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Plan",
+      "label": "计划",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#InformationEntity"
+      ],
+      "comment": "达到Goal或完成Task的步骤、选择条件和资源预算。",
+      "provenance": "rao-georgeff-bdi"
+    },
+    {
+      "id": "Decision",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Decision",
+      "label": "决策",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#InformationEntity"
+      ],
+      "comment": "Agent根据其可见证据、信念、目标和Policy作出的选择；决策不等于动作。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "ActionRequest",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#ActionRequest",
+      "label": "动作请求",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#InformationEntity"
+      ],
+      "comment": "请求执行某个Action或请求对该Action进行授权。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "Action",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Action",
+      "label": "动作",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#Process"
+      ],
+      "comment": "Agent或其Platform实际执行的过程。",
+      "provenance": "wooldridge-jennings-1995"
+    },
+    {
+      "id": "Effect",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Effect",
+      "label": "效果记录",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#InformationEntity"
+      ],
+      "comment": "效果记录：对动作所报告的状态变化、产品或失败结果的信息表述；不把该记录直接当成实际因果效果或发生过程。",
+      "provenance": "localResearch",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; localResearch"
+    },
+    {
+      "id": "Message",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Message",
+      "label": "消息",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#InformationEntity"
+      ],
+      "comment": "Agent之间交换的可验证消息载荷；消息的生产者、接收者和有效时间必须可追溯。",
+      "provenance": "c2sim"
+    },
+    {
+      "id": "CommunicationAct",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#CommunicationAct",
+      "label": "通信行为",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#Process"
+      ],
+      "comment": "发送、接收、确认或拒绝Message的过程。",
+      "provenance": "c2sim"
+    },
+    {
+      "id": "Protocol",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Protocol",
+      "label": "协同协议",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#InformationEntity"
+      ],
+      "comment": "消息格式、时序、确认和失败语义的规范。",
+      "provenance": "c2sim"
+    },
+    {
+      "id": "LinkState",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#LinkState",
+      "label": "链路状态",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#Quality"
+      ],
+      "comment": "通信通断、延迟、带宽和可见性；不可用链路不能支持共享信念。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "Capability",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Capability",
+      "label": "能力",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#DependentContinuant"
+      ],
+      "comment": "Agent在条件满足时可以提供或执行的能力；能力不等于已经执行。",
+      "provenance": "wooldridge-jennings-1995"
+    },
+    {
+      "id": "Policy",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Policy",
+      "label": "策略",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#InformationEntity"
+      ],
+      "comment": "决策、行为和权限约束；包含版本和生效时间。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "Authority",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Authority",
+      "label": "权限范围",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#InformationEntity"
+      ],
+      "comment": "Agent可代表的动作、资源和空间范围。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "Authorization",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Authorization",
+      "label": "授权结果",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#InformationEntity"
+      ],
+      "comment": "Policy对ActionRequest的确定性评估结果。现有Permit是项目专用序列化产品，不能由检索结果直接生成。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "Run",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Run",
+      "label": "运行",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#Occurrent"
+      ],
+      "comment": "仿真、演训或任务运行边界；AgentInstance和RuntimeEnvelope必须归属某个Run。",
+      "provenance": "grimm-odd-2010"
+    },
+    {
+      "id": "AuditEvent",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#AuditEvent",
+      "label": "审计事件",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#Occurrent"
+      ],
+      "comment": "可回放的观察、信念更新、任务、授权、动作和效果事件。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "EmbodiedAgent",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#EmbodiedAgent",
+      "label": "具身 Agent",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k/agent/1.0.0#Agent"
+      ],
+      "comment": "具身 Agent：通过明确物理平台实现感知或作用接口的 Agent；Agent 身份与承载平台身份分别登记。",
+      "provenance": "localResearch",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; localResearch"
+    },
+    {
+      "id": "SoftwareAgent",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#SoftwareAgent",
+      "label": "软件 Agent",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k/agent/1.0.0#Agent"
+      ],
+      "comment": "软件 Agent：由软件运行实现、具有状态和交互边界的 Agent；所用模型或聊天会话不自动等于该主体。",
+      "provenance": "localResearch",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; localResearch"
+    },
+    {
+      "id": "Desire",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Desire",
+      "label": "愿望/动机",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k/agent/1.0.0#Goal"
+      ],
+      "comment": "愿望：Agent 尚未形成执行承诺的候选目标表述；多个愿望可并存，不自动构成任务或授权。",
+      "provenance": "rao-georgeff-bdi",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; rao-georgeff-bdi"
+    },
+    {
+      "id": "Intention",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Intention",
+      "label": "意图/承诺",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#InformationEntity"
+      ],
+      "comment": "意图：Agent 对选定目标或方案所形成的承诺表述；实际过程和授权裁决分别登记。",
+      "provenance": "rao-georgeff-bdi",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; rao-georgeff-bdi"
+    },
+    {
+      "id": "StateTransition",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#StateTransition",
+      "label": "状态转移",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#Process"
+      ],
+      "comment": "状态转移：在指定运行中使状态由前态转为后态的过程；转移规范中的 guard 或触发器不是已发生的转移。",
+      "provenance": "devs-zeigler-2000",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; devs-zeigler-2000"
+    },
+    {
+      "id": "Resource",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Resource",
+      "label": "资源",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#IndependentContinuant"
+      ],
+      "comment": "资源：在明确范围中可被占用、分配或使用的独立对象；资源可用量和分配记录与资源本身分别建模。",
+      "provenance": "localResearch",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; localResearch"
+    },
+    {
+      "id": "Constraint",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Constraint",
+      "label": "约束",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#InformationEntity"
+      ],
+      "comment": "约束：限定可接受状态、行为或交换内容的信息规范；适用范围与执行检查结果必须分别登记。",
+      "provenance": "localResearch",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; localResearch"
+    },
+    {
+      "id": "AgentCycle",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentCycle",
+      "label": "Agent 周期",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#Process"
+      ],
+      "comment": "Agent 周期：一次可界定起止与阶段组成的运行过程；周期模板、日志记录和实际周期不混同。",
+      "provenance": "boyd-ooda",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; boyd-ooda"
+    },
+    {
+      "id": "TimeInterval",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#TimeInterval",
+      "label": "时间区间",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#Occurrent"
+      ],
+      "comment": "时间区间：由明确时钟、单位及边界限定的时间范围；仿真数值时钟在没有历元锚点时不表示 UTC 日期时间。",
+      "provenance": "localResearch",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; localResearch"
+    },
+    {
+      "id": "ActionExecution",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#ActionExecution",
+      "label": "动作执行",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#Process"
+      ],
+      "comment": "动作执行：在某次运行中实现动作请求的过程，引用具体执行主体、有效授权及实际结果；执行记录表述该过程，不与授权决定混同。",
+      "provenance": "localResearch",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; localResearch"
+    },
+    {
+      "id": "ProcessSpecification",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#ProcessSpecification",
+      "label": "过程规范",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#InformationEntity"
+      ],
+      "comment": "过程规范：描述过程的输入、输出、前提、步骤和约束的信息对象；规范存在不意味着过程已经执行。",
+      "provenance": "localResearch",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; localResearch"
+    },
+    {
+      "id": "AgentExecution",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentExecution",
+      "label": "Agent执行实例",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#Process"
+      ],
+      "comment": "Agent 执行：某个 Agent 在指定 Run 与时间范围中的具体运行过程；与 Agent 主体及其可复用模型分别具有身份。",
+      "provenance": "devs-zeigler-2000",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; devs-zeigler-2000"
+    },
+    {
+      "id": "AgentState",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentState",
+      "label": "Agent状态",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#Quality"
+      ],
+      "comment": "Agent 状态：在明确有效时间中依存于某个 Agent 的质量或状态；状态断言携带版本和来源，不自动代表客观真值。",
+      "provenance": "localResearch",
+      "definitionStatus": "project-definition-pending-domain-review",
+      "definitionSource": "semantic-decisions.json; localResearch"
+    },
+    {
+      "id": "AssistantSession",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#AssistantSession",
+      "label": "智能助手会话",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#Occurrent"
+      ],
+      "comment": "操作员与智能助手的问答会话；不能直接产生作战事实、信念或授权。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "Operator",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Operator",
+      "label": "操作员",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#IndependentContinuant"
+      ],
+      "comment": "通过助手查询或提交任务请求的人类主体。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "DecisionDraft",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#DecisionDraft",
+      "label": "决策推荐草案",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#InformationEntity"
+      ],
+      "comment": "Agent生成的可审查方案推荐；不等同于Decision、Authorization或ActionExecution。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "ApprovalRequest",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#ApprovalRequest",
+      "label": "人工审批请求",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#InformationEntity"
+      ],
+      "comment": "针对ActionRequest的人工在环审查请求；人工批准不直接产生Authorization。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "HumanDecision",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#HumanDecision",
+      "label": "人工决策",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#InformationEntity"
+      ],
+      "comment": "操作员对ApprovalRequest作出的可追溯决定；必须由Gate重新评估后才能形成Authorization。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "TriggerDefinition",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#TriggerDefinition",
+      "label": "触发器定义",
+      "subClassOf": [
+        "https://local.ontology/coast-raid-k#InformationEntity"
+      ],
+      "comment": "声明事件、条件、目标Agent和调度约束的触发器；触发器本身不授予执行权限。",
+      "provenance": "localResearch"
+    }
+  ],
+  "objectProperties": [
+    {
+      "id": "initiatedBy",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#initiatedBy",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#AssistantSession",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Operator",
+      "comment": "助手会话由哪个操作员发起；操作员身份不能被助手身份替代。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "representsAgent",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#representsAgent",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#AssistantSession",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "comment": "助手会话可选地代表哪个作战 Agent；代表关系不授予授权。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "submitsRequest",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#submitsRequest",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#AssistantSession",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#ActionRequest",
+      "comment": "助手会话提交的动作请求草案；必须经过作战运行时和授权服务。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "realizesType",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#realizesType",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentType",
+      "comment": "AgentInstance实现的类型规范。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "usesTemplate",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#usesTemplate",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance",
+      "range": "https://local.ontology/coast-raid-k#ShellTemplate",
+      "comment": "运行实例采用的现有ShellTemplate；不改变ShellTemplate的既有定义。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "implementedOn",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#implementedOn",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance",
+      "range": "https://local.ontology/coast-raid-k#Platform",
+      "comment": "Agent与物理平台的实现绑定。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "performsFunction",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#performsFunction",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentFunction",
+      "comment": "AgentInstance承担的可组合责任功能域；与 functionDomain 字符串投影保持一致，不等同于权限。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "operatesAtTimeScale",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#operatesAtTimeScale",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#OperationalTimeScale",
+      "comment": "AgentInstance工作的作战时间尺度；与 timeScale 字符串投影保持一致。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "hasRole",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#hasRole",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentRole",
+      "comment": "Agent承担的角色。",
+      "provenance": "wooldridge-jennings-1995"
+    },
+    {
+      "id": "memberOf",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#memberOf",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Organization",
+      "comment": "Agent的组织成员关系。",
+      "provenance": "c2sim"
+    },
+    {
+      "id": "reportsTo",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#reportsTo",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "comment": "指挥或报告关系，不表示通信链路可用。",
+      "provenance": "c2sim"
+    },
+    {
+      "id": "hasCapability",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#hasCapability",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Capability",
+      "comment": "Agent可提供的能力。",
+      "provenance": "wooldridge-jennings-1995"
+    },
+    {
+      "id": "observes",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#observes",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Observation",
+      "comment": "Agent接收的局部观测。",
+      "provenance": "mana-assignment-case"
+    },
+    {
+      "id": "updates",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#updates",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Observation",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#BeliefState",
+      "comment": "观测更新的信念状态。",
+      "provenance": "rao-georgeff-bdi"
+    },
+    {
+      "id": "asserts",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#asserts",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#BeliefState",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#BeliefAssertion",
+      "comment": "信念状态包含的断言。",
+      "provenance": "rao-georgeff-bdi"
+    },
+    {
+      "id": "adoptsGoal",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#adoptsGoal",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Goal",
+      "comment": "Agent采用的目标。",
+      "provenance": "rao-georgeff-bdi"
+    },
+    {
+      "id": "assignedTask",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#assignedTask",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Task",
+      "comment": "分配给Agent的任务。",
+      "provenance": "c2sim"
+    },
+    {
+      "id": "plans",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#plans",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Plan",
+      "comment": "Agent选择或维护的计划。",
+      "provenance": "rao-georgeff-bdi"
+    },
+    {
+      "id": "governedBy",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#governedBy",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Policy",
+      "comment": "Agent遵循的策略。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "requestsAction",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#requestsAction",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#ActionRequest",
+      "comment": "Agent提出的动作请求。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "requiresAuthorization",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#requiresAuthorization",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#ActionRequest",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Authority",
+      "comment": "动作请求所需的权限范围；不是授权结果。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "executes",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#executes",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Action",
+      "comment": "Agent实际执行的动作。",
+      "provenance": "wooldridge-jennings-1995"
+    },
+    {
+      "id": "produces",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#produces",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Action",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Effect",
+      "comment": "动作产生的效果。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "sends",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#sends",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Message",
+      "comment": "Agent发送的消息。",
+      "provenance": "c2sim"
+    },
+    {
+      "id": "receives",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#receives",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Message",
+      "comment": "Agent接收的消息。",
+      "provenance": "c2sim"
+    },
+    {
+      "id": "usesProtocol",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#usesProtocol",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#CommunicationAct",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Protocol",
+      "comment": "通信行为采用的协议。",
+      "provenance": "c2sim"
+    },
+    {
+      "id": "hasLinkState",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#hasLinkState",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#LinkState",
+      "comment": "Agent当前可用的链路状态。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "hasAuthority",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#hasAuthority",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Authority",
+      "comment": "Agent拥有的权限范围。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "withinRun",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#withinRun",
+      "domain": "https://local.ontology/coast-raid-k#Entity",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Run",
+      "comment": "信息、动作、产品和Agent实例所属的Run。",
+      "provenance": "grimm-odd-2010"
+    },
+    {
+      "id": "derivedFrom",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#derivedFrom",
+      "domain": "https://local.ontology/coast-raid-k#InformationEntity",
+      "range": "https://local.ontology/coast-raid-k#Entity",
+      "comment": "产品或信念的证据来源。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "assertedBy",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#assertedBy",
+      "domain": "https://local.ontology/coast-raid-k#InformationEntity",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "comment": "信息断言的生产Agent；不等同于交互助手。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "hostsAgent",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#hostsAgent",
+      "domain": "https://local.ontology/coast-raid-k#Platform",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance",
+      "comment": "Platform承载Agent实例。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "hasAssignment",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#hasAssignment",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#RoleAssignment",
+      "comment": "Agent的角色/任务绑定。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "usesResource",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#usesResource",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Resource",
+      "comment": "Agent使用的资源。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "believesAbout",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#believesAbout",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#BeliefAssertion",
+      "range": "https://local.ontology/coast-raid-k#Entity",
+      "comment": "信念所指向的实体。",
+      "provenance": "rao-georgeff-bdi"
+    },
+    {
+      "id": "formsIntention",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#formsIntention",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Intention",
+      "comment": "Agent形成的承诺。",
+      "provenance": "rao-georgeff-bdi"
+    },
+    {
+      "id": "selectsPlan",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#selectsPlan",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Intention",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Plan",
+      "comment": "意图选择的计划。",
+      "provenance": "rao-georgeff-bdi"
+    },
+    {
+      "id": "decomposes",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#decomposes",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Plan",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Task",
+      "comment": "计划分解出的任务。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "createsDecision",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#createsDecision",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Decision",
+      "comment": "Agent产生的决策记录。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "realizesRequest",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#realizesRequest",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Action",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#ActionRequest",
+      "comment": "动作实现的请求。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "producesEffect",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#producesEffect",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Action",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Effect",
+      "comment": "动作产生的效果。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "constrainedBy",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#constrainedBy",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Constraint",
+      "comment": "Agent受约束。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "hasCycle",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#hasCycle",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentCycle",
+      "comment": "Agent所属周期。",
+      "provenance": "boyd-ooda"
+    },
+    {
+      "id": "hasPhase",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#hasPhase",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentCycle",
+      "range": "https://local.ontology/coast-raid-k#Process",
+      "comment": "周期中的阶段。",
+      "provenance": "boyd-ooda"
+    },
+    {
+      "id": "precedes",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#precedes",
+      "domain": "https://local.ontology/coast-raid-k#Process",
+      "range": "https://local.ontology/coast-raid-k#Process",
+      "comment": "过程的时序先后。",
+      "provenance": "devs-zeigler-2000"
+    },
+    {
+      "id": "occursDuring",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#occursDuring",
+      "domain": "https://local.ontology/coast-raid-k#Entity",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#TimeInterval",
+      "comment": "实体或过程发生于时间区间。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "receivesTask",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#receivesTask",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Task",
+      "comment": "Agent接收任务。",
+      "provenance": "c2sim"
+    },
+    {
+      "id": "delegatesTaskTo",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#delegatesTaskTo",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "comment": "Agent向下属委派任务。",
+      "provenance": "c2sim"
+    },
+    {
+      "id": "hasMember",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#hasMember",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Organization",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "comment": "组织拥有成员。",
+      "provenance": "c2sim"
+    },
+    {
+      "id": "supportedBy",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#supportedBy",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#BeliefAssertion",
+      "range": "https://local.ontology/coast-raid-k#InformationEntity",
+      "comment": "信念断言得到的证据。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "preconditionOf",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#preconditionOf",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Constraint",
+      "range": "https://local.ontology/coast-raid-k#Process",
+      "comment": "约束作为过程前置条件。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "effectOf",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#effectOf",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Effect",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Action",
+      "comment": "效果对应的动作。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "partOfCycle",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#partOfCycle",
+      "domain": "https://local.ontology/coast-raid-k#Process",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentCycle",
+      "comment": "过程属于 Agent 周期。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "realizedBy",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#realizedBy",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentExecution",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance",
+      "comment": "执行实例由 Agent 实现。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "authorizedBy",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#authorizedBy",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#ActionRequest",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Authorization",
+      "comment": "动作请求对应的授权结果。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "validDuring",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#validDuring",
+      "domain": "https://local.ontology/coast-raid-k#Entity",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#TimeInterval",
+      "comment": "实体或过程在时间区间内有效。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "observedEntity",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#observedEntity",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Observation",
+      "range": "https://local.ontology/coast-raid-k#Entity",
+      "comment": "观测所指对象。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "sender",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#sender",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Message",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "comment": "消息发送主体。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "receivers",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#receivers",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Message",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "comment": "消息接收主体。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "evidence",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#evidence",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Authorization",
+      "range": "https://local.ontology/coast-raid-k#InformationEntity",
+      "comment": "授权使用的证据。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "decidedBy",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#decidedBy",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Authorization",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "comment": "产生授权决定的授权主体；与交互助手或请求提出者分离。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "realizesAgentClass",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#realizesAgentClass",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentType",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentClass",
+      "comment": "AgentType实现的OrgMAS Agent类模型。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "specifiesRole",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#specifiesRole",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentClass",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentRole",
+      "comment": "Agent类模型定义的角色集合 R。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "specifiesGoal",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#specifiesGoal",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentClass",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Goal",
+      "comment": "Agent类模型定义的目标集合 G。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "usesOrganizationModel",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#usesOrganizationModel",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentClass",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#OrganizationModel",
+      "comment": "Agent类模型采用的组织模型 MO。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "partOf",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#partOf",
+      "domain": "https://local.ontology/coast-raid-k#Entity",
+      "range": "https://local.ontology/coast-raid-k#Entity",
+      "comment": "实体或组织组成关系。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "kindOf",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#kindOf",
+      "domain": "https://local.ontology/coast-raid-k#Entity",
+      "range": "https://local.ontology/coast-raid-k#Entity",
+      "comment": "概念或类型的种属关系；类层级优先使用subClassOf。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "scope",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#scope",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Authorization",
+      "range": "https://local.ontology/coast-raid-k#Entity",
+      "comment": "授权作用范围，可指向目标、资源或空间实体；范围不扩大 Gate 的 Authority。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "proposesDecisionDraft",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#proposesDecisionDraft",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#DecisionDraft",
+      "comment": "Agent生成决策推荐草案。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "requestsApproval",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#requestsApproval",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#ApprovalRequest",
+      "comment": "Agent提交人工审批请求。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "reviewsApproval",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#reviewsApproval",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Operator",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#ApprovalRequest",
+      "comment": "操作员负责审查人工审批请求。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "recordsHumanDecision",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#recordsHumanDecision",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Operator",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#HumanDecision",
+      "comment": "操作员记录人工决定。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "forActionRequest",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#forActionRequest",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#ApprovalRequest",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#ActionRequest",
+      "comment": "审批请求对应的动作请求。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "forRecommendation",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#forRecommendation",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#ApprovalRequest",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#DecisionDraft",
+      "comment": "审批请求对应的推荐草案。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "approvedBy",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#approvedBy",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#ApprovalRequest",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#HumanDecision",
+      "comment": "审批请求由人工决定完成审查。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "triggerTarget",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#triggerTarget",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#TriggerDefinition",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "comment": "触发器启动的目标Agent。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "derivedFromEvidence",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#derivedFromEvidence",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#DecisionDraft",
+      "range": "https://local.ontology/coast-raid-k#InformationEntity",
+      "comment": "推荐草案引用的证据实体。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "gatePrecheckEvidence",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#gatePrecheckEvidence",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#ApprovalRequest",
+      "range": "https://local.ontology/coast-raid-k#InformationEntity",
+      "comment": "人工审批前Gate预检查使用的证据。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "evaluatedByGate",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#evaluatedByGate",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Authorization",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance",
+      "comment": "授权由Gate功能域Agent评估；不得由Options或Effectors直接生成。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "usesAuthorization",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#usesAuthorization",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#ActionExecution",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Authorization",
+      "comment": "执行过程引用本次使用的授权裁决。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "requestedBy",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#requestedBy",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#ActionRequest",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "comment": "提出动作请求的 Agent；与 requestsAction 互逆。",
+      "provenance": "localResearch",
+      "inverseOf": "https://local.ontology/coast-raid-k/agent/1.0.0#requestsAction"
+    },
+    {
+      "id": "requestIri",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#requestIri",
+      "domain": "https://local.ontology/coast-raid-k#Entity",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#ActionRequest",
+      "comment": "授权或执行记录所引用的具体动作请求。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "hasEffect",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#hasEffect",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#ActionExecution",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Effect",
+      "comment": "执行过程所报告的效果信息对象；不隐含因果真值。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "decisionMaker",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#decisionMaker",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Decision",
+      "range": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "comment": "形成该决策记录的 Agent；与授权签发者分开。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "hasProvenanceRecord",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#hasProvenanceRecord",
+      "domain": "https://local.ontology/coast-raid-k#Entity",
+      "range": "https://local.ontology/coast-raid-k#InformationEntity",
+      "comment": "关联来源描述记录，不替代该记录中的来源证据。",
+      "provenance": "localResearch"
+    }
+  ],
+  "dataProperties": [
+    {
+      "id": "agentId",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#agentId",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance",
+      "range": "xsd:string",
+      "comment": "运行内稳定Agent标识。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "decisionMode",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#decisionMode",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance",
+      "range": "xsd:string",
+      "comment": "reactive、bdi、rule、human-in-loop或hybrid。",
+      "provenance": "wooldridge-jennings-1995"
+    },
+    {
+      "id": "lifecycleState",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#lifecycleState",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance",
+      "range": "xsd:string",
+      "comment": "initialized、active、degraded、suspended或destroyed。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "autonomyLevel",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#autonomyLevel",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance",
+      "range": "xsd:string",
+      "comment": "supervised、delegated或autonomous；不等同于权限。",
+      "provenance": "wooldridge-jennings-1995"
+    },
+    {
+      "id": "observedAt",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#observedAt",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Observation",
+      "range": "xsd:dateTime",
+      "comment": "观测产生时间。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "confidence",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#confidence",
+      "domain": "https://local.ontology/coast-raid-k#InformationEntity",
+      "range": "xsd:decimal",
+      "comment": "断言或观测的置信度；不得与OpenViking相关度分数混用。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "validFrom",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#validFrom",
+      "domain": "https://local.ontology/coast-raid-k#Entity",
+      "range": "xsd:dateTime",
+      "comment": "事实、信念或权限的有效起始时间。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "validTo",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#validTo",
+      "domain": "https://local.ontology/coast-raid-k#Entity",
+      "range": "xsd:dateTime",
+      "comment": "事实、信念或权限的有效终止时间。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "sourceIri",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#sourceIri",
+      "domain": "https://local.ontology/coast-raid-k#InformationEntity",
+      "range": "xsd:anyURI",
+      "comment": "直接证据或生产者来源。",
+      "provenance": "prov-o"
+    },
+    {
+      "id": "observationKind",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#observationKind",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Observation",
+      "range": "xsd:string",
+      "comment": "观测类型。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "beliefRevision",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#beliefRevision",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#BeliefState",
+      "range": "xsd:string",
+      "comment": "信念版本。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "priority",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#priority",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Goal",
+      "range": "xsd:decimal",
+      "comment": "目标优先级。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "status",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#status",
+      "domain": "https://local.ontology/coast-raid-k#InformationEntity",
+      "range": "xsd:string",
+      "comment": "运行状态。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "decisionTime",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#decisionTime",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Decision",
+      "range": "xsd:dateTime",
+      "comment": "决策时间。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "ruleVersion",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#ruleVersion",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Authorization",
+      "range": "xsd:string",
+      "comment": "授权规则版本。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "reasonCode",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#reasonCode",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Authorization",
+      "range": "xsd:string",
+      "comment": "授权裁决原因码。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "conversationId",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#conversationId",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Message",
+      "range": "xsd:string",
+      "comment": "通信会话标识。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "payloadHash",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#payloadHash",
+      "domain": "https://local.ontology/coast-raid-k#InformationEntity",
+      "range": "xsd:string",
+      "comment": "载荷哈希。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "modelId",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#modelId",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance",
+      "range": "xsd:string",
+      "comment": "模型标识。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "modelRevision",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#modelRevision",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance",
+      "range": "xsd:string",
+      "comment": "模型修订版本。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "ontology",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#ontology",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Message",
+      "range": "xsd:anyURI",
+      "comment": "消息使用的本体。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "result",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#result",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Authorization",
+      "range": "xsd:string",
+      "comment": "授权裁决结果：allow、deny 或 indeterminate；授权生命周期由 authorizationStatus 独立表达。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "authorizationStatus",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#authorizationStatus",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Authorization",
+      "range": "xsd:string",
+      "comment": "授权生命周期状态：active、expired 或 revoked；与 result 的 allow、deny、indeterminate 决策结果分离。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "abortConditions",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#abortConditions",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Authorization",
+      "range": "xsd:string",
+      "comment": "授权必须满足的可验证中止条件集合；Effectors 触发任一条件时停止执行。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "policyVersion",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#policyVersion",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Authorization",
+      "range": "xsd:string",
+      "comment": "评估授权时采用的策略版本。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "evidenceUris",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#evidenceUris",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Authorization",
+      "range": "xsd:anyURI",
+      "comment": "交换格式中的证据 URI；图模型可同时使用 evidence 对象属性。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "functionDomain",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#functionDomain",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance",
+      "range": "xsd:string",
+      "comment": "performsFunction 的交换格式字符串投影；受控值为 World、Self、Adversary、Options、Gate、Effectors 或 Learn，可多选但不自动授予授权。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "timeScale",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#timeScale",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance",
+      "range": "xsd:string",
+      "comment": "Agent工作的时间尺度；受控值为 Immediate、Tactical、Operational 或 Strategic，可多选。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "humanControlMode",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#humanControlMode",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance",
+      "range": "xsd:string",
+      "comment": "人机责任面：in-the-loop、on-the-loop 或 out-of-the-loop；不等同于Agent权限。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "connectivityMode",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#connectivityMode",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance",
+      "range": "xsd:string",
+      "comment": "连接降级模式：online、degraded 或 disconnected。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "failureContainment",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#failureContainment",
+      "domain": "https://local.ontology/coast-raid-k#Entity",
+      "range": "xsd:string",
+      "comment": "失败隔离边界：local-action、team、operational 或 strategic；表示失效最多可影响的范围。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "safeFallbackPolicy",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#safeFallbackPolicy",
+      "domain": "https://local.ontology/coast-raid-k#Entity",
+      "range": "xsd:string",
+      "comment": "失联、超时或证据不足时执行的安全回退策略；Gate 默认收紧，Effectors 进入预批准的安全动作。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "reversibility",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#reversibility",
+      "domain": "https://local.ontology/coast-raid-k#Entity",
+      "range": "xsd:string",
+      "comment": "动作或授权的可逆性：reversible、recoverable 或 irreversible。自主范围只能随可逆性扩大。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "issuedAt",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#issuedAt",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Authorization",
+      "range": "xsd:dateTime",
+      "comment": "授权签发时间；与 expiresAt 共同定义有限授权寿命。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "expiresAt",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#expiresAt",
+      "domain": "https://local.ontology/coast-raid-k#Entity",
+      "range": "xsd:dateTime",
+      "comment": "授权或执行许可的到期时间；到期后不得继续执行。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "revocable",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#revocable",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Authorization",
+      "range": "xsd:boolean",
+      "comment": "授权是否可以在自然到期前被撤销；允许的授权必须可撤销。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "revokedAt",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#revokedAt",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Authorization",
+      "range": "xsd:dateTime",
+      "comment": "授权被撤销的时间；存在该值时 authorizationStatus 必须为 revoked。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "revocationReason",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#revocationReason",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Authorization",
+      "range": "xsd:string",
+      "comment": "授权撤销原因或关联 RevocationEvent。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "requiredHumanControlMode",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#requiredHumanControlMode",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Authorization",
+      "range": "xsd:string",
+      "comment": "该授权要求的人机控制模式：in-the-loop、on-the-loop 或 out-of-the-loop。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "abortCondition",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#abortCondition",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#ActionExecution",
+      "range": "xsd:string",
+      "comment": "执行必须中止的可验证条件；执行记录至少声明一条。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "authorizationIri",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#authorizationIri",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#ActionExecution",
+      "range": "xsd:anyURI",
+      "comment": "旧 URI 字面量谓词，仅保留兼容声明；ActionExecution JSON.authorizationIri 现显式映射到对象关系 ag:usesAuthorization。",
+      "provenance": "localResearch",
+      "deprecated": true
+    },
+    {
+      "id": "authorizationTtlSeconds",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#authorizationTtlSeconds",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance",
+      "range": "xsd:integer",
+      "comment": "默认授权寿命（仿真秒）；必须与动作风险和中止策略共同解释。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "expiresAtTick",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#expiresAtTick",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Authorization",
+      "range": "xsd:integer",
+      "comment": "仿真时钟中的授权到期拍；交换格式 expiresAt 的运行时投影。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "executionStatus",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#executionStatus",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#ActionExecution",
+      "range": "xsd:string",
+      "comment": "执行状态：executed 或 aborted；不等同于授权结果。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "recommendationStatus",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#recommendationStatus",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#DecisionDraft",
+      "range": "xsd:string",
+      "comment": "推荐草案状态。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "recommendationAction",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#recommendationAction",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#DecisionDraft",
+      "range": "xsd:string",
+      "comment": "推荐动作类型。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "recommendationRationale",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#recommendationRationale",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#DecisionDraft",
+      "range": "xsd:string",
+      "comment": "推荐理由。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "uncertainties",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#uncertainties",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#DecisionDraft",
+      "range": "xsd:string",
+      "comment": "推荐中未消除的不确定性；交换格式可重复出现。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "promptVersion",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#promptVersion",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#DecisionDraft",
+      "range": "xsd:string",
+      "comment": "生成推荐所用提示模板版本。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "contextHash",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#contextHash",
+      "domain": "https://local.ontology/coast-raid-k#InformationEntity",
+      "range": "xsd:string",
+      "comment": "生成推荐或裁决时读取上下文快照的哈希。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "approvalStatus",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#approvalStatus",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#ApprovalRequest",
+      "range": "xsd:string",
+      "comment": "人工审批请求状态。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "decisionKind",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#decisionKind",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#HumanDecision",
+      "range": "xsd:string",
+      "comment": "人工决定类型。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "decisionReason",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#decisionReason",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#HumanDecision",
+      "range": "xsd:string",
+      "comment": "人工决定理由。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "changedFields",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#changedFields",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#HumanDecision",
+      "range": "xsd:string",
+      "comment": "人工修改后重新评估的字段名；可重复出现。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "eventType",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#eventType",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#TriggerDefinition",
+      "range": "xsd:string",
+      "comment": "触发器匹配的运行事件类型。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "conditionRuleIri",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#conditionRuleIri",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#TriggerDefinition",
+      "range": "xsd:anyURI",
+      "comment": "触发器使用的条件规则。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "cooldownSeconds",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#cooldownSeconds",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#TriggerDefinition",
+      "range": "xsd:integer",
+      "comment": "触发器冷却时长（秒）。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "maxConcurrency",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#maxConcurrency",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#TriggerDefinition",
+      "range": "xsd:integer",
+      "comment": "触发器最大并发运行数。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "dedupeKey",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#dedupeKey",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#TriggerDefinition",
+      "range": "xsd:string",
+      "comment": "事件去重键表达式。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "enabled",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#enabled",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#TriggerDefinition",
+      "range": "xsd:boolean",
+      "comment": "触发器是否启用。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "onFailure",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#onFailure",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#TriggerDefinition",
+      "range": "xsd:string",
+      "comment": "触发失败策略。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "triggerStatus",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#triggerStatus",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#TriggerDefinition",
+      "range": "xsd:string",
+      "comment": "触发器生命周期状态。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "decidedByFunctionDomain",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#decidedByFunctionDomain",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Authorization",
+      "range": "xsd:string",
+      "comment": "授权裁决者功能域；必须为Gate。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "packageVersion",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#packageVersion",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Run",
+      "range": "xsd:string",
+      "comment": "运行锁定的知识包版本。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "manifestHash",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#manifestHash",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Run",
+      "range": "xsd:string",
+      "comment": "运行锁定的知识包清单哈希。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "executionResult",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#executionResult",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#ActionExecution",
+      "range": "xsd:string",
+      "comment": "执行结果；不同于 ag:result 授权决定。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "requestedAt",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#requestedAt",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#ActionRequest",
+      "range": "xsd:dateTime",
+      "comment": "动作请求被提出的壁钟时间。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "executedAt",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#executedAt",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#ActionExecution",
+      "range": "xsd:dateTime",
+      "comment": "执行过程登记的壁钟时间。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "runModelId",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#runModelId",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Run",
+      "range": "xsd:string",
+      "comment": "该运行采用的模型标识。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "runModelRevision",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#runModelRevision",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#Run",
+      "range": "xsd:string",
+      "comment": "该运行采用的模型版本。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "intervalFrom",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#intervalFrom",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#TimeInterval",
+      "range": "xsd:decimal",
+      "comment": "区间起点，依据 timeClock 与 timeUnit 解释。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "intervalTo",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#intervalTo",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#TimeInterval",
+      "range": "xsd:decimal",
+      "comment": "区间终点，未给值时不推断无限远。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "timeClock",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#timeClock",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#TimeInterval",
+      "range": "xsd:string",
+      "comment": "区间使用的时钟标识；未登记时不可补造。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "timeUnit",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#timeUnit",
+      "domain": "https://local.ontology/coast-raid-k/agent/1.0.0#TimeInterval",
+      "range": "xsd:string",
+      "comment": "区间使用的计时单位；无来源时不可补造。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "sourceSha256",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#sourceSha256",
+      "domain": "https://local.ontology/coast-raid-k#InformationEntity",
+      "range": "xsd:string",
+      "comment": "来源描述中记录的 SHA-256；存在值不表示本次已重算。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "hashStatus",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#hashStatus",
+      "domain": "https://local.ontology/coast-raid-k#InformationEntity",
+      "range": "xsd:string",
+      "comment": "来源哈希登记状态，不是本次校验结论。",
+      "provenance": "localResearch"
+    }
+  ],
+  "axioms": [
+    {
+      "id": "agent-instance-has-type",
+      "kind": "minCardinality",
+      "subject": "AgentInstance",
+      "property": "realizesType",
+      "minCount": 1,
+      "comment": "运行实例必须声明AgentType。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "agent-instance-has-lifecycle",
+      "kind": "requiredDataProperty",
+      "subject": "AgentInstance",
+      "property": "lifecycleState",
+      "comment": "运行实例必须有生命周期状态。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "belief-has-provenance",
+      "kind": "requiredProperties",
+      "subject": "BeliefAssertion",
+      "properties": [
+        "assertedBy",
+        "derivedFrom",
+        "confidence",
+        "validDuring"
+      ],
+      "comment": "信念不得被当作无来源的全局事实。",
+      "provenance": "rao-georgeff-bdi"
+    },
+    {
+      "id": "authorization-is-not-action",
+      "kind": "disjoint",
+      "left": "Authorization",
+      "right": "Action",
+      "comment": "授权结果不能代替实际动作。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "permit-requires-authorization",
+      "kind": "mapping",
+      "subject": "Permit",
+      "mapsTo": "Authorization",
+      "comment": "现有Permit作为项目专用授权产品映射，不改变Permit的既有类定义。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "agent-instance-declares-operating-boundary",
+      "kind": "requiredDataProperties",
+      "subject": "AgentInstance",
+      "properties": [
+        "functionDomain",
+        "timeScale",
+        "humanControlMode",
+        "connectivityMode",
+        "failureContainment",
+        "safeFallbackPolicy",
+        "reversibility"
+      ],
+      "comment": "运行Agent必须显式声明责任域、时间尺度、人机控制、连接模式、失败隔离和安全回退；这些声明不自动扩大权限。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "authorization-has-bounded-lifetime",
+      "kind": "requiredDataProperties",
+      "subject": "Authorization",
+      "properties": [
+        "authorizationStatus",
+        "issuedAt",
+        "expiresAt",
+        "revocable",
+        "abortConditions",
+        "requiredHumanControlMode",
+        "reversibility",
+        "failureContainment",
+        "safeFallbackPolicy"
+      ],
+      "comment": "授权必须有有限寿命、撤销语义和动作安全边界；过期或撤销后不可执行。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "action-execution-has-safety-envelope",
+      "kind": "requiredProperties",
+      "subject": "ActionExecution",
+      "properties": [
+        "usesAuthorization",
+        "expiresAt",
+        "abortCondition",
+        "safeFallbackPolicy",
+        "reversibility",
+        "failureContainment"
+      ],
+      "comment": "效果执行必须引用短寿命授权并声明中止条件、安全回退、可逆性和失败隔离边界。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "authorization-gate-only",
+      "kind": "requiredFunctionDomain",
+      "subject": "Authorization",
+      "property": "decidedByFunctionDomain",
+      "value": "Gate",
+      "comment": "任何Authorization（allow、deny或indeterminate）只能由functionDomain=Gate的AgentInstance评估产生；人工决定不等同于授权。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "approval-requires-human-decision",
+      "kind": "requiredReference",
+      "subject": "ApprovalRequest",
+      "property": "approvedBy",
+      "comment": "审批请求结束时必须引用HumanDecision；批准、拒绝、补证据和超时均须可审计。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "decision-draft-is-not-authorization",
+      "kind": "disjoint",
+      "left": "DecisionDraft",
+      "right": "Authorization",
+      "comment": "Agent推荐草案与Gate授权结果严格分离。",
+      "provenance": "localResearch"
+    },
+    {
+      "id": "trigger-does-not-authorize",
+      "kind": "disjoint",
+      "left": "TriggerDefinition",
+      "right": "Authorization",
+      "comment": "触发器只启动推理或审批流程，不授予执行权限。",
+      "provenance": "localResearch"
+    }
+  ],
+  "competencyQuestions": [
+    "运行中有哪些AgentInstance，其AgentType、Platform、Role、Organization和生命周期是什么？",
+    "某个BeliefAssertion来自哪个Observation、Agent和有效时间窗口？",
+    "某个ActionRequest由谁提出，是否经过Authorization，最终是否执行？",
+    "某个Permit的门控证据和规则版本是否可以从AuditEvent重放？"
+  ]
+}

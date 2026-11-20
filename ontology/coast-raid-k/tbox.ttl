@@ -1,0 +1,678 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix crk: <https://local.ontology/coast-raid-k#> .
+
+crk: a owl:Ontology ;
+  rdfs:label "coast-raid-k" ;
+  owl:versionInfo "1.0.0" ;
+  rdfs:comment "Generated from tbox.json. Not used in the 40ms tick." .
+
+crk:Entity a owl:Class ;
+  rdfs:label "实体"@zh ;
+  rdfs:comment "一切可指称者。类与个体在本包中都作为实体被陈述。"@zh ;
+  rdfs:seeAlso <http://purl.obolibrary.org/obo/BFO_0000001> .
+
+crk:Continuant a owl:Class ;
+  rdfs:label "持存体"@zh ;
+  rdfs:subClassOf crk:Entity ;
+  rdfs:comment "在时间中持存，不作为过程本身发生。"@zh ;
+  owl:equivalentClass <http://purl.obolibrary.org/obo/BFO_0000002> .
+
+crk:Occurrent a owl:Class ;
+  rdfs:label "发生体"@zh ;
+  rdfs:subClassOf crk:Entity ;
+  rdfs:comment "过程与发生。"@zh ;
+  owl:equivalentClass <http://purl.obolibrary.org/obo/BFO_0000003> .
+
+crk:IndependentContinuant a owl:Class ;
+  rdfs:label "独立持存体"@zh ;
+  rdfs:subClassOf crk:Continuant ;
+  rdfs:comment "独立持存体：在其存在期间具有自身身份、不作为另一实体的质量或角色而存在的持存对象。本项目的物理平台和空间对象按各自子类进一步限定。"@zh ;
+  owl:equivalentClass <http://purl.obolibrary.org/obo/BFO_0000004> .
+
+crk:DependentContinuant a owl:Class ;
+  rdfs:label "依赖持存体"@zh ;
+  rdfs:subClassOf crk:Continuant ;
+  rdfs:comment "依赖持存体：其存在依赖某个承载者的质量、角色或能力；不与承载它的物体混同。"@zh ;
+  rdfs:seeAlso <http://purl.obolibrary.org/obo/BFO_0000020> ;
+  rdfs:seeAlso <http://purl.obolibrary.org/obo/BFO_0000031> .
+
+crk:MaterialObject a owl:Class ;
+  rdfs:label "物质对象"@zh ;
+  rdfs:subClassOf crk:IndependentContinuant ;
+  rdfs:comment "物质对象：在时间中保持身份并占据空间的物理实体；记录、模板和空间包络不因描述物体而成为物质对象。"@zh ;
+  owl:equivalentClass <http://purl.obolibrary.org/obo/BFO_0000040> .
+
+crk:SpatialRegion a owl:Class ;
+  rdfs:label "空间区域"@zh ;
+  rdfs:subClassOf crk:IndependentContinuant ;
+  rdfs:comment "可行集或海陆域。不是占领区。"@zh ;
+  owl:equivalentClass <http://purl.obolibrary.org/obo/BFO_0000006> .
+
+crk:InformationEntity a owl:Class ;
+  rdfs:label "信息实体"@zh ;
+  rdfs:subClassOf crk:DependentContinuant ;
+  rdfs:comment "规则、算法、产品、型。依赖承载，但自身可被指称。"@zh ;
+  rdfs:seeAlso <https://www.commoncoreontologies.org/ont00000958> ;
+  rdfs:seeAlso <http://purl.obolibrary.org/obo/BFO_0000031> ;
+  rdfs:seeAlso <http://www.w3.org/ns/prov#Entity> .
+
+crk:Quality a owl:Class ;
+  rdfs:label "质量/状态"@zh ;
+  rdfs:subClassOf crk:DependentContinuant ;
+  rdfs:comment "依存于实体的状态。不是方法。"@zh ;
+  owl:equivalentClass <http://purl.obolibrary.org/obo/BFO_0000019> .
+
+crk:Role a owl:Class ;
+  rdfs:label "角色"@zh ;
+  rdfs:subClassOf crk:DependentContinuant ;
+  rdfs:comment "职能与监视角色。角色不是 Agent 壳体。"@zh ;
+  owl:equivalentClass <http://purl.obolibrary.org/obo/BFO_0000023> .
+
+crk:Relator a owl:Class ;
+  rdfs:label "关系体"@zh ;
+  rdfs:subClassOf crk:DependentContinuant ;
+  rdfs:comment "把两端实体绑在一起的关系本身也是实体。"@zh ;
+  rdfs:seeAlso <http://purl.obolibrary.org/obo/BFO_0000020> .
+
+crk:Process a owl:Class ;
+  rdfs:label "过程"@zh ;
+  rdfs:subClassOf crk:Occurrent ;
+  rdfs:comment "过程：在时间中发生、具有时间部分的活动或变化；过程规范和过程记录属于信息实体。"@zh ;
+  owl:equivalentClass <http://purl.obolibrary.org/obo/BFO_0000015> .
+
+crk:Class a owl:Class ;
+  rdfs:label "类"@zh ;
+  rdfs:subClassOf crk:Entity ;
+  rdfs:comment "owl:Class 在本包文档层也作为实体（punning），便于入库陈述。"@zh .
+
+crk:Package a owl:Class ;
+  rdfs:label "封皮包"@zh ;
+  rdfs:subClassOf crk:InformationEntity ;
+  rdfs:comment "知识包：汇集词汇、事实目录、约束、来源与版本声明的信息对象；包级单位与坐标约定不自动成为包内每个对象的属性断言。"@zh ;
+  rdfs:seeAlso <http://www.w3.org/ns/prov#Entity> .
+
+crk:Exclude a owl:Class ;
+  rdfs:label "排除项"@zh ;
+  rdfs:subClassOf crk:InformationEntity ;
+  rdfs:comment "排除项：知识包对未建模或明确禁止纳入范围的功能/概念所作声明；不是场景物理对象。"@zh .
+
+crk:Shoreline a owl:Class ;
+  rdfs:label "岸线"@zh ;
+  rdfs:subClassOf crk:IndependentContinuant ;
+  rdfs:comment "岸线：在指定工程坐标框架内界定海陆分界的空间曲线。采样折线是原参数曲线的近似表示。"@zh ;
+  rdfs:seeAlso <http://www.opengis.net/ont/geosparql#Feature> ;
+  rdfs:seeAlso <http://www.opengis.net/ont/geosparql#Geometry> .
+
+crk:Region a owl:Class ;
+  rdfs:label "海陆域"@zh ;
+  rdfs:subClassOf crk:SpatialRegion ;
+  rdfs:comment "区域：按边界、坐标框架或分类约定界定的空间范围；区域成员关系不表示占领或控制事实。"@zh ;
+  rdfs:seeAlso <http://www.opengis.net/ont/geosparql#Feature> .
+
+crk:Membership a owl:Class ;
+  rdfs:label "隶属"@zh ;
+  rdfs:subClassOf crk:Relator ;
+  rdfs:comment "成员关系：明确记载某对象依据指定规则归属于某区域的关系体；关系本身与参与该关系的对象分别具有身份。"@zh .
+
+crk:Envelope a owl:Class ;
+  rdfs:label "交战包络"@zh ;
+  rdfs:subClassOf crk:SpatialRegion ;
+  rdfs:comment "空间包络：由参数定义的三维空间范围；用于描述覆盖或约束范围，不等同于产生该范围的设备或设备能力。"@zh ;
+  rdfs:seeAlso <http://www.opengis.net/ont/geosparql#Feature> .
+
+crk:Corridor a owl:Class ;
+  rdfs:label "走廊"@zh ;
+  rdfs:subClassOf crk:SpatialRegion ;
+  rdfs:comment "走廊：具有边界和位置约定的通行或分析空间范围；其几何与实际对象是否位于其中是不同断言。"@zh ;
+  rdfs:seeAlso <http://www.opengis.net/ont/geosparql#Feature> .
+
+crk:SearchSector a owl:Class ;
+  rdfs:label "搜索扇"@zh ;
+  rdfs:subClassOf crk:SpatialRegion ;
+  rdfs:comment "搜索扇区：由中心、半径、方向及高度等参数限定的空间区域；矩形外包框不是扇区本身。"@zh ;
+  rdfs:seeAlso <http://www.opengis.net/ont/geosparql#Feature> .
+
+crk:DetectionDisk a owl:Class ;
+  rdfs:label "探测盘"@zh ;
+  rdfs:subClassOf crk:SpatialRegion ;
+  rdfs:comment "探测盘：以中心与半径定义的圆盘空间范围；表示几何范围，不证明范围内目标已被探测。"@zh ;
+  rdfs:seeAlso <http://www.opengis.net/ont/geosparql#Feature> .
+
+crk:JamBloom a owl:Class ;
+  rdfs:label "干扰开花"@zh ;
+  rdfs:subClassOf crk:SpatialRegion ;
+  rdfs:comment "干扰范围：对干扰影响空间所作参数化区域描述；不等于已发生的电磁效果或对效果确定性的保证。"@zh ;
+  rdfs:seeAlso <http://www.opengis.net/ont/geosparql#Feature> .
+
+crk:CommandPost a owl:Class ;
+  rdfs:label "指挥所"@zh ;
+  rdfs:subClassOf crk:MaterialObject ;
+  rdfs:comment "指挥所：在场景中被登记为指挥设施的物质对象；软件 Agent、组织和授权角色分别建模。"@zh ;
+  rdfs:seeAlso <https://www.commoncoreontologies.org/ont00000958> .
+
+crk:Sensor a owl:Class ;
+  rdfs:label "传感器阵地"@zh ;
+  rdfs:subClassOf crk:MaterialObject ;
+  rdfs:comment "传感器：用于取得观测的物质设备；观测、感知算法和设备型谱分别表示。"@zh ;
+  rdfs:seeAlso <http://www.opengis.net/ont/geosparql#Feature> .
+
+crk:Shooter a owl:Class ;
+  rdfs:label "发射阵地"@zh ;
+  rdfs:subClassOf crk:MaterialObject ;
+  rdfs:comment "效果设备：场景中登记的效果实施物质设备；设备记录及其通道数不表示实际授权或已执行动作。"@zh ;
+  rdfs:seeAlso <http://www.opengis.net/ont/geosparql#Feature> .
+
+crk:Platform a owl:Class ;
+  rdfs:label "平台"@zh ;
+  rdfs:subClassOf crk:MaterialObject ;
+  rdfs:comment "平台：可承载设备或 Agent 实现的物质对象；与平台型谱以及运行 Agent 实例分别具有身份。"@zh ;
+  rdfs:seeAlso <http://www.opengis.net/ont/geosparql#Feature> .
+
+crk:Emitter a owl:Class ;
+  rdfs:label "辐射源"@zh ;
+  rdfs:subClassOf crk:MaterialObject ;
+  rdfs:comment "发射设备：场景中登记的产生信号或辐射的物质设备；其状态、范围描述与具体发射过程分开表示。"@zh ;
+  rdfs:seeAlso <http://www.opengis.net/ont/geosparql#Feature> .
+
+crk:PlatformType a owl:Class ;
+  rdfs:label "平台型"@zh ;
+  rdfs:subClassOf crk:InformationEntity ;
+  rdfs:comment "平台型谱：规定一类平台的类别与描述特征的信息对象；inScene 仅记录该型谱在当前场景中的使用标记，不把型谱个体变成物质平台，也不表示某一平台或批次已实例化。"@zh .
+
+crk:Needline a owl:Class ;
+  rdfs:label "岸上数据链"@zh ;
+  rdfs:subClassOf crk:Relator ;
+  rdfs:comment "信息需求关系：记录通信参与对象及其预期信息交换关系的关系体；不自动断言链路当前可用。"@zh ;
+  rdfs:seeAlso <http://www.opengis.net/ont/geosparql#Feature> .
+
+crk:Link a owl:Class ;
+  rdfs:label "链路"@zh ;
+  rdfs:subClassOf crk:Relator ;
+  rdfs:comment "通信链路关系：对参与对象、链路方式或拓扑关系的登记；通道、消息与具体通信过程分别建模。"@zh .
+
+crk:Invariant a owl:Class ;
+  rdfs:label "交战镜像"@zh ;
+  rdfs:subClassOf crk:InformationEntity ;
+  rdfs:comment "不变约束：在明确适用范围内要求持续成立的条件规范；是否满足需要针对输入和规则版本执行校验。"@zh .
+
+crk:Rule a owl:Class ;
+  rdfs:label "规则"@zh ;
+  rdfs:subClassOf crk:InformationEntity ;
+  rdfs:comment "规则：以条件、模态和约束内容表达的规范信息对象；规则文本、机器执行器和某次检查结果是不同对象。"@zh ;
+  rdfs:seeAlso <http://www.w3.org/ns/prov#Plan> .
+
+crk:Algorithm a owl:Class ;
+  rdfs:label "算法"@zh ;
+  rdfs:subClassOf crk:InformationEntity ;
+  rdfs:comment "算法：可由实现执行的计算方法规范；名称或绑定不证明某次执行已发生，也不自动获得授权。"@zh ;
+  rdfs:seeAlso <http://purl.obolibrary.org/obo/BFO_0000034> .
+
+crk:CloudDef a owl:Class ;
+  rdfs:label "云定义"@zh ;
+  rdfs:subClassOf crk:InformationEntity ;
+  rdfs:comment "云模型定义：以期望、熵、超熵等数字特征描述不确定性模型的信息对象；其所表征的质量与该定义本身不同。"@zh ;
+  rdfs:seeAlso <https://doi.org/10.1002/int.20340> .
+
+crk:ShellTemplate a owl:Class ;
+  rdfs:label "壳体模板"@zh ;
+  rdfs:subClassOf crk:InformationEntity ;
+  rdfs:comment "壳体模板：描述阶段、平台型绑定及读写契约的可复用运行规范；不是某次运行中的 Agent 实例。"@zh .
+
+crk:Monitor a owl:Class ;
+  rdfs:label "授权监视"@zh ;
+  rdfs:subClassOf crk:Role ;
+  rdfs:comment "监视角色：在规则目录中承担监视与检查责任的角色对象；角色不等同于软件主体或某次授权裁决。"@zh .
+
+crk:FunctionBind a owl:Class ;
+  rdfs:label "指挥职能"@zh ;
+  rdfs:subClassOf crk:Role ;
+  rdfs:comment "职能绑定角色：某承载主体在指定组织或运行语境中承担的职能角色；输入、输出、约束及实现绑定描述该角色的履行条件，描述记录与角色本身分开。不因名称为 gate 而等同于 Rule/gate、授权规范或授权主体。"@zh .
+
+crk:Stage a owl:Class ;
+  rdfs:label "壳体段"@zh ;
+  rdfs:subClassOf crk:Process ;
+  rdfs:comment "阶段：在一次具体运行中发生、并构成更大过程的有界过程片段；具有实际参与者与时间位置。壳体模板中的阶段名称、顺序及输入输出是阶段规范的描述，不凭模板记录断言该过程已经发生。"@zh .
+
+crk:Track a owl:Class ;
+  rdfs:label "航迹"@zh ;
+  rdfs:subClassOf crk:InformationEntity ;
+  rdfs:comment "航迹记录：对观察或估计的目标状态及其关联作出的信息表述；不等于被跟踪物体或无误差真值。"@zh ;
+  rdfs:seeAlso <http://www.w3.org/ns/prov#Entity> .
+
+crk:Identity a owl:Class ;
+  rdfs:label "身份"@zh ;
+  rdfs:subClassOf crk:InformationEntity ;
+  rdfs:comment "身份判断记录：对对象类别或归属的认定及其依据的信息表述；判断状态与实际对象身份不混同。"@zh ;
+  rdfs:seeAlso <http://www.w3.org/ns/prov#Entity> .
+
+crk:Pair a owl:Class ;
+  rdfs:label "配对"@zh ;
+  rdfs:subClassOf crk:InformationEntity ;
+  rdfs:comment "配对记录：对两个或多个参与对象之间候选/已选关联的表述；不是参与对象本身或执行结果。"@zh .
+
+crk:Slot a owl:Class ;
+  rdfs:label "槽位"@zh ;
+  rdfs:subClassOf crk:InformationEntity ;
+  rdfs:comment "资源槽记录：描述资源或时间安排的离散分配单元；记录存在不表示对应执行已发生。"@zh .
+
+crk:Permit a owl:Class ;
+  rdfs:label "许可"@zh ;
+  rdfs:subClassOf crk:InformationEntity ;
+  rdfs:comment "项目许可记录：旧模型中的许可产品，表达本包检查结果；与 Agent Authorization 的映射需显式说明，不自动等价。"@zh ;
+  rdfs:seeAlso <http://www.w3.org/ns/prov#Entity> .
+
+crk:Wave a owl:Class ;
+  rdfs:label "波次"@zh ;
+  rdfs:subClassOf crk:InformationEntity ;
+  rdfs:comment "批次记录：描述一组有限任务或产品的组织单元；与真实过程的发生和完成状态分别登记。"@zh .
+
+crk:Channel a owl:Class ;
+  rdfs:label "通道"@zh ;
+  rdfs:subClassOf crk:InformationEntity ;
+  rdfs:comment "通道记录：描述可用于信息或资源交换的通道及相关容量状态；不是消息内容或通信行为。"@zh .
+
+crk:Inject a owl:Class ;
+  rdfs:label "注入"@zh ;
+  rdfs:subClassOf crk:InformationEntity ;
+  rdfs:comment "实验注入记录：描述向模型输入的受控变化或事件规范；不表示外部世界已发生同一变化。"@zh .
+
+crk:Event a owl:Class ;
+  rdfs:label "事件记录"@zh ;
+  rdfs:subClassOf crk:InformationEntity ;
+  rdfs:comment "事件记录：对发生事项的时间、主体及载荷所作的信息表述；记录不是它所描述的世界过程。"@zh .
+
+crk:Equipment a owl:Class ;
+  rdfs:label "装备"@zh ;
+  rdfs:subClassOf crk:MaterialObject ;
+  rdfs:comment "可被公开来源、测试事件或制造研究指称的装备实体；不表示已部署或具备未经核验的作战效果。"@zh .
+
+crk:EquipmentModel a owl:Class ;
+  rdfs:label "装备型号"@zh ;
+  rdfs:subClassOf crk:InformationEntity ;
+  rdfs:comment "装备型号或系统型号的信息对象；与具体物理装备实例分开。"@zh .
+
+crk:Technology a owl:Class ;
+  rdfs:label "技术"@zh ;
+  rdfs:subClassOf crk:InformationEntity ;
+  rdfs:comment "装备制造、软件、传感、通信或保障技术的信息对象。"@zh .
+
+crk:Organization a owl:Class ;
+  rdfs:label "组织"@zh ;
+  rdfs:subClassOf crk:IndependentContinuant ;
+  rdfs:comment "制造商、采购方、研究机构或其他公开来源中的组织实体。"@zh .
+
+crk:Program a owl:Class ;
+  rdfs:label "项目"@zh ;
+  rdfs:subClassOf crk:InformationEntity ;
+  rdfs:comment "采购、研发、测试或生产项目的信息对象。"@zh .
+
+crk:SourceDocument a owl:Class ;
+  rdfs:label "来源文档"@zh ;
+  rdfs:subClassOf crk:InformationEntity ;
+  rdfs:comment "公开来源的不可变文档记录；正文、版本和哈希由证据层保存。"@zh .
+
+crk:EvidenceItem a owl:Class ;
+  rdfs:label "证据项"@zh ;
+  rdfs:subClassOf crk:InformationEntity ;
+  rdfs:comment "从来源文档定位出的证据片段或材料项。"@zh .
+
+crk:CapabilityObservation a owl:Class ;
+  rdfs:label "能力观测"@zh ;
+  rdfs:subClassOf crk:InformationEntity ;
+  rdfs:comment "在明确条件、时间和数据性质下对装备能力的来源绑定观测。"@zh .
+
+crk:CapabilityMetric a owl:Class ;
+  rdfs:label "能力指标"@zh ;
+  rdfs:subClassOf crk:InformationEntity ;
+  rdfs:comment "能力观测中的指标定义、数值、单位和限定词。"@zh .
+
+crk:TestEvent a owl:Class ;
+  rdfs:label "测试事件"@zh ;
+  rdfs:subClassOf crk:Event ;
+  rdfs:comment "公开来源报告的测试、演示、试验或观察事件。"@zh .
+
+crk:ProcurementEvent a owl:Class ;
+  rdfs:label "采购事件"@zh ;
+  rdfs:subClassOf crk:Event ;
+  rdfs:comment "公开来源报告的采购、合同授予或订购事件的信息记录；不表明已交付、部署或形成作战能力。"@zh .
+
+crk:ProductionEvent a owl:Class ;
+  rdfs:label "生产事件"@zh ;
+  rdfs:subClassOf crk:Event ;
+  rdfs:comment "公开来源报告的生产启动、扩产、制造进度或交付事件的信息记录；与实际制造过程及其能力验证分开。"@zh .
+
+crk:ManufacturingProcess a owl:Class ;
+  rdfs:label "制造过程"@zh ;
+  rdfs:subClassOf crk:Process ;
+  rdfs:comment "制造、装配、质检、维护或交付相关过程。"@zh .
+
+crk:TrendHypothesis a owl:Class ;
+  rdfs:label "趋势假设"@zh ;
+  rdfs:subClassOf crk:InformationEntity ;
+  rdfs:comment "跨来源形成的未来趋势推断；不是静态事实。"@zh .
+
+crk:ManufacturingDecision a owl:Class ;
+  rdfs:label "制造决定"@zh ;
+  rdfs:subClassOf crk:InformationEntity ;
+  rdfs:comment "人在具体需求和约束下形成的制造研究决定。"@zh .
+
+crk:Continuant owl:disjointWith crk:Occurrent .
+crk:Rule owl:disjointWith crk:Algorithm .
+crk:Rule owl:disjointWith crk:ShellTemplate .
+crk:Algorithm owl:disjointWith crk:ShellTemplate .
+crk:FunctionBind owl:disjointWith crk:ShellTemplate .
+crk:FunctionBind owl:disjointWith crk:Rule .
+crk:Role owl:disjointWith crk:InformationEntity .
+crk:MaterialObject owl:disjointWith crk:SpatialRegion .
+crk:Envelope owl:disjointWith crk:Region .
+
+crk:hasState a owl:ObjectProperty ;
+  rdfs:domain crk:Entity ;
+  rdfs:range crk:Quality ;
+  rdfs:comment "状态作为质量依存于实体。每一实体都有。"@zh .
+
+crk:inheresIn a owl:ObjectProperty ;
+  rdfs:domain crk:Quality ;
+  rdfs:range crk:Entity ;
+  owl:inverseOf crk:hasState .
+
+crk:rdf_type a owl:ObjectProperty ;
+  rdfs:domain crk:Entity ;
+  rdfs:range crk:Class ;
+  rdfs:comment "个体属于类。JSON 字段 type。"@zh .
+
+crk:boundTo a owl:ObjectProperty ;
+  rdfs:domain crk:Algorithm ;
+  rdfs:range crk:FunctionBind .
+
+crk:gives a owl:ObjectProperty ;
+  rdfs:domain crk:FunctionBind ;
+  rdfs:range crk:InformationEntity .
+
+crk:evaluatesOn a owl:ObjectProperty ;
+  rdfs:domain crk:Rule ;
+  rdfs:range crk:Entity .
+
+crk:memberOf a owl:ObjectProperty ;
+  rdfs:domain crk:IndependentContinuant ;
+  rdfs:range crk:Region .
+
+crk:owns a owl:ObjectProperty ;
+  rdfs:domain crk:MaterialObject ;
+  rdfs:range crk:SpatialRegion .
+
+crk:covers a owl:ObjectProperty ;
+  rdfs:domain crk:Sensor ;
+  rdfs:range crk:SpatialRegion .
+
+crk:commands a owl:ObjectProperty ;
+  rdfs:domain crk:CommandPost ;
+  rdfs:range crk:Platform .
+
+crk:notSameAs a owl:ObjectProperty ;
+  rdfs:domain crk:Entity ;
+  rdfs:range crk:Entity .
+
+crk:bindsPlatformType a owl:ObjectProperty ;
+  rdfs:domain crk:ShellTemplate ;
+  rdfs:range crk:PlatformType .
+
+crk:reads a owl:ObjectProperty ;
+  rdfs:domain crk:Entity ;
+  rdfs:range crk:InformationEntity ;
+  rdfs:comment "过程或角色读取产品。"@zh .
+
+crk:writes a owl:ObjectProperty ;
+  rdfs:domain crk:Entity ;
+  rdfs:range crk:InformationEntity ;
+  rdfs:comment "仅 Monitor 可写 Permit；壳体禁止。"@zh .
+
+crk:participatesIn a owl:ObjectProperty ;
+  rdfs:domain crk:IndependentContinuant ;
+  rdfs:range crk:Process .
+
+crk:specifiedBy a owl:ObjectProperty ;
+  rdfs:domain crk:Process ;
+  rdfs:range crk:ShellTemplate .
+
+crk:of a owl:ObjectProperty ;
+  rdfs:domain crk:Relator ;
+  rdfs:range crk:Entity .
+
+crk:region a owl:ObjectProperty ;
+  rdfs:domain crk:Membership ;
+  rdfs:range crk:Region .
+
+crk:hasCapabilityObservation a owl:ObjectProperty ;
+  rdfs:domain crk:Entity ;
+  rdfs:range crk:CapabilityObservation ;
+  rdfs:comment "仅用于装备实例 Equipment 或装备型号 EquipmentModel 与来源绑定能力观测的关联；宽域避免将信息型谱误推为物理装备。"@zh .
+
+crk:observesSubject a owl:ObjectProperty ;
+  rdfs:domain crk:CapabilityObservation ;
+  rdfs:range crk:Entity ;
+  rdfs:comment "能力观测所指称的装备实例 Equipment 或装备型号 EquipmentModel；宽值域避免将型号信息对象误推为物理装备。"@zh .
+
+crk:hasMetric a owl:ObjectProperty ;
+  rdfs:domain crk:CapabilityObservation ;
+  rdfs:range crk:CapabilityMetric ;
+  rdfs:comment "能力观测所使用的指标。"@zh .
+
+crk:measuredIn a owl:ObjectProperty ;
+  rdfs:domain crk:CapabilityObservation ;
+  rdfs:range crk:TestEvent ;
+  rdfs:comment "能力观测所关联的测试或观察事件。"@zh .
+
+crk:reportedBy a owl:ObjectProperty ;
+  rdfs:domain crk:CapabilityObservation ;
+  rdfs:range crk:SourceDocument ;
+  rdfs:comment "能力观测的来源文档。"@zh .
+
+crk:supportedBy a owl:ObjectProperty ;
+  rdfs:domain crk:Entity ;
+  rdfs:range crk:EvidenceItem ;
+  rdfs:comment "实体、关系或结论的证据支持。"@zh .
+
+crk:manufacturedBy a owl:ObjectProperty ;
+  rdfs:domain crk:Entity ;
+  rdfs:range crk:Organization ;
+  rdfs:comment "仅用于装备实例 Equipment 或装备型号 EquipmentModel 与公开制造组织的来源绑定关联。"@zh .
+
+crk:participatesInProgram a owl:ObjectProperty ;
+  rdfs:domain crk:Entity ;
+  rdfs:range crk:Program ;
+  rdfs:comment "仅用于装备实例 Equipment 或装备型号 EquipmentModel 关联的研发、采购或生产项目。"@zh .
+
+crk:supportsApplication a owl:ObjectProperty ;
+  rdfs:domain crk:Entity ;
+  rdfs:range crk:InformationEntity ;
+  rdfs:comment "仅用于装备实例 Equipment 或装备型号 EquipmentModel 所关联的应用角色或场景描述。"@zh .
+
+crk:derivedFrom a owl:ObjectProperty ;
+  rdfs:domain crk:Entity ;
+  rdfs:range crk:SourceDocument ;
+  rdfs:comment "研究对象从来源文档派生。"@zh .
+
+crk:contradicts a owl:ObjectProperty ;
+  rdfs:domain crk:Entity ;
+  rdfs:range crk:Entity ;
+  rdfs:comment "两个证据化对象之间的冲突关系。"@zh .
+
+crk:hasManufacturingProcess a owl:ObjectProperty ;
+  rdfs:domain crk:Entity ;
+  rdfs:range crk:ManufacturingProcess ;
+  rdfs:comment "仅用于装备实例 Equipment 或装备型号 EquipmentModel 关联的制造或保障过程；型号关联不表示该型号是过程的物理参与者。"@zh .
+
+crk:hasTrendHypothesis a owl:ObjectProperty ;
+  rdfs:domain crk:Entity ;
+  rdfs:range crk:TrendHypothesis ;
+  rdfs:comment "仅用于装备实例 Equipment 或装备型号 EquipmentModel 关联的趋势假设。"@zh .
+
+crk:develops a owl:ObjectProperty ;
+  rdfs:domain crk:Organization ;
+  rdfs:range crk:InformationEntity ;
+  rdfs:comment "公开来源报告的组织研发型号、技术或项目关系；不推定已投入使用。"@zh .
+
+crk:procures a owl:ObjectProperty ;
+  rdfs:domain crk:Organization ;
+  rdfs:range crk:EquipmentModel ;
+  rdfs:comment "公开来源报告的采购组织与装备型号的关系；计划、合同和交付阶段由证据区分。"@zh .
+
+crk:supplies a owl:ObjectProperty ;
+  rdfs:domain crk:Organization ;
+  rdfs:range crk:EquipmentModel ;
+  rdfs:comment "公开来源报告的供应组织与装备型号关系；不推定产量或实际交付。"@zh .
+
+crk:testsEquipment a owl:ObjectProperty ;
+  rdfs:domain crk:TestEvent ;
+  rdfs:range crk:EquipmentModel ;
+  rdfs:comment "来源绑定测试事件涉及的装备型号；不推定测试结论或实战能力。"@zh .
+
+crk:usesTechnology a owl:ObjectProperty ;
+  rdfs:domain crk:Entity ;
+  rdfs:range crk:Technology ;
+  rdfs:comment "仅用于装备型号 EquipmentModel 或项目 Program 对公开技术的来源绑定关联。"@zh .
+
+crk:announcedBy a owl:ObjectProperty ;
+  rdfs:domain crk:Event ;
+  rdfs:range crk:Organization ;
+  rdfs:comment "来源绑定公开试验、采购或生产事件的发布组织。"@zh .
+
+crk:involvesEquipment a owl:ObjectProperty ;
+  rdfs:domain crk:Event ;
+  rdfs:range crk:EquipmentModel ;
+  rdfs:comment "来源绑定公开试验、采购或生产事件所涉及的装备型号。"@zh .
+
+crk:involvesOrganization a owl:ObjectProperty ;
+  rdfs:domain crk:Event ;
+  rdfs:range crk:Organization ;
+  rdfs:comment "来源绑定公开试验、采购或生产事件所涉及的组织。"@zh .
+
+crk:participatesInEventRecord a owl:ObjectProperty ;
+  rdfs:domain crk:Organization ;
+  rdfs:range crk:Event ;
+  rdfs:comment "组织与来源绑定公开事件记录的参与关联；Event 是信息记录，不等同于组织参与实际 Process。"@zh .
+
+crk:claims a owl:DatatypeProperty ;
+  rdfs:domain crk:Algorithm ;
+  rdfs:range xsd:boolean ;
+  rdfs:comment "永假。算法不是权利要求。"@zh .
+
+crk:hasModality a owl:DatatypeProperty ;
+  rdfs:domain crk:Rule ;
+  rdfs:range xsd:string .
+
+crk:hasText a owl:DatatypeProperty ;
+  rdfs:domain crk:Rule ;
+  rdfs:range xsd:string .
+
+crk:tau a owl:DatatypeProperty ;
+  rdfs:domain crk:Rule ;
+  rdfs:range xsd:decimal .
+
+crk:iden a owl:DatatypeProperty ;
+  rdfs:domain crk:Identity ;
+  rdfs:range xsd:string .
+
+crk:listable a owl:DatatypeProperty ;
+  rdfs:domain crk:Identity ;
+  rdfs:range xsd:boolean .
+
+crk:p_belief a owl:DatatypeProperty ;
+  rdfs:domain crk:Identity ;
+  rdfs:range xsd:decimal .
+
+crk:human a owl:DatatypeProperty ;
+  rdfs:domain crk:FunctionBind ;
+  rdfs:range xsd:boolean .
+
+crk:metricName a owl:DatatypeProperty ;
+  rdfs:domain crk:CapabilityMetric ;
+  rdfs:range xsd:string ;
+  rdfs:comment "指标名称。"@zh .
+
+crk:numericValue a owl:DatatypeProperty ;
+  rdfs:domain crk:CapabilityMetric ;
+  rdfs:range xsd:decimal ;
+  rdfs:comment "来源原值；禁止无证据换算。"@zh .
+
+crk:unit a owl:DatatypeProperty ;
+  rdfs:domain crk:CapabilityMetric ;
+  rdfs:range xsd:string ;
+  rdfs:comment "来源单位。"@zh .
+
+crk:qualifier a owl:DatatypeProperty ;
+  rdfs:domain crk:CapabilityMetric ;
+  rdfs:range xsd:string ;
+  rdfs:comment "约数、上下限或精确值限定词。"@zh .
+
+crk:basis a owl:DatatypeProperty ;
+  rdfs:domain crk:CapabilityObservation ;
+  rdfs:range xsd:string ;
+  rdfs:comment "reported-test、manufacturer-claim、program-target 或 reported-observation。"@zh .
+
+crk:conditions a owl:DatatypeProperty ;
+  rdfs:domain crk:CapabilityObservation ;
+  rdfs:range xsd:string ;
+  rdfs:comment "测试或观察条件。"@zh .
+
+crk:validTime a owl:DatatypeProperty ;
+  rdfs:domain crk:Entity ;
+  rdfs:range xsd:string ;
+  rdfs:comment "有效时间或来源观察时间范围。"@zh .
+
+crk:reviewStatus a owl:DatatypeProperty ;
+  rdfs:domain crk:Entity ;
+  rdfs:range xsd:string ;
+  rdfs:comment "pending、accepted、rejected 或 withdrawn。"@zh .
+
+crk:Entity rdfs:subClassOf [
+  a owl:Restriction ;
+  owl:onProperty crk:hasState ;
+  owl:someValuesFrom crk:Quality
+] .
+
+crk:Algorithm rdfs:subClassOf [
+  a owl:Restriction ;
+  owl:onProperty crk:claims ;
+  owl:hasValue "false"^^xsd:boolean
+] .
+
+crk:ShellTemplate rdfs:subClassOf [
+  a owl:Restriction ;
+  owl:onProperty crk:writes ;
+  owl:allValuesFrom [ owl:complementOf crk:Permit ]
+] .
+
+crk:axiom_entity_has_quality a owl:Axiom ;
+  rdfs:comment "Entity SubClassOf hasState some Quality" .
+
+crk:axiom_algorithm_no_claim a owl:Axiom ;
+  rdfs:comment "Algorithm SubClassOf claims value false" .
+
+crk:axiom_shell_no_permit a owl:Axiom ;
+  rdfs:comment "ShellTemplate SubClassOf not (writes some Permit)" .
+
+crk:axiom_monitor_writes_permit a owl:Axiom ;
+  rdfs:comment "Monitor SubClassOf writes some Permit" .
+
+crk:axiom_unk_not_listable a owl:Axiom ;
+  rdfs:comment "Identity and (iden value 不明) SubClassOf listable value false" .
+
+crk:axiom_inner_loop a owl:Axiom ;
+  rdfs:comment "spherical_code rdf:type Algorithm . Algorithm and (boundTo value form) and (scope value inner) DisjointWith (claims value true)" .
+
+# Independently reviewed, source-qualified descriptive attribute vocabulary.
+crk:AttributeObservation a owl:Class ; rdfs:subClassOf crk:InformationEntity ; rdfs:label "属性断言记录"@zh .
+crk:hasAttributeObservation a owl:ObjectProperty ; rdfs:domain crk:Entity ; rdfs:range crk:AttributeObservation .
+crk:reportedStandard a owl:DatatypeProperty ; rdfs:domain crk:Entity ; rdfs:range xsd:string ; rdfs:label "公开标准"@zh .
+crk:reportedInterface a owl:DatatypeProperty ; rdfs:domain crk:Entity ; rdfs:range xsd:string ; rdfs:label "公开接口"@zh .
+crk:reportedArchitecture a owl:DatatypeProperty ; rdfs:domain crk:Entity ; rdfs:range xsd:string ; rdfs:label "公开架构"@zh .
+crk:reportedHumanOversight a owl:DatatypeProperty ; rdfs:domain crk:Entity ; rdfs:range xsd:string ; rdfs:label "人工监督"@zh .
+crk:reportedTestStatus a owl:DatatypeProperty ; rdfs:domain crk:Entity ; rdfs:range xsd:string ; rdfs:label "公开试验状态"@zh .
+crk:reportedMaturity a owl:DatatypeProperty ; rdfs:domain crk:Entity ; rdfs:range xsd:string ; rdfs:label "公开成熟度描述"@zh .
+crk:reportedContractStage a owl:DatatypeProperty ; rdfs:domain crk:Entity ; rdfs:range xsd:string ; rdfs:label "公开合同阶段"@zh .
+crk:reportedEventDate a owl:DatatypeProperty ; rdfs:domain crk:Entity ; rdfs:range xsd:string ; rdfs:label "公开事件日期"@zh .

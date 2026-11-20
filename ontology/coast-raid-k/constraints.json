@@ -1,0 +1,94 @@
+{
+  "package": "coast-raid-k",
+  "invariants": [
+    {
+      "id": "N_bound",
+      "text": "第 k 波 N_k ≤ N_max，分层上限同时成立"
+    },
+    {
+      "id": "lo_in_corridor",
+      "text": "低空梯队轨迹 ⊂ C_low"
+    },
+    {
+      "id": "gate",
+      "text": "过门 ⇔ 区内 ∧ p≥τ ∧ 岸上数据链通 ∧ m>0 ∧ 身份可分"
+    },
+    {
+      "id": "unk_no_list",
+      "text": "不明不进交战清单"
+    },
+    {
+      "id": "saturate_no_open",
+      "text": "饱和（λN_lo > m_SAM）不是开门理由"
+    },
+    {
+      "id": "ship_no_shoot",
+      "text": "舰载探测区内跟踪不打"
+    },
+    {
+      "id": "envelope_not_occupy",
+      "text": "交战本体是可行集，不是占领区"
+    },
+    {
+      "id": "no_person_auto",
+      "text": "不把人员选为类别并自动交战；授权门留下"
+    },
+    {
+      "id": "no_mean_field",
+      "text": "N 有限，均值场不进问题"
+    },
+    {
+      "id": "no_satellite_sensor",
+      "text": "本幕情报源不含天基传感器"
+    },
+    {
+      "id": "fusion_split",
+      "text": "G(t) 断则队级融合不可用，只用局部 p；机间不断"
+    },
+    {
+      "id": "type_not_item",
+      "text": "inScene=false 的平台型不得进本幕波次"
+    },
+    {
+      "id": "hale_not_scene",
+      "text": "HALE/G5 不进本幕；它不是天基传感器，但超出本幕包络"
+    }
+  ],
+  "clouds": {
+    "inSam": {
+      "Ex": 0.72,
+      "En": 0.16,
+      "He": 0.03,
+      "vis": "team",
+      "source": "theater.intel.src_team · 岸搜+舰载+制导（无天基）",
+      "wasGeneratedBy": "cloud_shadow",
+      "used": "Track",
+      "floor": 0,
+      "ceil": 1,
+      "note": "Li Deyi cloud: Ex expectation, En entropy, He hyper-entropy. Not NN weights."
+    },
+    "nEnv": {
+      "Ex": 4,
+      "En": 0.7,
+      "He": 0.12,
+      "vis": "local",
+      "source": "编成计数 / finite N",
+      "wasGeneratedBy": "cloud_shadow",
+      "used": "Wave",
+      "floor": 0,
+      "note": "Expected environment count. Bounded by Rule.N_bound."
+    },
+    "threatSam": {
+      "Ex": 0.8,
+      "En": 0.14,
+      "He": 0.04,
+      "vis": "team",
+      "source": "Identity × inSam",
+      "wasGeneratedBy": "iff_logic",
+      "used": "Identity",
+      "floor": 0,
+      "ceil": 1,
+      "note": "Threat belief. Gate still needs p≥τ."
+    }
+  }
+}

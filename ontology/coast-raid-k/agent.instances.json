@@ -1,0 +1,141 @@
+{
+  "$schema": "https://local.ontology/coast-raid-k/agent/1.0.0/schema.agent.extension.json",
+  "package": "coast-raid-k",
+  "type": "AgentInstanceCatalog",
+  "version": "1.0.0",
+  "status": "example",
+  "runId": "run-20260923-001",
+  "instances": [
+    {
+      "type": "AgentInstance",
+      "id": "agent.monitor.gate",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#agent-monitor-gate",
+      "agentType": "https://local.ontology/coast-raid-k/agent/1.0.0#agent-type-gate-monitor",
+      "implementedOn": "https://local.ontology/coast-raid-k#C2",
+      "organization": "https://local.ontology/coast-raid-k/agent/1.0.0#org-blue-c2",
+      "roles": [
+        "https://local.ontology/coast-raid-k/agent/1.0.0#role-gate-monitor"
+      ],
+      "capabilities": [
+        "https://local.ontology/coast-raid-k/agent/1.0.0#capability-authorization-evaluation"
+      ],
+      "runId": "run-20260923-001",
+      "modelId": "gate-service",
+      "modelRevision": "gate-v1",
+      "functionDomain": [
+        "Gate"
+      ],
+      "timeScale": [
+        "Immediate",
+        "Tactical"
+      ],
+      "humanControlMode": "on-the-loop",
+      "connectivityMode": "online",
+      "failureContainment": "team",
+      "safeFallbackPolicy": "deny-new-authorization",
+      "reversibility": "reversible",
+      "decisionMode": "rule",
+      "autonomyLevel": "supervised",
+      "lifecycleState": "active",
+      "authorityScope": [
+        "https://local.ontology/coast-raid-k/agent/1.0.0#authority-gate-policy"
+      ],
+      "validTime": {
+        "from": 0,
+        "to": null,
+        "clock": "sim"
+      },
+      "provenance": {
+        "source": "shells.json; rules.json; agent.extension.json",
+        "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#agent-catalog-generator",
+        "hashStatus": "not-computed"
+      },
+      "authorizationTtlSeconds": 8
+    },
+    {
+      "type": "AgentInstance",
+      "id": "agent.options.planner",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#agent-options-planner",
+      "agentType": "https://local.ontology/coast-raid-k/agent/1.0.0#agent-type-options-planner",
+      "implementedOn": "https://local.ontology/coast-raid-k#C2",
+      "organization": "https://local.ontology/coast-raid-k/agent/1.0.0#org-blue-c2",
+      "roles": [
+        "https://local.ontology/coast-raid-k/agent/1.0.0#role-options-planner"
+      ],
+      "capabilities": [
+        "https://local.ontology/coast-raid-k/agent/1.0.0#capability-plan-and-task"
+      ],
+      "runId": "run-20260923-001",
+      "modelId": "options-planner",
+      "modelRevision": "options-v1",
+      "functionDomain": [
+        "Options"
+      ],
+      "timeScale": [
+        "Tactical",
+        "Operational"
+      ],
+      "humanControlMode": "on-the-loop",
+      "connectivityMode": "online",
+      "failureContainment": "operational",
+      "safeFallbackPolicy": "shrink-options-to-local",
+      "reversibility": "recoverable",
+      "decisionMode": "hybrid",
+      "autonomyLevel": "delegated",
+      "lifecycleState": "active",
+      "authorityScope": [],
+      "validTime": {
+        "from": 0,
+        "to": null,
+        "clock": "sim"
+      },
+      "provenance": {
+        "source": "platform/battle.js; agent.extension.json",
+        "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#agent-catalog-generator",
+        "hashStatus": "not-computed"
+      }
+    },
+    {
+      "type": "AgentInstance",
+      "id": "agent.fusion.c2",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#agent-fusion-c2",
+      "agentType": "https://local.ontology/coast-raid-k/agent/1.0.0#agent-type-fusion",
+      "implementedOn": "https://local.ontology/coast-raid-k#C2",
+      "organization": "https://local.ontology/coast-raid-k/agent/1.0.0#org-blue-c2",
+      "roles": [
+        "https://local.ontology/coast-raid-k/agent/1.0.0#role-fusion"
+      ],
+      "capabilities": [
+        "https://local.ontology/coast-raid-k/agent/1.0.0#capability-track-fusion"
+      ],
+      "runId": "run-20260923-001",
+      "modelId": "cloud-belief",
+      "modelRevision": "cloud-v1",
+      "functionDomain": [
+        "World"
+      ],
+      "timeScale": [
+        "Tactical"
+      ],
+      "humanControlMode": "on-the-loop",
+      "connectivityMode": "online",
+      "failureContainment": "local-action",
+      "safeFallbackPolicy": "stale-world-local-self",
+      "reversibility": "reversible",
+      "decisionMode": "hybrid",
+      "autonomyLevel": "delegated",
+      "lifecycleState": "active",
+      "authorityScope": [],
+      "validTime": {
+        "from": 0,
+        "to": null,
+        "clock": "sim"
+      },
+      "provenance": {
+        "source": "platform/knowledge.js; agent.extension.json",
+        "generatedBy": "https://local.ontology/coast-raid-k/agent/1.0.0#agent-catalog-generator",
+        "hashStatus": "not-computed"
+      }
+    }
+  ]
+}

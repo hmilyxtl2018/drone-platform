@@ -1,0 +1,93 @@
+{
+  "id": "coast-raid-k",
+  "title": "分层交战本体 · 海岸有限波次",
+  "version": "1.0.0",
+  "kind": "engagement-body-package",
+  "envelope": [
+    "Scene",
+    "Rule",
+    "Algorithm",
+    "Engagement",
+    "Agent",
+    "Knowledge"
+  ],
+  "schemaModules": [
+    "schema.common.json",
+    "schema.ontology.json",
+    "schema.scene.json",
+    "schema.rule.json",
+    "schema.algorithm.json",
+    "schema.engagement.json",
+    "schema.agent.json",
+    "schema.knowledge.json",
+    "schema.dictionary.json",
+    "schema.agent.extension.json"
+  ],
+  "unit": {
+    "length": "km",
+    "one": 1,
+    "speed": "km/h",
+    "tick_s": 0.04
+  },
+  "frame": {
+    "origin": "岸线中点 O",
+    "x": "东距，东为正",
+    "y": "高，上为正",
+    "z": "距岸，陆正海负",
+    "heading000_deg": 0,
+    "heading000": "向陆（+z）",
+    "heading180": "向海（−z）"
+  },
+  "parts": {
+    "context": "context.jsonld",
+    "schema": "schema.json",
+    "products": "products.schema.json",
+    "gis": "gis.json",
+    "theater": "theater.json",
+    "graph": "graph.json",
+    "rules": "rules.json",
+    "constraints": "constraints.json",
+    "shells": "shells.json",
+    "lexicon": "lexicon.json",
+    "tbox": "tbox.json",
+    "dictionary": "dictionary.json",
+    "inventory": "inventory.json",
+    "algorithms": "algorithms.json",
+    "sources": "sources.json",
+    "sqlite": "coast-raid-k.sqlite",
+    "agentExtension": "agent.extension.json",
+    "agentTtl": "agent.extension.ttl",
+    "agentSchema": "schema.agent.extension.json",
+    "agentShapes": "agent.shapes.ttl",
+    "agentInstances": "agent.instances.json",
+    "openvikingContexts": "openviking-contexts.json",
+    "runtimeContract": "runtime-contract.json",
+    "identityRegistry": "identity-registry.json",
+    "semanticMapping": "semantic-mapping.json",
+    "semanticSchema": "schema.semantic-mapping.json",
+    "semanticDecisions": "semantic-decisions.json",
+    "standardsEvidence": "standards-evidence.json",
+    "intelligenceDdl": "ddl-intelligence.sql",
+    "osintDdl": "ddl-osint.sql",
+    "osintAgent": "osint-agent.md",
+    "intelligenceContract": "intelligence-contract.json",
+    "intelligenceAgent": "intelligence-agent.md",
+    "intelligenceSchema": "schema.intelligence.json",
+    "attributesJsonbSchema": "schema.object-attributes-jsonb.json",
+    "classDefinitionReview": "class-definition-review.json"
+  },
+  "runtime": {
+    "source": "platform/run-workbench-demo.js",
+    "store": "platform/runtime_store.py",
+    "contract": "runtime-contract.json",
+    "note": "运行链仅用于知识治理、证据采集和通知类的范围受限动作；不连接外部执行器。"
+  },
+  "excludes": [
+    "satelliteSensor",
+    "link16",
+    "ibcsIfcn",
+    "meanField",
+    "personAutoEngage",
+    "occupationZone"
+  ]
+}

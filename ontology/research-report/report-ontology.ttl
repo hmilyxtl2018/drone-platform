@@ -1,0 +1,9 @@
+@prefix r: <urn:research-report:> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+r:Ontology a owl:Ontology ; owl:versionInfo "1.0.0" .
+r:Entity a owl:Class .
+r:Assertion a owl:Class .
+r:Evidence a owl:Class .
+r:Entity owl:disjointWith r:Assertion, r:Evidence .
+r:Assertion owl:disjointWith r:Evidence .

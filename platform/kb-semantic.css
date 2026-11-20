@@ -1,0 +1,24 @@
+/* The stage owns the outer gutter; panes align with its title and tabs. */
+.semantic-pane { padding: 0; color: var(--ink, #26333e); }
+.semantic-title { font-size: 16px; line-height: 1.5; margin: 16px 0 6px; font-weight: 600; }
+.semantic-title:first-child { margin-top: 0; }
+.semantic-note, .semantic-empty { font-size: 13px; line-height: 1.7; color: #66717c; margin: 4px 0 8px; }
+.semantic-definition { font-size: 15px; line-height: 1.8; max-width: 85ch; margin: 6px 0 10px; }
+.semantic-scroll { overflow-x: auto; }
+.semantic-table { border-collapse: collapse; width: 100%; font-size: 13px; line-height: 1.6; table-layout: auto; }
+.semantic-table th { text-align: left; background: #f0f3f5; font-weight: 600; color: #52616e; }
+.semantic-table td, .semantic-table th { padding: 6px 8px; border-bottom: 1px solid #dde3e8; vertical-align: top; overflow-wrap: anywhere; }
+.semantic-table td p { margin: 4px 0 0; }
+.semantic-table code { font-size: 12px; overflow-wrap: anywhere; color: #344e6b; }
+.semantic-badge { display: inline-block; font-size: 11px; background: #edf2f6; color: #526578; padding: 1px 6px; border-radius: 3px; margin: 1px 4px 1px 0; white-space: nowrap; }
+.semantic-link { border: none; background: none; padding: 0; color: #2460a2; cursor: pointer; text-align: left; font: inherit; }
+.semantic-link:hover { text-decoration: underline; }
+.semantic-array { margin: 0; padding-left: 22px; }
+.semantic-array li { padding: 2px 0; }
+.semantic-values { margin: 0; display: grid; grid-template-columns: minmax(70px, auto) 1fr; gap: 4px 12px; }
+.semantic-values dt { color: #647180; font-size: 12px; }
+.semantic-values dd { margin: 0; }
+.semantic-json { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.6; font-size: 12px; background: #f5f7f9; padding: 8px; margin: 6px 0 8px; border: 1px solid #e0e5eb; }
+.semantic-pane details { margin: 8px 0; }
+.semantic-pane summary { cursor: pointer; font-size: 13px; color: #355b7a; padding: 4px 0; }
+@media (max-width: 760px) { .kb-stage { padding: 10px 12px 12px; } .semantic-table td, .semantic-table th { padding: 6px; } }

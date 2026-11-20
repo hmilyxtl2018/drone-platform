@@ -1,0 +1,57 @@
+{
+  "graphId": "situation-assessment-action-capabilities",
+  "version": "1.0.0",
+  "agentKey": "situation-assessment-action",
+  "capabilities": [
+    {
+      "key": "temporal-alignment",
+      "name": "temporal alignment",
+      "requiredActions": [
+        "analysis.temporal_align"
+      ],
+      "requiredEvidence": [
+        "context",
+        "findings"
+      ],
+      "acceptance": [
+        "Effective and retrieval times remain distinct."
+      ]
+    },
+    {
+      "key": "configuration-identity",
+      "name": "configuration identity",
+      "requiredActions": [
+        "analysis.temporal_align"
+      ],
+      "requiredEvidence": [
+        "findings",
+        "conflicts"
+      ],
+      "acceptance": [
+        "Different configurations are not merged."
+      ]
+    },
+    {
+      "key": "state-evidence",
+      "name": "state evidence",
+      "requiredActions": [
+        "analysis.report_contract_validate"
+      ],
+      "requiredEvidence": [
+        "claims",
+        "gaps"
+      ],
+      "acceptance": [
+        "Unobserved states remain unknown."
+      ]
+    }
+  ],
+  "forbiddenCapabilities": [
+    "operational-tasking",
+    "target-assignment",
+    "weapon-control",
+    "engagement-authorization",
+    "formal-ontology-write",
+    "self-expand-authority"
+  ]
+}

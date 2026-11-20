@@ -1,0 +1,32 @@
+{
+  "type": "object",
+  "required": [
+    "evidence",
+    "proposal",
+    "requiredReviewTargets"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "evidence": {
+      "type": "array",
+      "maxItems": 100,
+      "items": {
+        "type": "object"
+      }
+    },
+    "proposal": {
+      "type": "object"
+    },
+    "requiredReviewTargets": {
+      "type": "array",
+      "maxItems": 32,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "kind"
+        ]
+      }
+    }
+  }
+}

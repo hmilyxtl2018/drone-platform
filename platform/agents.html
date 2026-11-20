@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="zh-CN" class="agents-page">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>Agents 工作台 · 基于本体 Agents 工作室</title>
+    <link rel="stylesheet" href="./agents.css?v=2" />
+  </head>
+  <body class="agents-page">
+    <header class="agents-mast">
+      <div class="mast-brand">
+        <img src="./img/logo-mark.jpg" alt="灵云智" />
+        <div>
+          <p class="eyebrow">Ontology based Agents Studio</p>
+          <h1>Agents 工作台</h1>
+        </div>
+      </div>
+      <div class="run-identity" aria-label="当前运行上下文">
+        <span class="run-chip"><i class="status-dot live"></i><span id="run-status">运行中</span></span>
+        <span class="run-chip mono" id="run-id-chip">准备 Run</span>
+        <span class="run-chip">coast-raid-k · v0.9.4</span>
+        <span class="run-chip">模型 <b id="model-version">deterministic-1.2</b></span>
+      </div>
+      <div class="mast-actions">
+        <a id="engine-admin-link" class="nav-link nav-link-accent" href="http://127.0.0.1:8090/agent-admin.html">Agent Engine 管理</a>
+        <button id="pause-run" class="btn btn-quiet" type="button">暂停 Run</button>
+        <button id="replay-run" class="btn btn-quiet" type="button">回放</button>
+        <a class="nav-link nav-link-accent" href="./intelligence.html?api">情报采集</a>
+        <a class="nav-link" href="./osint.html">开源情报</a>
+        <a class="nav-link" href="./kb.html">知识库</a>
+      </div>
+    </header>
+
+    <script>
+      (() => { const id = new URLSearchParams(location.search).get('analysisRunId');
+        if (id) document.getElementById('engine-admin-link').href += '?analysisRunId=' + encodeURIComponent(id); })();
+    </script>
+    <main class="agents-shell">
+      <aside class="roster panel" aria-label="Agent 状态与运行上下文">
+        <div class="panel-head">
+          <div>
+            <p class="eyebrow">RUN CONTEXT</p>
+            <h2>运行上下文</h2>
+          </div>
+          <button class="icon-btn" id="refresh-run" type="button" title="刷新运行状态" aria-label="刷新运行状态">↻</button>
+        </div>
+        <dl class="context-list">
+          <div><dt>场景</dt><dd>证据治理 · K-01</dd></div>
+          <div><dt>知识包</dt><dd class="mono">coast-raid-k</dd></div>
+          <div><dt>规则</dt><dd class="mono">engagement-rules@24</dd></div>
+          <div><dt>开始时间</dt><dd class="mono">14:32:08 CST</dd></div>
+        </dl>
+        <div class="section-label"><span>AGENTS</span><span id="agent-count">6 在线</span></div>
+        <ul class="agent-list" id="agent-list"></ul>
+        <div class="roster-foot">
+          <span class="sync-dot"></span><span>事件流已同步</span><span class="mono" id="last-sync">14:38:22</span>
+        </div>
+      </aside>
+
+      <section class="workspace" aria-label="运行事件与 Copilot">
+        <div class="workspace-tabs" role="tablist" aria-label="工作台视图">
+          <button type="button" class="tab active" role="tab" aria-selected="true" data-view="timeline">运行时间线 <span id="event-count">12</span></button>
+          <button type="button" class="tab" role="tab" aria-selected="false" data-view="copilot">Copilot <span class="tab-badge">1</span></button>
+          <span class="workspace-spacer"></span>
+          <button id="new-task" class="btn btn-primary" type="button">＋ 新建任务</button>
+        </div>
+        <div id="timeline-view" class="view-pane active" role="tabpanel">
+          <div class="timeline-toolbar">
+            <div>
+              <h2>运行事件</h2>
+              <p>所有入口共享同一条可回放的 RuntimeEnvelope 事件链。</p>
+            </div>
+            <div class="toolbar-actions">
+              <button class="filter-chip active" type="button" data-filter="all">全部</button>
+              <button class="filter-chip" type="button" data-filter="attention">需关注 <span id="attention-count">1</span></button>
+            </div>
+          </div>
+          <ol class="event-stream" id="event-stream" aria-live="polite"></ol>
+        </div>
+        <div id="copilot-view" class="view-pane" role="tabpanel" hidden>
+          <div class="copilot-head">
+            <div class="copilot-avatar">✦</div>
+            <div><h2>Copilot</h2><p>我会读取当前 Run 的知识、规则与证据，协助你比较方案。</p></div>
+          </div>
+          <div class="copilot-messages" id="copilot-messages"></div>
+        </div>
+        <form class="composer" id="copilot-form">
+          <label class="sr-only" for="copilot-input">询问 Copilot</label>
+          <textarea id="copilot-input" rows="1" placeholder="询问当前态势，或让 Copilot 比较方案…"></textarea>
+          <div class="composer-foot">
+            <span class="composer-hint"><kbd>⌘</kbd><kbd>Enter</kbd> 发送 · 结果会保留证据引用</span>
+            <button class="btn btn-primary" type="submit">发送 <span aria-hidden="true">↗</span></button>
+          </div>
+        </form>
+      </section>
+
+      <aside class="inspector" aria-label="推荐、人工队列与证据">
+        <section class="panel recommendation-panel" id="recommendation-panel">
+          <div class="panel-head">
+            <div><p class="eyebrow">OPTIONS AGENT</p><h2>推荐方案</h2></div>
+            <span class="state-pill pending" id="recommendation-state">待人工确认</span>
+          </div>
+          <div id="recommendation-card"></div>
+        </section>
+        <section class="panel review-panel">
+          <div class="panel-head compact"><div><p class="eyebrow">HUMAN IN THE LOOP</p><h2>人工队列 <span class="count-badge" id="queue-count">1</span></h2></div><button id="queue-refresh" class="icon-btn" type="button" title="刷新人工队列" aria-label="刷新人工队列">↻</button></div>
+          <div id="review-card"></div>
+        </section>
+        <section class="panel evidence-panel" id="evidence-panel">
+          <div class="panel-head compact"><div><p class="eyebrow">TRACE / EVIDENCE</p><h2>证据与规则</h2></div><button id="close-evidence" class="icon-btn" type="button" title="收起证据" aria-label="收起证据">×</button></div>
+          <div id="evidence-body"></div>
+        </section>
+      </aside>
+    </main>
+
+    <div class="toast-stack" id="toast-stack" aria-live="polite"></div>
+    <script>
+      if (location.protocol === "file:") {
+        document.write("<div class='file-warning'>不要双击本地 html。<br>请打开 <b>http://127.0.0.1:8765/agents.html</b>；演示回放使用 <b>?demo</b></div>");
+      }
+    </script>
+    <script type="module" src="./agents.js?v=1"></script>
+  </body>
+</html>

@@ -1,0 +1,147 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.ontology/coast-raid-k/schema.knowledge.json",
+  "title": "coast-raid-k knowledge $defs",
+  "description": "出处 + 云模型 Ex/En/He。页签：来源 · 数字特征 · 质量 · 谱系 · 粒度 · 可见性。",
+  "$defs": {
+    "CloudDef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "Ex",
+        "En",
+        "He"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "const": "CloudDef"
+        },
+        "Ex": {
+          "title": "数字特征 Ex",
+          "type": "number"
+        },
+        "En": {
+          "title": "数字特征 En",
+          "type": "number",
+          "minimum": 0
+        },
+        "He": {
+          "title": "数字特征 He",
+          "type": "number",
+          "minimum": 0
+        },
+        "floor": {
+          "type": "number"
+        },
+        "ceil": {
+          "type": "number"
+        },
+        "vis": {
+          "$ref": "#/$defs/Visibility"
+        },
+        "source": {
+          "type": "string"
+        },
+        "wasGeneratedBy": {
+          "type": "string"
+        },
+        "used": {
+          "type": "string"
+        },
+        "note": {
+          "type": "string"
+        }
+      }
+    },
+    "Shadow": {
+      "type": "object",
+      "required": [
+        "scope",
+        "cloud"
+      ],
+      "properties": {
+        "scope": {
+          "enum": [
+            "team",
+            "local"
+          ]
+        },
+        "cloud": {
+          "type": "string"
+        },
+        "f": {
+          "type": "number"
+        },
+        "mu": {
+          "type": "number"
+        },
+        "n": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "frozen": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Candidate": {
+      "type": "object",
+      "required": [
+        "cloud",
+        "trigger",
+        "status"
+      ],
+      "properties": {
+        "cloud": {
+          "type": "string"
+        },
+        "dEx": {
+          "type": "number"
+        },
+        "dEn": {
+          "type": "number"
+        },
+        "dHe": {
+          "type": "number"
+        },
+        "trigger": {
+          "enum": [
+            "wave",
+            "gate",
+            "attrition",
+            "jam"
+          ]
+        },
+        "status": {
+          "enum": [
+            "pending",
+            "accepted",
+            "rejected"
+          ]
+        }
+      }
+    },
+    "Granularity": {
+      "type": "object",
+      "required": [
+        "level",
+        "routesTo"
+      ],
+      "properties": {
+        "level": {
+          "enum": [
+            "粗",
+            "中",
+            "细"
+          ]
+        },
+        "routesTo": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,107 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Explicit JSON to RDF field mapping",
+  "type": "object",
+  "required": [
+    "mappingVersion",
+    "package",
+    "classIris",
+    "mappings"
+  ],
+  "properties": {
+    "mappingVersion": {
+      "type": "string"
+    },
+    "package": {
+      "const": "coast-raid-k"
+    },
+    "classIris": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "format": "uri"
+      }
+    },
+    "mappings": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "classIri",
+          "jsonPointer",
+          "predicateIri",
+          "nodeKind",
+          "status",
+          "source",
+          "mappingVersion",
+          "sequencePolicy",
+          "nullPolicy"
+        ],
+        "properties": {
+          "classIri": {
+            "type": "string",
+            "format": "uri"
+          },
+          "jsonPointer": {
+            "type": "string",
+            "pattern": "^/"
+          },
+          "predicateIri": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uri"
+          },
+          "nodeKind": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "status": {
+            "enum": [
+              "mapped",
+              "unmapped",
+              "identity"
+            ]
+          },
+          "source": {
+            "type": "string"
+          },
+          "mappingVersion": {
+            "type": "string"
+          },
+          "sequencePolicy": {
+            "type": "string"
+          },
+          "nullPolicy": {
+            "type": "string"
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "const": "mapped"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "predicateIri": {
+                  "type": "string",
+                  "format": "uri"
+                },
+                "nodeKind": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}

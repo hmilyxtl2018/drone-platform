@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.ontology/coast-raid-k/evidence-factor-graph.v1.schema.json",
+  "title": "证据因子图契约",
+  "description": "把来源观测、候选变量、支持/冲突因子和约束组织成可追溯的待审核图。该契约不代表已发布事实。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "graphRunId", "entity", "variables", "observations", "factors", "constraints", "inference", "contentHash"],
+  "properties": {
+    "schemaVersion": {"const": "evidence-factor-graph.v1"},
+    "graphRunId": {"type": "string", "minLength": 1, "maxLength": 120},
+    "entity": {"$ref": "#/$defs/entity"},
+    "variables": {"type": "array", "maxItems": 500, "items": {"$ref": "#/$defs/variable"}},
+    "observations": {"type": "array", "maxItems": 1000, "items": {"$ref": "#/$defs/observation"}},
+    "factors": {"type": "array", "maxItems": 2000, "items": {"$ref": "#/$defs/factor"}},
+    "constraints": {"type": "array", "maxItems": 1000, "items": {"$ref": "#/$defs/constraint"}},
+    "inference": {"$ref": "#/$defs/inference"},
+    "contentHash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^[A-Za-z0-9._:-]{1,120}$"},
+    "entity": {
+      "type": "object", "additionalProperties": false,
+      "required": ["entityId", "name"],
+      "properties": {
+        "entityId": {"type": "string", "minLength": 1},
+        "entityRevisionId": {"type": ["string", "null"]},
+        "name": {"type": "string", "minLength": 1},
+        "variant": {"type": ["string", "null"]}
+      }
+    },
+    "variable": {
+      "type": "object", "additionalProperties": false,
+      "required": ["variableId", "variableKey", "variableType", "state", "contentHash"],
+      "properties": {
+        "variableId": {"$ref": "#/$defs/id"},
+        "variableKey": {"type": "string", "minLength": 1, "maxLength": 120},
+        "variableType": {"enum": ["identity", "configuration", "organization", "process", "production", "cost", "composition"]},
+        "state": {"enum": ["proposed", "unknown", "conflict", "constrained"]},
+        "value": {},
+        "unit": {"type": ["string", "null"], "maxLength": 60},
+        "conditions": {"type": "object"},
+        "candidateIds": {"type": "array", "items": {"type": "string"}},
+        "contentHash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "observation": {
+      "type": "object", "additionalProperties": false,
+      "required": ["observationId", "sourceSnapshotId", "sourceUri", "quote", "contentHash", "claimState", "variableIds"],
+      "properties": {
+        "observationId": {"$ref": "#/$defs/id"},
+        "candidateId": {"type": ["string", "null"]},
+        "sourceSnapshotId": {"type": "string", "minLength": 1},
+        "sourceUri": {"type": "string", "minLength": 1},
+        "quote": {"type": "string", "minLength": 1, "maxLength": 1200},
+        "sourceContentHash": {"type": ["string", "null"], "pattern": "^[0-9a-f]{64}$"},
+        "contentHash": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+        "claimState": {"enum": ["reported", "derived", "unknown", "conflict", "rejected"]},
+        "variableIds": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/id"}},
+        "locator": {"type": ["object", "null"]}
+      }
+    },
+    "factor": {
+      "type": "object", "additionalProperties": false,
+      "required": ["factorId", "factorType", "status", "variableIds", "observationIds", "contentHash"],
+      "properties": {
+        "factorId": {"$ref": "#/$defs/id"},
+        "factorType": {"enum": ["source-support", "identity-match", "configuration-scope", "time-consistency", "unit-normalization", "source-independence", "conflict", "review-gate"]},
+        "status": {"enum": ["supporting", "contradicting", "unresolved", "satisfied", "failed"]},
+        "variableIds": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "observationIds": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "score": {"type": ["number", "null"], "minimum": 0, "maximum": 1},
+        "details": {"type": "object"},
+        "contentHash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "constraint": {
+      "type": "object", "additionalProperties": false,
+      "required": ["constraintId", "constraintType", "status", "variableIds", "contentHash"],
+      "properties": {
+        "constraintId": {"$ref": "#/$defs/id"},
+        "constraintType": {"enum": ["identity", "configuration", "time", "unit", "source", "review"]},
+        "status": {"enum": ["satisfied", "failed", "unresolved"]},
+        "variableIds": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+        "details": {"type": "object"},
+        "contentHash": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    },
+    "inference": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "conflicts", "gaps"],
+      "properties": {
+        "status": {"enum": ["pending-review", "needs-evidence", "conflict", "complete-with-gaps"]},
+        "conflicts": {"type": "array", "items": {"type": "string"}},
+        "gaps": {"type": "array", "items": {"type": "string"}},
+        "summary": {"type": "object"}
+      }
+    }
+  }
+}

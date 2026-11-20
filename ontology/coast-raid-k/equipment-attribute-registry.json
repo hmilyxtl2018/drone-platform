@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "equipment-attributes-registry.v1",
+  "templates": {
+    "EquipmentModel": {
+      "identity": ["category", "subcategory", "lifecycle-status", "first-flight-year", "service-entry-year"],
+      "dimensions": ["length", "wingspan", "max-takeoff-weight", "payload-capacity"],
+      "performance": ["max-speed", "ceiling", "flight-range", "endurance"],
+      "propulsion": ["propulsion-type"],
+      "mission": ["primary-weapons", "stealth-feature", "swarm-compatibility"],
+      "c4isr": ["sensor-payload", "data-link"],
+      "survivability": ["rcs", "jamming-resistance"],
+      "autonomy": ["autonomy-mode", "human-oversight"],
+      "manufacturing": ["reference-unit-cost", "production-count"],
+      "research": ["technical-highlights", "composite-score"]
+    }
+  },
+  "fields": {
+    "category": {"valueType": "text"},
+    "subcategory": {"valueType": "text"},
+    "lifecycle-status": {"valueType": "text"},
+    "first-flight-year": {"valueType": "number", "unit": "year"},
+    "service-entry-year": {"valueType": "number", "unit": "year"},
+    "length": {"valueType": "quantity", "unit": "m"},
+    "wingspan": {"valueType": "quantity", "unit": "m"},
+    "max-takeoff-weight": {"valueType": "quantity", "unit": "kg"},
+    "payload-capacity": {"valueType": "quantity", "unit": "kg"},
+    "max-speed": {"valueType": "quantity", "unit": "km/h"},
+    "ceiling": {"valueType": "quantity", "unit": "m"},
+    "flight-range": {"valueType": "quantity", "unit": "km"},
+    "endurance": {"valueType": "quantity", "unit": "h"},
+    "propulsion-type": {"valueType": "text"},
+    "primary-weapons": {"valueType": "text"},
+    "stealth-feature": {"valueType": "text"},
+    "swarm-compatibility": {"valueType": "boolean"},
+    "sensor-payload": {"valueType": "text"},
+    "data-link": {"valueType": "text"},
+    "rcs": {"valueType": "text"},
+    "jamming-resistance": {"valueType": "text"},
+    "autonomy-mode": {"valueType": "text"},
+    "human-oversight": {"valueType": "text"},
+    "reference-unit-cost": {"valueType": "quantity", "unit": "million-usd"},
+    "production-count": {"valueType": "text"},
+    "technical-highlights": {"valueType": "text"},
+    "composite-score": {"valueType": "number", "unit": "score-1-10"},
+    "combat-status": {"valueType": "boolean"},
+    "combat-conflict-count": {"valueType": "number", "unit": "conflicts"},
+    "combat-hours-or-production": {"valueType": "text"}
+  }
+}

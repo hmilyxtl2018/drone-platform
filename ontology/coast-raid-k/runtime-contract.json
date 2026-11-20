@@ -1,0 +1,94 @@
+{
+  "package": "coast-raid-k",
+  "contractId": "agent-runtime-contract",
+  "version": "0.9.4",
+  "staticKnowledgeSource": {
+    "catalog": "catalog.json",
+    "packageVersionIsLockedOnRun": true
+  },
+  "runtimeStore": {
+    "postgresql": "ddl-runtime.sql",
+    "sqlite": "platform/runtime_store.py",
+    "separation": "Runtime tables are append-only and are never loaded into crk_agent_doc."
+  },
+  "intelligenceGovernance": {
+    "schema": "schema.intelligence.json",
+    "contract": "intelligence-contract.json",
+    "ddl": "ddl-intelligence.sql",
+    "osintDdl": "ddl-osint.sql",
+    "scope": "public or explicitly authorized documents and evidence-backed knowledge candidates",
+    "osintCollection": {
+      "trigger": "manual",
+      "sourceAllowlist": "intelligence-contract.json#/osintCollection/sourcePolicy/sourceAllowlist",
+      "resultBoundary": "OSINTItem records are untrusted pending-review material and are never loaded into crk_agent_doc or a trusted knowledge projection directly.",
+      "safeFetch": [
+        "curated HTTPS URLs only",
+        "redirect host revalidation",
+        "reject private, loopback, local, and reserved DNS answers",
+        "bounded timeout, response bytes, and item count",
+        "RSS/Atom only; reject DOCTYPE and ENTITY",
+        "do not fetch arbitrary entry links"
+      ],
+      "topic": "equipment technology, procurement, budgets, and defence industry dynamics",
+      "prohibited": [
+        "real-time troop/person tracking",
+        "targeting or operational tasking",
+        "covert or credentialed collection"
+      ]
+    },
+    "entities": {
+      "SourceDocument": "schema.intelligence.json#/$defs/SourceDocument",
+      "EvidenceClaim": "schema.intelligence.json#/$defs/EvidenceClaim",
+      "KnowledgeCandidate": "schema.intelligence.json#/$defs/KnowledgeCandidate",
+      "ConflictSet": "schema.intelligence.json#/$defs/ConflictSet",
+      "IngestionReview": "schema.intelligence.json#/$defs/IngestionReview",
+      "PublishedKnowledgeVersion": "schema.intelligence.json#/$defs/PublishedKnowledgeVersion",
+      "OSINTTask": "ddl-osint.sql#osint_task",
+      "OSINTItem": "ddl-osint.sql#osint_item"
+    },
+    "publicationAuthority": "Only an authorized publisher may create PublishedKnowledgeVersion after evidence and conflict checks; extraction Agent and LLM cannot authorize or execute.",
+    "api": "/api/intelligence/state"
+  },
+  "eventEnvelope": {
+    "required": ["eventId", "runId", "seq", "eventType", "occurredAt", "payload", "payloadSha256", "provenance"],
+    "ordering": "(runId, seq)",
+    "hash": "sha256(canonical-json(payload))",
+    "replay": "Trace is rebuilt from events ordered by seq; read models are disposable projections."
+  },
+  "mainChain": [
+    "RunStarted",
+    "ObservationCreated",
+    "BeliefAssertionCreated",
+    "DecisionDraftCreated",
+    "ActionRequestCreated",
+    "GatePrecheckCompleted",
+    "HumanReviewRequested",
+    "HumanDecisionRecorded",
+    "AuthorizationIssued",
+    "ActionExecutionStarted",
+    "ActionExecutionCompleted",
+    "EffectRecorded",
+    "AuditEventRecorded"
+  ],
+  "entities": {
+    "DecisionDraft": "schema.agent.extension.json#/$defs/DecisionDraft",
+    "ApprovalRequest": "schema.agent.extension.json#/$defs/ApprovalRequest",
+    "HumanDecision": "schema.agent.extension.json#/$defs/HumanDecision",
+    "TriggerDefinition": "schema.agent.extension.json#/$defs/TriggerDefinition",
+    "ActionRequest": "schema.agent.extension.json#/$defs/ActionRequest",
+    "Authorization": "schema.agent.extension.json#/$defs/Authorization",
+    "ActionExecution": "schema.agent.extension.json#/$defs/ActionExecution",
+    "AuditEvent": "schema.agent.extension.json#/$defs/AuditEvent"
+  },
+  "authorityRules": [
+    "RecommendationProvider may emit DecisionDraft only.",
+    "The public-source OSINT collector may create only OSINTTask/OSINTItem evidence records; it cannot write trusted knowledge, issue Authorization, or invoke Effectors.",
+    "Every OSINTItem must pass the existing human candidate review and publication gate before it can contribute to a knowledge version.",
+    "HumanDecision records the operator choice and never grants authority.",
+    "Only an active Gate agent may emit Authorization.",
+    "Effectors require an active allow Authorization and abort on expiry, revocation, unsafe state, or connectivity loss.",
+    "Every state transition is represented by a new event; prior events are immutable."
+  ],
+  "triggerModes": ["manual", "auto", "scheduled", "replay"],
+  "failureFallback": "deny-new-authorization-and-record-safe-fallback"
+}

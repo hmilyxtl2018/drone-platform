@@ -1,0 +1,977 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ag: <https://local.ontology/coast-raid-k/agent/1.0.0#> .
+@prefix crk: <https://local.ontology/coast-raid-k#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ag: a owl:Ontology ; rdfs:label "coast-raid-k Agent extension"@en ; owl:versionInfo "1.0.0" .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#Agent> a owl:Class ;
+  rdfs:label "作战Agent"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#IndependentContinuant> ;
+  rdfs:comment "在环境中接收局部观测、维护信念、形成目标或任务、选择并请求动作且承担可追溯责任的决策主体。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance> a owl:Class ;
+  rdfs:label "Agent实例"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:comment "某一次Run中具有生命周期、版本和权限边界的具体Agent。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#AgentFunction> a owl:Class ;
+  rdfs:label "Agent责任功能域"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "可组合的作战责任边界：World、Self、Adversary、Options、Gate、Effectors、Learn。功能域不是互斥Agent子类，也不自动授予权限。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#OperationalTimeScale> a owl:Class ;
+  rdfs:label "作战时间尺度"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#Quality> ;
+  rdfs:comment "Agent责任所处时间尺度：Immediate、Tactical、Operational 或 Strategic。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#OrganizationModel> a owl:Class ;
+  rdfs:label "组织模型"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "描述Agent类所属组织、编组和指挥关系的模型。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#AgentClass> a owl:Class ;
+  rdfs:label "Agent类模型"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "OrgMAS形式 AgentClass=<name,R,G,MO> 的规范化表示，分别由名称、角色集合、目标集合和组织模型构成。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#AgentType> a owl:Class ;
+  rdfs:label "Agent类型"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "Agent架构、能力、阶段、状态转移和失败模式的规范；ShellTemplate是其现有项目表示。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#AgentRole> a owl:Class ;
+  rdfs:label "Agent角色"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#Role> ;
+  rdfs:comment "传感、融合、分配、编队、执行、监视和授权等依存角色。角色不是Agent实体。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#Organization> a owl:Class ;
+  rdfs:label "组织"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#IndependentContinuant> ;
+  rdfs:comment "指挥层级、团队或编组；组织成员关系与通信关系分开建模。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#RoleAssignment> a owl:Class ;
+  rdfs:label "角色分配"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#Relator> ;
+  rdfs:comment "把Agent、角色、组织和任务绑定到有效时间的关系实体。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#PlatformBinding> a owl:Class ;
+  rdfs:label "平台绑定"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#Relator> ;
+  rdfs:comment "Agent与物理Platform的时态绑定；Platform不自动等同于Agent。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#Observation> a owl:Class ;
+  rdfs:label "观测"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "Agent从局部传感器、消息或环境获得的观测；观测不是全局真值。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#BeliefState> a owl:Class ;
+  rdfs:label "信念状态"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "某Agent在指定时间窗口内维护的内部信念集合。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#BeliefAssertion> a owl:Class ;
+  rdfs:label "信念断言"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "关于实体或命题的一条带来源、置信度和有效时间的断言。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#Goal> a owl:Class ;
+  rdfs:label "目标"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "Agent或组织期望达到的状态；不等同于已执行的Task。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#Task> a owl:Class ;
+  rdfs:label "任务"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#Process> ;
+  rdfs:comment "可分配、可执行且具有前置条件、截止时间和完成状态的过程。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#Plan> a owl:Class ;
+  rdfs:label "计划"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "达到Goal或完成Task的步骤、选择条件和资源预算。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#Decision> a owl:Class ;
+  rdfs:label "决策"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "Agent根据其可见证据、信念、目标和Policy作出的选择；决策不等于动作。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#ActionRequest> a owl:Class ;
+  rdfs:label "动作请求"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "请求执行某个Action或请求对该Action进行授权。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#Action> a owl:Class ;
+  rdfs:label "动作"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#Process> ;
+  rdfs:comment "Agent或其Platform实际执行的过程。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#Effect> a owl:Class ;
+  rdfs:label "效果"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "Action造成的状态变化、产品或失败结果。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#Message> a owl:Class ;
+  rdfs:label "消息"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "Agent之间交换的可验证消息载荷；消息的生产者、接收者和有效时间必须可追溯。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#CommunicationAct> a owl:Class ;
+  rdfs:label "通信行为"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#Process> ;
+  rdfs:comment "发送、接收、确认或拒绝Message的过程。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#Protocol> a owl:Class ;
+  rdfs:label "协同协议"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "消息格式、时序、确认和失败语义的规范。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#LinkState> a owl:Class ;
+  rdfs:label "链路状态"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#Quality> ;
+  rdfs:comment "通信通断、延迟、带宽和可见性；不可用链路不能支持共享信念。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#Capability> a owl:Class ;
+  rdfs:label "能力"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#DependentContinuant> ;
+  rdfs:comment "Agent在条件满足时可以提供或执行的能力；能力不等于已经执行。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#Policy> a owl:Class ;
+  rdfs:label "策略"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "决策、行为和权限约束；包含版本和生效时间。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#Authority> a owl:Class ;
+  rdfs:label "权限范围"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "Agent可代表的动作、资源和空间范围。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#Authorization> a owl:Class ;
+  rdfs:label "授权结果"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "Policy对ActionRequest的确定性评估结果。现有Permit是项目专用序列化产品，不能由检索结果直接生成。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#Run> a owl:Class ;
+  rdfs:label "运行"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#Occurrent> ;
+  rdfs:comment "仿真、演训或任务运行边界；AgentInstance和RuntimeEnvelope必须归属某个Run。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#AuditEvent> a owl:Class ;
+  rdfs:label "审计事件"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#Occurrent> ;
+  rdfs:comment "可回放的观察、信念更新、任务、授权、动作和效果事件。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#EmbodiedAgent> a owl:Class ;
+  rdfs:label "具身 Agent"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:comment "Agent扩展术语。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#SoftwareAgent> a owl:Class ;
+  rdfs:label "软件 Agent"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:comment "Agent扩展术语。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#Desire> a owl:Class ;
+  rdfs:label "愿望/动机"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k/agent/1.0.0#Goal> ;
+  rdfs:comment "Agent扩展术语。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#Intention> a owl:Class ;
+  rdfs:label "意图/承诺"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "Agent扩展术语。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#StateTransition> a owl:Class ;
+  rdfs:label "状态转移"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#Process> ;
+  rdfs:comment "Agent扩展术语。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#Resource> a owl:Class ;
+  rdfs:label "资源"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#IndependentContinuant> ;
+  rdfs:comment "Agent扩展术语。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#Constraint> a owl:Class ;
+  rdfs:label "约束"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "Agent扩展术语。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#AgentCycle> a owl:Class ;
+  rdfs:label "Agent 周期"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#Process> ;
+  rdfs:comment "Agent扩展术语。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#TimeInterval> a owl:Class ;
+  rdfs:label "时间区间"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#Occurrent> ;
+  rdfs:comment "Agent扩展术语。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#ActionExecution> a owl:Class ;
+  rdfs:label "动作执行"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#Process> ;
+  rdfs:comment "Agent扩展术语。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#ProcessSpecification> a owl:Class ;
+  rdfs:label "过程规范"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "Agent扩展术语。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#AgentExecution> a owl:Class ;
+  rdfs:label "Agent执行实例"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#Process> ;
+  rdfs:comment "Agent扩展术语。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#AgentState> a owl:Class ;
+  rdfs:label "Agent状态"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#Quality> ;
+  rdfs:comment "Agent扩展术语。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#AssistantSession> a owl:Class ;
+  rdfs:label "智能助手会话"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#Occurrent> ;
+  rdfs:comment "操作员与智能助手的问答会话；不能直接产生作战事实、信念或授权。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#Operator> a owl:Class ;
+  rdfs:label "操作员"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#IndependentContinuant> ;
+  rdfs:comment "通过助手查询或提交任务请求的人类主体。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#DecisionDraft> a owl:Class ;
+  rdfs:label "决策推荐草案"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "Agent生成的可审查方案推荐；不等同于Decision、Authorization或ActionExecution。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#ApprovalRequest> a owl:Class ;
+  rdfs:label "人工审批请求"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "针对ActionRequest的人工在环审查请求；人工批准不直接产生Authorization。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#HumanDecision> a owl:Class ;
+  rdfs:label "人工决策"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "操作员对ApprovalRequest作出的可追溯决定；必须由Gate重新评估后才能形成Authorization。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#TriggerDefinition> a owl:Class ;
+  rdfs:label "触发器定义"@zh ;
+  rdfs:subClassOf <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "声明事件、条件、目标Agent和调度约束的触发器；触发器本身不授予执行权限。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#initiatedBy> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#AssistantSession> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Operator> ;
+  rdfs:comment "助手会话由哪个操作员发起；操作员身份不能被助手身份替代。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#representsAgent> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#AssistantSession> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:comment "助手会话可选地代表哪个作战 Agent；代表关系不授予授权。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#submitsRequest> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#AssistantSession> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#ActionRequest> ;
+  rdfs:comment "助手会话提交的动作请求草案；必须经过作战运行时和授权服务。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#realizesType> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#AgentType> ;
+  rdfs:comment "AgentInstance实现的类型规范。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#usesTemplate> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance> ;
+  rdfs:range <https://local.ontology/coast-raid-k#ShellTemplate> ;
+  rdfs:comment "运行实例采用的现有ShellTemplate；不改变ShellTemplate的既有定义。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#implementedOn> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance> ;
+  rdfs:range <https://local.ontology/coast-raid-k#Platform> ;
+  rdfs:comment "Agent与物理平台的实现绑定。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#performsFunction> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#AgentFunction> ;
+  rdfs:comment "AgentInstance承担的可组合责任功能域；与 functionDomain 字符串投影保持一致，不等同于权限。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#operatesAtTimeScale> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#OperationalTimeScale> ;
+  rdfs:comment "AgentInstance工作的作战时间尺度；与 timeScale 字符串投影保持一致。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#hasRole> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#AgentRole> ;
+  rdfs:comment "Agent承担的角色。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#memberOf> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Organization> ;
+  rdfs:comment "Agent的组织成员关系。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#reportsTo> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:comment "指挥或报告关系，不表示通信链路可用。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#hasCapability> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Capability> ;
+  rdfs:comment "Agent可提供的能力。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#observes> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Observation> ;
+  rdfs:comment "Agent接收的局部观测。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#updates> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Observation> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#BeliefState> ;
+  rdfs:comment "观测更新的信念状态。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#asserts> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#BeliefState> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#BeliefAssertion> ;
+  rdfs:comment "信念状态包含的断言。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#adoptsGoal> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Goal> ;
+  rdfs:comment "Agent采用的目标。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#assignedTask> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Task> ;
+  rdfs:comment "分配给Agent的任务。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#plans> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Plan> ;
+  rdfs:comment "Agent选择或维护的计划。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#governedBy> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Policy> ;
+  rdfs:comment "Agent遵循的策略。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#requestsAction> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#ActionRequest> ;
+  rdfs:comment "Agent提出的动作请求。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#requiresAuthorization> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#ActionRequest> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Authority> ;
+  rdfs:comment "动作请求所需的权限范围；不是授权结果。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#executes> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Action> ;
+  rdfs:comment "Agent实际执行的动作。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#produces> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Action> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Effect> ;
+  rdfs:comment "动作产生的效果。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#sends> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Message> ;
+  rdfs:comment "Agent发送的消息。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#receives> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Message> ;
+  rdfs:comment "Agent接收的消息。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#usesProtocol> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#CommunicationAct> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Protocol> ;
+  rdfs:comment "通信行为采用的协议。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#hasLinkState> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#LinkState> ;
+  rdfs:comment "Agent当前可用的链路状态。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#hasAuthority> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Authority> ;
+  rdfs:comment "Agent拥有的权限范围。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#withinRun> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k#Entity> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Run> ;
+  rdfs:comment "信息、动作、产品和Agent实例所属的Run。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#derivedFrom> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:range <https://local.ontology/coast-raid-k#Entity> ;
+  rdfs:comment "产品或信念的证据来源。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#assertedBy> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:comment "信息断言的生产Agent；不等同于交互助手。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#hostsAgent> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k#Platform> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance> ;
+  rdfs:comment "Platform承载Agent实例。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#hasAssignment> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#RoleAssignment> ;
+  rdfs:comment "Agent的角色/任务绑定。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#usesResource> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Resource> ;
+  rdfs:comment "Agent使用的资源。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#believesAbout> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#BeliefAssertion> ;
+  rdfs:range <https://local.ontology/coast-raid-k#Entity> ;
+  rdfs:comment "信念所指向的实体。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#formsIntention> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Intention> ;
+  rdfs:comment "Agent形成的承诺。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#selectsPlan> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Intention> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Plan> ;
+  rdfs:comment "意图选择的计划。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#decomposes> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Plan> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Task> ;
+  rdfs:comment "计划分解出的任务。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#createsDecision> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Decision> ;
+  rdfs:comment "Agent产生的决策记录。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#realizesRequest> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Action> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#ActionRequest> ;
+  rdfs:comment "动作实现的请求。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#producesEffect> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Action> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Effect> ;
+  rdfs:comment "动作产生的效果。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#constrainedBy> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Constraint> ;
+  rdfs:comment "Agent受约束。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#hasCycle> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#AgentCycle> ;
+  rdfs:comment "Agent所属周期。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#hasPhase> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#AgentCycle> ;
+  rdfs:range <https://local.ontology/coast-raid-k#Process> ;
+  rdfs:comment "周期中的阶段。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#precedes> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k#Process> ;
+  rdfs:range <https://local.ontology/coast-raid-k#Process> ;
+  rdfs:comment "过程的时序先后。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#occursDuring> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k#Entity> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#TimeInterval> ;
+  rdfs:comment "实体或过程发生于时间区间。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#receivesTask> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Task> ;
+  rdfs:comment "Agent接收任务。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#delegatesTaskTo> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:comment "Agent向下属委派任务。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#hasMember> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Organization> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:comment "组织拥有成员。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#supportedBy> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#BeliefAssertion> ;
+  rdfs:range <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "信念断言得到的证据。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#preconditionOf> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Constraint> ;
+  rdfs:range <https://local.ontology/coast-raid-k#Process> ;
+  rdfs:comment "约束作为过程前置条件。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#effectOf> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Effect> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Action> ;
+  rdfs:comment "效果对应的动作。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#partOfCycle> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k#Process> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#AgentCycle> ;
+  rdfs:comment "过程属于 Agent 周期。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#realizedBy> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#AgentExecution> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance> ;
+  rdfs:comment "执行实例由 Agent 实现。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#authorizedBy> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#ActionRequest> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Authorization> ;
+  rdfs:comment "动作请求对应的授权结果。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#validDuring> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k#Entity> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#TimeInterval> ;
+  rdfs:comment "实体或过程在时间区间内有效。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#observedEntity> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Observation> ;
+  rdfs:range <https://local.ontology/coast-raid-k#Entity> ;
+  rdfs:comment "观测所指对象。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#sender> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Message> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:comment "消息发送主体。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#receivers> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Message> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:comment "消息接收主体。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#evidence> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Authorization> ;
+  rdfs:range <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "授权使用的证据。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#decidedBy> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Authorization> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:comment "产生授权决定的授权主体；与交互助手或请求提出者分离。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#realizesAgentClass> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#AgentType> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#AgentClass> ;
+  rdfs:comment "AgentType实现的OrgMAS Agent类模型。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#specifiesRole> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#AgentClass> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#AgentRole> ;
+  rdfs:comment "Agent类模型定义的角色集合 R。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#specifiesGoal> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#AgentClass> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Goal> ;
+  rdfs:comment "Agent类模型定义的目标集合 G。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#usesOrganizationModel> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#AgentClass> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#OrganizationModel> ;
+  rdfs:comment "Agent类模型采用的组织模型 MO。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#partOf> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k#Entity> ;
+  rdfs:range <https://local.ontology/coast-raid-k#Entity> ;
+  rdfs:comment "实体或组织组成关系。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#kindOf> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k#Entity> ;
+  rdfs:range <https://local.ontology/coast-raid-k#Entity> ;
+  rdfs:comment "概念或类型的种属关系；类层级优先使用subClassOf。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#scope> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Authorization> ;
+  rdfs:range <https://local.ontology/coast-raid-k#Entity> ;
+  rdfs:comment "授权作用范围，可指向目标、资源或空间实体；范围不扩大 Gate 的 Authority。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#proposesDecisionDraft> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#DecisionDraft> ;
+  rdfs:comment "Agent生成决策推荐草案。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#requestsApproval> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#ApprovalRequest> ;
+  rdfs:comment "Agent提交人工审批请求。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#reviewsApproval> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Operator> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#ApprovalRequest> ;
+  rdfs:comment "操作员负责审查人工审批请求。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#recordsHumanDecision> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Operator> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#HumanDecision> ;
+  rdfs:comment "操作员记录人工决定。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#forActionRequest> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#ApprovalRequest> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#ActionRequest> ;
+  rdfs:comment "审批请求对应的动作请求。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#forRecommendation> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#ApprovalRequest> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#DecisionDraft> ;
+  rdfs:comment "审批请求对应的推荐草案。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#approvedBy> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#ApprovalRequest> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#HumanDecision> ;
+  rdfs:comment "审批请求由人工决定完成审查。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#triggerTarget> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#TriggerDefinition> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#Agent> ;
+  rdfs:comment "触发器启动的目标Agent。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#derivedFromEvidence> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#DecisionDraft> ;
+  rdfs:range <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "推荐草案引用的证据实体。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#gatePrecheckEvidence> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#ApprovalRequest> ;
+  rdfs:range <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:comment "人工审批前Gate预检查使用的证据。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#evaluatedByGate> a owl:ObjectProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Authorization> ;
+  rdfs:range <https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance> ;
+  rdfs:comment "授权由Gate功能域Agent评估；不得由Options或Effectors直接生成。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#agentId> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "运行内稳定Agent标识。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#decisionMode> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "reactive、bdi、rule、human-in-loop或hybrid。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#lifecycleState> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "initialized、active、degraded、suspended或destroyed。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#autonomyLevel> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "supervised、delegated或autonomous；不等同于权限。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#observedAt> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Observation> ;
+  rdfs:range xsd:dateTime ;
+  rdfs:comment "观测产生时间。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#confidence> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:range xsd:decimal ;
+  rdfs:comment "断言或观测的置信度；不得与OpenViking相关度分数混用。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#validFrom> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k#Entity> ;
+  rdfs:range xsd:dateTime ;
+  rdfs:comment "事实、信念或权限的有效起始时间。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#validTo> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k#Entity> ;
+  rdfs:range xsd:dateTime ;
+  rdfs:comment "事实、信念或权限的有效终止时间。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#sourceIri> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:range xsd:anyURI ;
+  rdfs:comment "直接证据或生产者来源。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#observationKind> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Observation> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "观测类型。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#beliefRevision> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#BeliefState> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "信念版本。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#priority> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Goal> ;
+  rdfs:range xsd:decimal ;
+  rdfs:comment "目标优先级。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#status> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "运行状态。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#decisionTime> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Decision> ;
+  rdfs:range xsd:dateTime ;
+  rdfs:comment "决策时间。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#ruleVersion> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Authorization> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "授权规则版本。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#reasonCode> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Authorization> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "授权裁决原因码。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#conversationId> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Message> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "通信会话标识。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#payloadHash> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "载荷哈希。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#modelId> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "模型标识。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#modelRevision> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "模型修订版本。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#ontology> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Message> ;
+  rdfs:range xsd:anyURI ;
+  rdfs:comment "消息使用的本体。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#result> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Authorization> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "授权裁决结果：allow、deny 或 indeterminate；授权生命周期由 authorizationStatus 独立表达。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#authorizationStatus> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Authorization> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "授权生命周期状态：active、expired 或 revoked；与 result 的 allow、deny、indeterminate 决策结果分离。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#abortConditions> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Authorization> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "授权必须满足的可验证中止条件集合；Effectors 触发任一条件时停止执行。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#policyVersion> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Authorization> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "评估授权时采用的策略版本。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#evidenceUris> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Authorization> ;
+  rdfs:range xsd:anyURI ;
+  rdfs:comment "交换格式中的证据 URI；图模型可同时使用 evidence 对象属性。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#functionDomain> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "performsFunction 的交换格式字符串投影；受控值为 World、Self、Adversary、Options、Gate、Effectors 或 Learn，可多选但不自动授予授权。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#timeScale> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "Agent工作的时间尺度；受控值为 Immediate、Tactical、Operational 或 Strategic，可多选。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#humanControlMode> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "人机责任面：in-the-loop、on-the-loop 或 out-of-the-loop；不等同于Agent权限。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#connectivityMode> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "连接降级模式：online、degraded 或 disconnected。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#failureContainment> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k#Entity> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "失败隔离边界：local-action、team、operational 或 strategic；表示失效最多可影响的范围。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#safeFallbackPolicy> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k#Entity> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "失联、超时或证据不足时执行的安全回退策略；Gate 默认收紧，Effectors 进入预批准的安全动作。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#reversibility> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k#Entity> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "动作或授权的可逆性：reversible、recoverable 或 irreversible。自主范围只能随可逆性扩大。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#issuedAt> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Authorization> ;
+  rdfs:range xsd:dateTime ;
+  rdfs:comment "授权签发时间；与 expiresAt 共同定义有限授权寿命。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#expiresAt> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k#Entity> ;
+  rdfs:range xsd:dateTime ;
+  rdfs:comment "授权或执行许可的到期时间；到期后不得继续执行。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#revocable> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Authorization> ;
+  rdfs:range xsd:boolean ;
+  rdfs:comment "授权是否可以在自然到期前被撤销；允许的授权必须可撤销。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#revokedAt> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Authorization> ;
+  rdfs:range xsd:dateTime ;
+  rdfs:comment "授权被撤销的时间；存在该值时 authorizationStatus 必须为 revoked。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#revocationReason> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Authorization> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "授权撤销原因或关联 RevocationEvent。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#requiredHumanControlMode> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Authorization> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "该授权要求的人机控制模式：in-the-loop、on-the-loop 或 out-of-the-loop。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#abortCondition> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#ActionExecution> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "执行必须中止的可验证条件；执行记录至少声明一条。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#authorizationIri> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#ActionExecution> ;
+  rdfs:range xsd:anyURI ;
+  rdfs:comment "动作执行引用的授权记录；执行不得仅凭自然语言意图。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#authorizationTtlSeconds> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance> ;
+  rdfs:range xsd:integer ;
+  rdfs:comment "默认授权寿命（仿真秒）；必须与动作风险和中止策略共同解释。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#expiresAtTick> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Authorization> ;
+  rdfs:range xsd:integer ;
+  rdfs:comment "仿真时钟中的授权到期拍；交换格式 expiresAt 的运行时投影。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#executionStatus> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#ActionExecution> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "执行状态：executed 或 aborted；不等同于授权结果。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#recommendationStatus> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#DecisionDraft> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "推荐草案状态。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#recommendationAction> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#DecisionDraft> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "推荐动作类型。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#recommendationRationale> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#DecisionDraft> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "推荐理由。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#uncertainties> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#DecisionDraft> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "推荐中未消除的不确定性；交换格式可重复出现。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#promptVersion> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#DecisionDraft> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "生成推荐所用提示模板版本。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#contextHash> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k#InformationEntity> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "生成推荐或裁决时读取上下文快照的哈希。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#approvalStatus> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#ApprovalRequest> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "人工审批请求状态。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#decisionKind> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#HumanDecision> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "人工决定类型。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#decisionReason> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#HumanDecision> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "人工决定理由。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#changedFields> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#HumanDecision> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "人工修改后重新评估的字段名；可重复出现。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#eventType> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#TriggerDefinition> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "触发器匹配的运行事件类型。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#conditionRuleIri> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#TriggerDefinition> ;
+  rdfs:range xsd:anyURI ;
+  rdfs:comment "触发器使用的条件规则。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#cooldownSeconds> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#TriggerDefinition> ;
+  rdfs:range xsd:integer ;
+  rdfs:comment "触发器冷却时长（秒）。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#maxConcurrency> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#TriggerDefinition> ;
+  rdfs:range xsd:integer ;
+  rdfs:comment "触发器最大并发运行数。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#dedupeKey> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#TriggerDefinition> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "事件去重键表达式。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#enabled> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#TriggerDefinition> ;
+  rdfs:range xsd:boolean ;
+  rdfs:comment "触发器是否启用。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#onFailure> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#TriggerDefinition> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "触发失败策略。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#triggerStatus> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#TriggerDefinition> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "触发器生命周期状态。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#decidedByFunctionDomain> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Authorization> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "授权裁决者功能域；必须为Gate。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#packageVersion> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Run> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "运行锁定的知识包版本。"@zh .
+
+<https://local.ontology/coast-raid-k/agent/1.0.0#manifestHash> a owl:DatatypeProperty ;
+  rdfs:domain <https://local.ontology/coast-raid-k/agent/1.0.0#Run> ;
+  rdfs:range xsd:string ;
+  rdfs:comment "运行锁定的知识包清单哈希。"@zh .

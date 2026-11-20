@@ -1,0 +1,44 @@
+{
+  "graphId": "rule-applicability-action-capabilities",
+  "version": "1.0.0",
+  "agentKey": "rule-applicability-action",
+  "capabilities": [
+    {
+      "key": "rule-provenance",
+      "name": "rule provenance",
+      "requiredActions": [
+        "analysis.rule_effectivity",
+        "analysis.report_contract_validate"
+      ],
+      "requiredEvidence": [
+        "ruleFindings",
+        "context"
+      ],
+      "acceptance": [
+        "Rule authority, version and effective period are preserved."
+      ]
+    },
+    {
+      "key": "conditional-checking",
+      "name": "conditional checking",
+      "requiredActions": [
+        "analysis.constraint_evaluate"
+      ],
+      "requiredEvidence": [
+        "checks",
+        "gaps"
+      ],
+      "acceptance": [
+        "Missing conditions and unexecuted checks never pass."
+      ]
+    }
+  ],
+  "forbiddenCapabilities": [
+    "operational-tasking",
+    "target-assignment",
+    "weapon-control",
+    "engagement-authorization",
+    "formal-ontology-write",
+    "self-expand-authority"
+  ]
+}

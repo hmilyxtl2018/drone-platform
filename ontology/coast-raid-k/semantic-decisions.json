@@ -1,0 +1,52 @@
+{
+  "version": "1.0.0",
+  "status": "implemented-conservative-interpretation; domain-owner-review-open",
+  "scope": "Knowledge representation and interchange only",
+  "decisions": [
+    {
+      "id": "D01",
+      "topic": "Event / Effect / Task",
+      "status": "implemented-conservative-interpretation",
+      "decision": "Preserve existing class IRIs and parent classes. Event and Effect denote information records describing an occurrence or reported outcome; Task denotes an execution process. ProcessSpecification denotes a specification. No new world occurrence or causal outcome is inferred from a record alone.",
+      "review": "If future source instances use one term for both specification and occurrence, split the meanings with a reviewed migration; no such split is asserted by this release."
+    },
+    {
+      "id": "D02",
+      "topic": "Authorization references and execution results",
+      "status": "implemented",
+      "decision": "Map ActionExecution.authorizationIri to ag:usesAuthorization (ObjectProperty) and ActionExecution.result to ag:executionResult (DatatypeProperty). Keep JSON input keys and the legacy ag:authorizationIri declaration for compatibility. ag:result remains the authorization decision. A second domain is not used as a union."
+    },
+    {
+      "id": "D03",
+      "topic": "Broad domain versus applicability",
+      "status": "implemented",
+      "decision": "Preserve valid broad domain declarations. A domain entails type when a property is asserted; it neither requires a property value nor proves business applicability. Schema and Shape references determine required validation, and UI profiles determine presentation only."
+    },
+    {
+      "id": "D04",
+      "topic": "Engineering geometry and simulation time",
+      "status": "implemented-conservative-interpretation",
+      "decision": "Preserve CRK:ENG coordinates x east, y up, z signed shore distance and km units. Approximate footprints and bounding boxes are not exact geometry or geographic coordinates. ValidTime numeric values are kept in an ag:TimeInterval node with explicit clock/unit metadata; unanchored simulation time is never converted to xsd:dateTime.",
+      "review": "A geographic transform or wall-clock epoch conversion requires an explicit CRS transform or clock anchor and is outside this release."
+    },
+    {
+      "id": "D05",
+      "topic": "FunctionBind / Stage / PlatformType definition and parent consistency",
+      "status": "implemented-conservative-wording; source-instance-review-open",
+      "decision": "Preserve existing IRIs and parents. FunctionBind denotes a context-dependent role (Role), distinct from the specification describing it. Stage denotes an actual process portion (Process), distinct from stage entries in ShellTemplate. PlatformType remains a type specification (InformationEntity); inScene is usage metadata and never changes its ontological category.",
+      "basis": [
+        "tbox.json subClassOf: FunctionBind -> Role, Stage -> Process, PlatformType -> InformationEntity",
+        "tbox.json disjointness and the existing Process / InformationEntity distinction",
+        "The present registry preserves source identity; it is not evidence that every legacy catalog record has the correct type."
+      ],
+      "sourceReview": "Legacy FunctionBind and Stage records may describe roles or process specifications rather than bearers or occurrences. Their data typing is explicitly pending individual review in class-definition-review.json. No occurrence, role bearer, authorization, subclass change, or equivalence is invented by this wording correction.",
+      "domainApproval": null
+    }
+  ],
+  "validationBoundaries": [
+    "OWL RL closure with explicit contradiction checks is not a complete OWL 2 DL satisfiability decision.",
+    "An empty SHACL target set is uncovered, not passed.",
+    "Referenced objects absent from supplied data are reported; the converter does not manufacture their types.",
+    "Unmapped fields remain in original JSON and in the conversion report; no guessed RDF predicate is emitted."
+  ]
+}

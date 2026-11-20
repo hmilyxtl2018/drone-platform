@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="zh-CN" class="osint-page">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>公开研究 Agent · 装备趋势研判</title>
+  <link rel="stylesheet" href="./agents.css?v=1">
+  <link rel="stylesheet" href="./osint.css?v=52-tight-equipment-summary">
+  <link rel="stylesheet" href="./execution-workspace.css?v=20261113-execution-methods">
+</head>
+<body class="agents-page osint-page">
+  <header class="agents-mast">
+    <div class="mast-brand">
+      <img src="./img/logo-mark.jpg" alt="灵云智">
+      <div><p class="eyebrow">OPEN SOURCE RESEARCH / ASSESSMENT</p><h1>装备趋势研判工作台</h1></div>
+    </div>
+    <div class="run-identity service-status-bar" role="group" aria-label="基础服务状态">
+      <span class="run-chip service-indicator" data-service="api" data-state="checking" tabindex="0"><i id="service-dot" class="status-dot" aria-hidden="true"></i><b data-service-name>研究 API</b><span id="service-status" data-service-value>检查中</span></span>
+      <span class="run-chip service-indicator" data-service="firecrawl" data-state="checking" tabindex="0"><i class="status-dot" aria-hidden="true"></i><b data-service-name>Firecrawl AI</b><span data-service-value>检查中</span></span>
+      <span class="run-chip service-indicator" data-service="deepseek" data-state="checking" tabindex="0"><i class="status-dot" aria-hidden="true"></i><b id="osint-provider" data-service-name>DeepSeek</b><span data-service-value>检查中</span></span>
+      <span class="run-chip service-indicator" data-service="openviking" data-state="neutral" tabindex="0"><i class="status-dot" aria-hidden="true"></i><b data-service-name>OpenViking</b><span data-service-value>未接入</span></span>
+      <span class="run-chip service-indicator" data-service="postgres" data-state="checking" tabindex="0"><i class="status-dot" aria-hidden="true"></i><b data-service-name>PostgreSQL</b><span data-service-value>检查中</span></span>
+      <button id="refresh-service-status" class="service-status-refresh" type="button" aria-label="刷新基础服务状态" title="刷新基础服务状态"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 6a5.2 5.2 0 1 0 .2 3M13 2.5V6H9.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+    </div>
+    <nav class="mast-actions" aria-label="主导航">
+      <a class="nav-link nav-link-accent" href="./agents.html?api">Agents 工作台</a>
+      <a class="nav-link" href="./intelligence.html?api">证据审核</a>
+      <a class="nav-link" href="./kb.html">知识库</a>
+      <a class="nav-link" href="./ontology-workbench.html">本体工作台</a>
+    </nav>
+  </header>
+
+  <main class="trend-shell">
+    <aside class="trend-sidebar" id="collection-drawer" aria-label="采编设置">
+      <div class="collection-drawer-header">
+        <div class="collection-drawer-identity">
+          <svg class="collection-agent-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h5M14 2v6h6M14 2l6 6v3M8 12h3"/><circle cx="16" cy="16" r="3.5"/><path d="m18.5 18.5 3 3"/></g></svg>
+          <span class="collection-drawer-label">采编设置</span>
+          <span class="collection-drawer-context">装备情报</span>
+        </div>
+        <button id="new-collection-task" class="collection-drawer-new" type="button" aria-label="新建采编任务" title="新建采编任务">
+          <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.4"/><path d="M10 6v8M6 10h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </button>
+        <button id="collection-drawer-toggle" class="collection-drawer-toggle" type="button" aria-expanded="true" aria-controls="collection-drawer-content" aria-label="收起采编设置" title="收起采编设置">
+          <svg class="collection-agent-icon collection-drawer-expand-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h5M14 2v6h6M14 2l6 6v3M8 12h3"/><circle cx="16" cy="16" r="3.5"/><path d="m18.5 18.5 3 3"/></g></svg>
+          <svg class="collection-drawer-chevron" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m10 4-4 4 4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div id="collection-drawer-content" class="collection-drawer-content">
+      <section class="preset-panel" id="collection-settings">
+        <div class="preset-copy"><b>未来战争装备发展应用趋势</b><span>优先采编军方公开资料、试验评估和采购文件，生成可追溯的 3–5 年趋势研判草稿。</span></div>
+        <form id="osint-form" class="trend-form">
+          <button id="load-research-preset" type="button" class="filter-chip">加载示例：全球军用无人机发展趋势（范围草案）</button>
+          <label>任务名称<input id="task-title" value="全球公开装备发展应用趋势（3–5 年）" required></label>
+          <label>研究问题<textarea id="task-question" rows="3" required>过去 365 天公开材料显示，未来 3–5 年哪些战争装备方向值得持续关注？请基于来源证据判断发展方向、成熟度、采购产业影响与证据缺口。</textarea></label>
+          <label>关键词 <span class="field-note">逗号或换行分隔</span><textarea id="task-keywords" rows="3">future warfare, defense technology, procurement, autonomy, counter-UAS, ISR, air defense, unmanned systems</textarea></label>
+          <div class="form-grid">
+            <label>材料窗口<select id="task-since"><option value="365" selected>过去 365 天</option><option value="180">过去 180 天</option><option value="90">过去 90 天</option></select></label>
+            <label>展望<select id="task-horizon"><option value="3">未来 3 年</option><option value="5" selected>未来 3–5 年</option><option value="10">未来 10 年</option></select></label>
+          </div>
+          <label>本次最多材料 <span class="field-note">1–100 条</span><input id="task-max-items" type="number" min="1" max="100" step="1" value="20" required></label>
+          <fieldset class="automation-settings">
+            <legend>自动执行选项</legend>
+            <div id="automation-options" class="automation-options" aria-label="自动执行选项">
+              <label class="automation-toggle"><input id="auto-select-materials" type="checkbox" checked><i class="switch-track" aria-hidden="true"></i><span>采集完成后自动选择全部正文</span></label>
+              <label class="automation-toggle"><input id="auto-start-assessment" type="checkbox" checked><i class="switch-track" aria-hidden="true"></i><span>自动生成趋势研判并启动对象属性提取</span></label>
+              <label class="automation-toggle"><input id="auto-run-evidence-check" type="checkbox" checked><i class="switch-track" aria-hidden="true"></i><span>提取完成后自动执行证据完整性检查</span></label>
+              <label class="automation-toggle"><input id="auto-run-model-critique" type="checkbox" checked><i class="switch-track" aria-hidden="true"></i><span>自动执行 DeepSeek 反证复核（最多 3 轮）</span></label>
+              <label class="automation-toggle"><input id="auto-create-admissions" type="checkbox" checked><i class="switch-track" aria-hidden="true"></i><span>自动生成本体准入候选（仍需人工审核，不自动发布）</span></label>
+            </div>
+            <small class="automation-note">默认全部打开＝自动推进采编、研判、提取、机器核验和准入候选生成；时间线中的“待自动推进”不是人工确认。只有本体候选发布前保留人工事实确认，自动流程不会替未经核验的断言写入本体。</small>
+          </fieldset>
+          <details class="collection-setting-block source-panel">
+            <summary>军事情报来源与类型 <span id="source-count" class="count-badge">0</span><button id="refresh-osint" class="icon-btn" type="button" title="刷新来源" aria-label="刷新来源">↻</button></summary>
+        <p id="source-engine" class="source-engine"></p>
+        <div class="source-toolbar"><button id="source-default" class="filter-chip active" type="button">优先来源</button><button id="source-all" class="filter-chip" type="button">全选</button><button id="source-none" class="filter-chip" type="button">清空</button><span id="source-selected" class="source-selected">0 已选</span></div>
+        <div id="source-list" class="source-list"><div class="placeholder">正在读取允许的公开来源…</div></div>
+        <p class="source-note">勾选范围用于下一次搜索。官方发布、厂商声明与媒体报道分别标注；来源性质不等于事实已核验。既有材料和报告保留原始记录。</p>
+        <details class="source-limits"><summary>本地处理上限（不是供应商套餐额度）</summary><dl><div><dt>Firecrawl 采集</dt><dd>按目标材料数和来源覆盖计算循环预算；每轮按来源组分配剩余目标，达到目标或预算上限即停止。每次请求响应最多 4 MB，单条正文最多 20,000 字符；实际请求、过滤和剩余目标记录在采编总览中。</dd></div><div><dt>DeepSeek 分析</dt><dd>趋势研判和公开指标量化会读取全部已选正文，按每批最多 8 条分批调用；每条选择最多 5,000 字符的原文窗口，单批提示词最多 180,000 字符，输出最多 8,192 tokens。分批结果按材料 ID 合并，不因上下文限制截断文献集合。</dd></div><div><dt>模型复核</dt><dd>同一报告最多 3 轮。重复模型复核不会提高置信度；补充新证据后可生成新报告。</dd></div></dl></details>
+          </details>
+
+          <details class="workspace-note collection-policy"><summary>采编说明</summary><p>研究只处理公开材料，不涉及战术行动、目标选择或作战建议。规则分类作为上下文展示，不冒充趋势预测。</p></details>
+          <button id="run-search" class="btn btn-primary" type="submit"><span>搜索公开材料</span><span aria-hidden="true">↗</span></button>
+        </form>
+      </section>
+
+      <section class="panel history-panel">
+        <div class="panel-head compact"><div><p class="eyebrow">PAST RUNS</p><h2>历史任务</h2></div><div class="history-actions"><button id="clear-task-history" class="filter-chip" type="button" title="归档当前历史任务，保留审计记录">清理历史</button><details class="workspace-help"><summary aria-label="查看任务恢复说明" title="任务恢复说明"><span aria-hidden="true">i</span></summary><div class="workspace-help-body"><b>任务恢复</b><p>任务和研判草稿会自动恢复，刷新页面不会丢失结果。</p></div></details></div></div>
+        <select id="task-history" class="history-select" aria-label="选择历史研究任务"><option value="">当前任务（未选择）</option></select>
+      </section>
+      </div>
+    </aside>
+
+    <section class="trend-main" aria-label="趋势研判结果">
+      <div class="trend-toolbar workspace-header">
+        <div class="run-heading">
+          <h2 id="run-title">等待开始研究</h2>
+          <button id="run-prompt-help" class="run-prompt-help" type="button" popovertarget="run-prompt-detail" aria-label="查看完整任务提示词">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.2" stroke="currentColor" stroke-width="1.2"/><path d="M6.3 5.9a1.7 1.7 0 0 1 3.4 0c0 1.2-1.7 1.3-1.7 2.6" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><circle cx="8" cy="10.8" r=".7" fill="currentColor"/></svg>
+          </button>
+          <div id="run-prompt-detail" class="run-prompt-detail" popover="auto" role="dialog" aria-labelledby="run-prompt-label">
+            <div class="run-prompt-header"><h3 id="run-prompt-label">任务提示词</h3><button type="button" class="run-prompt-close" popovertarget="run-prompt-detail" popovertargetaction="hide" aria-label="关闭任务提示词" autofocus>×</button></div>
+            <p id="run-question" class="run-prompt-body">搜索公开材料后，在这里生成研判与量化分析结论。</p>
+          </div>
+        </div>
+        <div class="workflow-navigation">
+          <nav id="workflow-tabs" class="workflow-tabs" role="tablist" aria-label="采编与本体治理流程">
+            <button id="workflow-tab-materials" type="button" role="tab" data-workflow-tab="materials" aria-controls="workflow-materials" aria-selected="true" tabindex="0"><span>01</span>采编执行 <b data-stage-count="materials">0</b></button>
+            <button id="workflow-tab-extract" type="button" role="tab" data-workflow-tab="extract" aria-controls="workflow-stage" aria-selected="false" tabindex="-1"><span>02</span>对象分析 <b data-stage-count="extract">0</b></button>
+            <button id="workflow-tab-graph" type="button" role="tab" data-workflow-tab="graph" aria-controls="workflow-stage" aria-selected="false" tabindex="-1"><span>03</span>图谱洞察</button>
+            <button id="workflow-tab-assessment" type="button" role="tab" data-workflow-tab="assessment" aria-controls="workflow-stage" aria-selected="false" tabindex="-1"><span>04</span>趋势研判</button>
+            <button id="workflow-tab-admission" type="button" role="tab" data-workflow-tab="admission" aria-controls="workflow-stage" aria-selected="false" tabindex="-1"><span>05</span>洞察结论 <b data-stage-count="admission">0</b></button>
+          </nav>
+        </div>
+        <details class="workspace-version-control"><summary aria-label="选择分析报告版本" title="选择分析报告版本">版本⌄</summary><div class="workspace-version-popup"><div class="workflow-version"><label><span class="version-label">版本</span><select id="assessment-version" aria-label="选择分析报告版本"><option value="">尚无分析版本</option></select></label><details class="workspace-help workflow-context-help"><summary aria-label="查看当前页说明" title="当前页说明"><span aria-hidden="true">i</span></summary><div class="workspace-help-body"><b>当前页说明</b><p id="workflow-context">选择材料后生成分析版本，再逐步提取、核验与入库。</p></div></details></div></div></details>
+        <div class="toolbar-actions"><span id="run-status" class="state-pill muted">待开始</span><details id="run-summary" class="run-summary muted-summary workspace-help"><summary aria-label="查看任务消息" title="任务消息"><span aria-hidden="true">i</span></summary><div class="workspace-help-body"><b>任务消息</b><span id="run-summary-text">预设已就绪：先选择来源并搜索，完成后点击“生成研判与量化分析”。</span></div></details><button id="refresh-task" class="filter-chip" type="button" disabled>刷新</button></div>
+      </div>
+      <section id="workflow-materials" class="materials-section" role="tabpanel" aria-labelledby="workflow-tab-materials">
+        <span id="item-count" hidden>0</span>
+        <div class="section-toolbar execution-hidden-actions" aria-hidden="true"><div class="section-actions"><button id="extract-from-execution" class="filter-chip" type="button" title="新分析版本会自动提取对象与属性；此按钮用于重新提取" disabled>重新提取对象与属性</button><button id="material-all" class="filter-chip" type="button">全选材料</button><button id="generate-assessment" class="btn btn-primary" type="button" title="生成研判草稿后自动提取对象、属性、关系与事件，保留原文证据等待审核" disabled>分析所选材料</button></div></div>
+        <div class="execution-workspace-body">
+        <div id="execution-summary" class="execution-summary"><div class="placeholder">创建任务后，显示执行依赖、步骤耗时、来源分支与结果。</div></div>
+        <div id="execution-materials" class="execution-material-heading"><h3>采编产出 · 原始材料</h3><span id="execution-material-total">0 条材料</span></div>
+        <details id="collection-coverage" class="collection-coverage" hidden></details>
+        <details id="collection-imagery" class="collection-imagery">
+          <summary>影像来源与对象证据 <span id="imagery-count" class="count-badge">0</span></summary>
+          <div class="imagery-workspace">
+            <details class="workspace-note"><summary>影像证据说明</summary><p>围绕已知对象和待核验断言补证。卫星影像、现场照片与文字证据分别记录；图片不能单独证明协同控制、互操作或作战效能。</p></details>
+            <div id="imagery-parent-target" class="imagery-parent-target" hidden></div>
+            <div id="imagery-source-list" class="imagery-source-list"></div>
+            <details class="imagery-add"><summary>登记公开影像来源</summary>
+              <form id="imagery-form" class="imagery-form">
+                <label>资料标题<input name="title" maxlength="300" required></label>
+                <div class="form-grid"><label>影像类型<select name="mediaKind" required><option value="">核对后选择类型…</option><option value="satellite-image">卫星影像（需核对来源）</option><option value="source-photo">来源照片</option></select></label><label>来源性质<select name="referenceType"><option value="archive">公开影像档案</option><option value="licensed-publication">授权公开刊物</option></select></label></div>
+                <label>来源页面 URL<input name="sourceUrl" type="url" placeholder="https://…" required></label>
+                <label>图片 URL（可留空）<input name="imageUrl" type="url" placeholder="https://…"></label>
+                <label>影像提供方<input name="provider" maxlength="200" required></label>
+                <p id="imagery-source-binding" class="section-note">可从图片线索选择已保存的来源；单独登记限公开影像发布者。</p>
+                <div class="form-grid"><label>影像获取日期<input name="captureDate" type="date"><small>未知则留空，不能用报道日期替代</small></label><label>资料发布日期<input name="publishedDate" type="date"></label></div>
+                <div class="form-grid"><label>传感器（来源明示）<input name="sensor" maxlength="200"></label><label>分辨率（来源明示）<input name="resolution" maxlength="200"></label></div>
+                <label>许可或使用说明<input name="license" maxlength="300"><small>授权公开刊物必须填写；许可仍待人工核验</small></label>
+                <label>关联对象、关系或事件<select name="graphElementId" id="imagery-target"><option value="">暂未绑定，等待对象核验</option></select></label>
+                <label>具体属性<select name="propertyPath" id="imagery-property"><option value="">对象或关系整体</option></select></label>
+                <label>支撑范围<select name="supportScope"><option value="image-provenance">影像出处核对</option><option value="public-test-context">公开试验背景</option><option value="industrial-context">公开产业背景</option><option value="publication-image-context">刊物图片背景</option></select></label>
+                <label>图片可见内容<textarea name="observedContent" rows="2" maxlength="1500" required></textarea></label>
+                <label>解读与待核验断言<textarea name="interpretation" rows="2" maxlength="1500" required></textarea></label>
+                <label>能支持哪项判断<textarea name="supportStatement" rows="2" maxlength="1500" required></textarea></label>
+                <label>局限与缺口<textarea name="limitations" rows="2" maxlength="1500" required></textarea></label>
+                <input name="sourceItemId" type="hidden">
+                <button type="submit" class="filter-chip">保存为待核验影像证据</button>
+              </form>
+            </details>
+          </div>
+        </details>
+        <div id="item-list" class="material-list"><div class="empty-state"><div class="empty-mark">⌕</div><h3>还没有材料</h3><p>搜索完成后，这里显示原文标题、来源、日期和摘要。先选择材料，再生成研判。</p></div></div>
+        </div>
+      </section>
+
+      <section id="workflow-stage" class="assessment-section" role="tabpanel" aria-labelledby="workflow-tab-extract" hidden>
+        <div hidden aria-hidden="true"><span id="workflow-stage-heading">对象提取 <span id="assessment-count">0</span></span><span id="workflow-stage-note">对象、属性、关系与事件均保留原文证据。</span></div>
+        <div id="assessment-list" class="assessment-list"><div class="empty-state compact-empty"><div class="empty-mark">◇</div><h3>等待趋势研判</h3><p>完成材料搜索后，点击“生成研判与量化分析”获取趋势方向、公开能力指标和证据缺口。</p></div></div>
+      </section>
+    </section>
+
+    <aside class="trend-inspector" aria-label="审核与证据">
+      <section class="panel review-panel">
+        <div class="panel-head compact"><div><p class="eyebrow">HUMAN REVIEW</p><h2>报告审核</h2></div><span id="review-state" class="state-pill muted">未选择</span><details class="operating-panel workspace-help workspace-policy"><summary aria-label="查看审核与发布说明" title="审核与发布说明"><span aria-hidden="true">i</span></summary><div class="workspace-help-body"><b>审核与发布说明</b><ul class="boundary-list"><li><b>研判草稿</b><span>模型生成的结论需记录证据与不确定性。</span></li><li><b>人工审核</b><span>填写理由，接受、退回或要求补证。</span></li><li><b>发布报告</b><span>发布报告不会自动写入知识库。</span></li><li><b>本体准入</b><span>每条断言分别审核，再单独发布到本体。</span></li></ul></div></details></div>
+        <div id="review-body" class="review-body"><div class="placeholder">选择一张研判卡片后，在这里记录审核理由。</div></div>
+      </section>
+      <section class="panel evidence-panel">
+        <div class="panel-head compact"><div><p class="eyebrow">EVIDENCE TRACE</p><h2 id="evidence-panel-title">证据详情</h2></div><span id="evidence-count" class="mini-summary">0 条</span><button type="button" class="filter-chip back-workflow" id="back-workflow">回到工作区 ↑</button></div>
+        <div id="evidence-body" class="evidence-body"><div class="placeholder">研判的来源、原文摘要和证据缺口会在这里展开。</div></div>
+      </section>
+    </aside>
+  </main>
+  <div id="osint-toast" class="toast-stack" aria-live="polite"></div>
+  <script type="module" src="./osint.js?v=20261113-execution-methods"></script>
+</body>
+</html>

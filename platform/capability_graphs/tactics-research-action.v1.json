@@ -1,0 +1,45 @@
+{
+  "graphId": "tactics-research-action-capabilities",
+  "version": "1.0.0",
+  "agentKey": "tactics-research-action",
+  "capabilities": [
+    {
+      "key": "comparable-options",
+      "name": "comparable options",
+      "requiredActions": [
+        "analysis.comparison_validate"
+      ],
+      "requiredEvidence": [
+        "criteria",
+        "options",
+        "comparisonState"
+      ],
+      "acceptance": [
+        "Common dimensions, conditions and incomparable items are explicit."
+      ]
+    },
+    {
+      "key": "counterevidence",
+      "name": "counterevidence",
+      "requiredActions": [
+        "analysis.report_contract_validate"
+      ],
+      "requiredEvidence": [
+        "claims",
+        "conflicts",
+        "gaps"
+      ],
+      "acceptance": [
+        "Conflicting and dependent sources are retained."
+      ]
+    }
+  ],
+  "forbiddenCapabilities": [
+    "operational-tasking",
+    "target-assignment",
+    "weapon-control",
+    "engagement-authorization",
+    "formal-ontology-write",
+    "self-expand-authority"
+  ]
+}

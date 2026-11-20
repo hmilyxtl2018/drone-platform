@@ -1,0 +1,2005 @@
+{
+  "registryVersion": "1.0.0",
+  "package": "coast-raid-k",
+  "packageVersion": "1.0.0",
+  "namespaces": {
+    "base": "https://local.ontology/coast-raid-k#",
+    "agent": "https://local.ontology/coast-raid-k/agent/1.0.0#"
+  },
+  "rules": {
+    "sourceIri": "preserve-exactly",
+    "classWithoutIri": "base#<urlencoded-id>",
+    "individualWithoutIri": "base#individual/<urlencoded-type>/<urlencoded-id>",
+    "legacyAlias": "base#<id>; resolve only when unique, otherwise return ambiguous",
+    "classNamespace": "Do not introduce a Class# or Type# namespace for class IRIs",
+    "kind": "Class and Individual are separate registry kinds; type=Class denotes a class"
+  },
+  "sourceOfTruth": [
+    "ontology/coast-raid-k/tbox.json",
+    "ontology/coast-raid-k/agent.extension.json",
+    "ontology/coast-raid-k/inventory.json",
+    "ontology/coast-raid-k/agent.instances.json"
+  ],
+  "knownLegacyAmbiguities": [
+    {
+      "alias": "https://local.ontology/coast-raid-k#gate",
+      "candidates": [
+        {
+          "type": "Rule",
+          "id": "gate",
+          "file": "rules.json"
+        },
+        {
+          "type": "FunctionBind",
+          "id": "gate",
+          "file": "algorithms.json"
+        }
+      ],
+      "resolution": "require type or full canonical IRI"
+    }
+  ],
+  "migrationStatus": "SQLite isolated candidate projection and browser IRI/alias implementation complete; PostgreSQL live-database acceptance not run; candidate not activated",
+  "compatibility": {
+    "oldHash": "#Class/<id> and #<type>/<id> remain accepted by the browser",
+    "oldBaseIri": "base#<id> is an alias and is never silently rewritten when ambiguous",
+    "sourceIri": "Agent extension instance IRIs remain unchanged"
+  },
+  "entries": [
+    {
+      "kind": "Individual",
+      "type": "Package",
+      "id": "coast-raid-k",
+      "iri": "https://local.ontology/coast-raid-k#individual/Package/coast-raid-k",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#coast-raid-k"
+      ],
+      "file": "catalog.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Exclude",
+      "id": "satelliteSensor",
+      "iri": "https://local.ontology/coast-raid-k#individual/Exclude/satelliteSensor",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#satelliteSensor"
+      ],
+      "file": "catalog.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Exclude",
+      "id": "link16",
+      "iri": "https://local.ontology/coast-raid-k#individual/Exclude/link16",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#link16"
+      ],
+      "file": "catalog.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Exclude",
+      "id": "ibcsIfcn",
+      "iri": "https://local.ontology/coast-raid-k#individual/Exclude/ibcsIfcn",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#ibcsIfcn"
+      ],
+      "file": "catalog.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Exclude",
+      "id": "meanField",
+      "iri": "https://local.ontology/coast-raid-k#individual/Exclude/meanField",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#meanField"
+      ],
+      "file": "catalog.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Exclude",
+      "id": "personAutoEngage",
+      "iri": "https://local.ontology/coast-raid-k#individual/Exclude/personAutoEngage",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#personAutoEngage"
+      ],
+      "file": "catalog.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Exclude",
+      "id": "occupationZone",
+      "iri": "https://local.ontology/coast-raid-k#individual/Exclude/occupationZone",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#occupationZone"
+      ],
+      "file": "catalog.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Entity",
+      "iri": "https://local.ontology/coast-raid-k#Entity",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Entity"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Continuant",
+      "iri": "https://local.ontology/coast-raid-k#Continuant",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Continuant"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Occurrent",
+      "iri": "https://local.ontology/coast-raid-k#Occurrent",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Occurrent"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "IndependentContinuant",
+      "iri": "https://local.ontology/coast-raid-k#IndependentContinuant",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#IndependentContinuant"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "DependentContinuant",
+      "iri": "https://local.ontology/coast-raid-k#DependentContinuant",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#DependentContinuant"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "MaterialObject",
+      "iri": "https://local.ontology/coast-raid-k#MaterialObject",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#MaterialObject"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "SpatialRegion",
+      "iri": "https://local.ontology/coast-raid-k#SpatialRegion",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#SpatialRegion"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "InformationEntity",
+      "iri": "https://local.ontology/coast-raid-k#InformationEntity",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#InformationEntity"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Quality",
+      "iri": "https://local.ontology/coast-raid-k#Quality",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Quality"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Role",
+      "iri": "https://local.ontology/coast-raid-k#Role",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Role"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Relator",
+      "iri": "https://local.ontology/coast-raid-k#Relator",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Relator"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Process",
+      "iri": "https://local.ontology/coast-raid-k#Process",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Process"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Class",
+      "iri": "https://local.ontology/coast-raid-k#Class",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Class"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Package",
+      "iri": "https://local.ontology/coast-raid-k#Package",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Package"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Exclude",
+      "iri": "https://local.ontology/coast-raid-k#Exclude",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Exclude"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Shoreline",
+      "iri": "https://local.ontology/coast-raid-k#Shoreline",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Shoreline"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Region",
+      "iri": "https://local.ontology/coast-raid-k#Region",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Region"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Membership",
+      "iri": "https://local.ontology/coast-raid-k#Membership",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Membership"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Envelope",
+      "iri": "https://local.ontology/coast-raid-k#Envelope",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Envelope"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Corridor",
+      "iri": "https://local.ontology/coast-raid-k#Corridor",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Corridor"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "SearchSector",
+      "iri": "https://local.ontology/coast-raid-k#SearchSector",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#SearchSector"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "DetectionDisk",
+      "iri": "https://local.ontology/coast-raid-k#DetectionDisk",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#DetectionDisk"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "JamBloom",
+      "iri": "https://local.ontology/coast-raid-k#JamBloom",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#JamBloom"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "CommandPost",
+      "iri": "https://local.ontology/coast-raid-k#CommandPost",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#CommandPost"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Sensor",
+      "iri": "https://local.ontology/coast-raid-k#Sensor",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Sensor"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Shooter",
+      "iri": "https://local.ontology/coast-raid-k#Shooter",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Shooter"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Platform",
+      "iri": "https://local.ontology/coast-raid-k#Platform",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Platform"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Emitter",
+      "iri": "https://local.ontology/coast-raid-k#Emitter",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Emitter"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "PlatformType",
+      "iri": "https://local.ontology/coast-raid-k#PlatformType",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#PlatformType"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Needline",
+      "iri": "https://local.ontology/coast-raid-k#Needline",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Needline"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Link",
+      "iri": "https://local.ontology/coast-raid-k#Link",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Link"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Invariant",
+      "iri": "https://local.ontology/coast-raid-k#Invariant",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Invariant"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Rule",
+      "iri": "https://local.ontology/coast-raid-k#Rule",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Rule"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Algorithm",
+      "iri": "https://local.ontology/coast-raid-k#Algorithm",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Algorithm"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "CloudDef",
+      "iri": "https://local.ontology/coast-raid-k#CloudDef",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#CloudDef"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "ShellTemplate",
+      "iri": "https://local.ontology/coast-raid-k#ShellTemplate",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#ShellTemplate"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Monitor",
+      "iri": "https://local.ontology/coast-raid-k#Monitor",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Monitor"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "FunctionBind",
+      "iri": "https://local.ontology/coast-raid-k#FunctionBind",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#FunctionBind"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Stage",
+      "iri": "https://local.ontology/coast-raid-k#Stage",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Stage"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Track",
+      "iri": "https://local.ontology/coast-raid-k#Track",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Track"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Identity",
+      "iri": "https://local.ontology/coast-raid-k#Identity",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Identity"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Pair",
+      "iri": "https://local.ontology/coast-raid-k#Pair",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Pair"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Slot",
+      "iri": "https://local.ontology/coast-raid-k#Slot",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Slot"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Permit",
+      "iri": "https://local.ontology/coast-raid-k#Permit",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Permit"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Wave",
+      "iri": "https://local.ontology/coast-raid-k#Wave",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Wave"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Channel",
+      "iri": "https://local.ontology/coast-raid-k#Channel",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Channel"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Inject",
+      "iri": "https://local.ontology/coast-raid-k#Inject",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Inject"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Event",
+      "iri": "https://local.ontology/coast-raid-k#Event",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Event"
+      ],
+      "file": "tbox.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Shoreline",
+      "id": "SHORE_0",
+      "iri": "https://local.ontology/coast-raid-k#individual/Shoreline/SHORE_0",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#SHORE_0"
+      ],
+      "file": "gis.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Region",
+      "id": "SEA",
+      "iri": "https://local.ontology/coast-raid-k#individual/Region/SEA",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#SEA"
+      ],
+      "file": "gis.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Region",
+      "id": "LAND",
+      "iri": "https://local.ontology/coast-raid-k#individual/Region/LAND",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#LAND"
+      ],
+      "file": "gis.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Membership",
+      "id": "C_low∈SEA",
+      "iri": "https://local.ontology/coast-raid-k#individual/Membership/C_low%E2%88%88SEA",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#C_low∈SEA",
+        "https://local.ontology/coast-raid-k#C_low%E2%88%88SEA"
+      ],
+      "file": "gis.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Membership",
+      "id": "B_ship∈SEA",
+      "iri": "https://local.ontology/coast-raid-k#individual/Membership/B_ship%E2%88%88SEA",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#B_ship∈SEA",
+        "https://local.ontology/coast-raid-k#B_ship%E2%88%88SEA"
+      ],
+      "file": "gis.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Membership",
+      "id": "JAM_BLOOM∈SEA",
+      "iri": "https://local.ontology/coast-raid-k#individual/Membership/JAM_BLOOM%E2%88%88SEA",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#JAM_BLOOM∈SEA",
+        "https://local.ontology/coast-raid-k#JAM_BLOOM%E2%88%88SEA"
+      ],
+      "file": "gis.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Membership",
+      "id": "B_BMD∈LAND",
+      "iri": "https://local.ontology/coast-raid-k#individual/Membership/B_BMD%E2%88%88LAND",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#B_BMD∈LAND",
+        "https://local.ontology/coast-raid-k#B_BMD%E2%88%88LAND"
+      ],
+      "file": "gis.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Membership",
+      "id": "B_SAM∈LAND",
+      "iri": "https://local.ontology/coast-raid-k#individual/Membership/B_SAM%E2%88%88LAND",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#B_SAM∈LAND",
+        "https://local.ontology/coast-raid-k#B_SAM%E2%88%88LAND"
+      ],
+      "file": "gis.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Membership",
+      "id": "SEARCH∈LAND",
+      "iri": "https://local.ontology/coast-raid-k#individual/Membership/SEARCH%E2%88%88LAND",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#SEARCH∈LAND",
+        "https://local.ontology/coast-raid-k#SEARCH%E2%88%88LAND"
+      ],
+      "file": "gis.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Membership",
+      "id": "SHIP∈SEA",
+      "iri": "https://local.ontology/coast-raid-k#individual/Membership/SHIP%E2%88%88SEA",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#SHIP∈SEA",
+        "https://local.ontology/coast-raid-k#SHIP%E2%88%88SEA"
+      ],
+      "file": "gis.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Membership",
+      "id": "JAMMER∈SEA",
+      "iri": "https://local.ontology/coast-raid-k#individual/Membership/JAMMER%E2%88%88SEA",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#JAMMER∈SEA",
+        "https://local.ontology/coast-raid-k#JAMMER%E2%88%88SEA"
+      ],
+      "file": "gis.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Membership",
+      "id": "C2∈LAND",
+      "iri": "https://local.ontology/coast-raid-k#individual/Membership/C2%E2%88%88LAND",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#C2∈LAND",
+        "https://local.ontology/coast-raid-k#C2%E2%88%88LAND"
+      ],
+      "file": "gis.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Membership",
+      "id": "RADAR_SHORE∈LAND",
+      "iri": "https://local.ontology/coast-raid-k#individual/Membership/RADAR_SHORE%E2%88%88LAND",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#RADAR_SHORE∈LAND",
+        "https://local.ontology/coast-raid-k#RADAR_SHORE%E2%88%88LAND"
+      ],
+      "file": "gis.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Membership",
+      "id": "RADAR_SAM∈LAND",
+      "iri": "https://local.ontology/coast-raid-k#individual/Membership/RADAR_SAM%E2%88%88LAND",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#RADAR_SAM∈LAND",
+        "https://local.ontology/coast-raid-k#RADAR_SAM%E2%88%88LAND"
+      ],
+      "file": "gis.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Membership",
+      "id": "SAM_TEL∈LAND",
+      "iri": "https://local.ontology/coast-raid-k#individual/Membership/SAM_TEL%E2%88%88LAND",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#SAM_TEL∈LAND",
+        "https://local.ontology/coast-raid-k#SAM_TEL%E2%88%88LAND"
+      ],
+      "file": "gis.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Membership",
+      "id": "BMD_SILO∈LAND",
+      "iri": "https://local.ontology/coast-raid-k#individual/Membership/BMD_SILO%E2%88%88LAND",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#BMD_SILO∈LAND",
+        "https://local.ontology/coast-raid-k#BMD_SILO%E2%88%88LAND"
+      ],
+      "file": "gis.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Envelope",
+      "id": "B_BMD",
+      "iri": "https://local.ontology/coast-raid-k#individual/Envelope/B_BMD",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#B_BMD"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Envelope",
+      "id": "B_SAM",
+      "iri": "https://local.ontology/coast-raid-k#individual/Envelope/B_SAM",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#B_SAM"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Corridor",
+      "id": "C_low",
+      "iri": "https://local.ontology/coast-raid-k#individual/Corridor/C_low",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#C_low"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "DetectionDisk",
+      "id": "B_ship",
+      "iri": "https://local.ontology/coast-raid-k#individual/DetectionDisk/B_ship",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#B_ship"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "SearchSector",
+      "id": "SEARCH",
+      "iri": "https://local.ontology/coast-raid-k#individual/SearchSector/SEARCH",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#SEARCH"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "JamBloom",
+      "id": "JAM_BLOOM",
+      "iri": "https://local.ontology/coast-raid-k#individual/JamBloom/JAM_BLOOM",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#JAM_BLOOM"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "CommandPost",
+      "id": "C2",
+      "iri": "https://local.ontology/coast-raid-k#individual/CommandPost/C2",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#C2"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Sensor",
+      "id": "RADAR_SHORE",
+      "iri": "https://local.ontology/coast-raid-k#individual/Sensor/RADAR_SHORE",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#RADAR_SHORE"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Sensor",
+      "id": "RADAR_SAM",
+      "iri": "https://local.ontology/coast-raid-k#individual/Sensor/RADAR_SAM",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#RADAR_SAM"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Shooter",
+      "id": "SAM_TEL",
+      "iri": "https://local.ontology/coast-raid-k#individual/Shooter/SAM_TEL",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#SAM_TEL"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Shooter",
+      "id": "BMD_SILO",
+      "iri": "https://local.ontology/coast-raid-k#individual/Shooter/BMD_SILO",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#BMD_SILO"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Platform",
+      "id": "SHIP",
+      "iri": "https://local.ontology/coast-raid-k#individual/Platform/SHIP",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#SHIP"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Emitter",
+      "id": "JAMMER",
+      "iri": "https://local.ontology/coast-raid-k#individual/Emitter/JAMMER",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#JAMMER"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "PlatformType",
+      "id": "blue_uav",
+      "iri": "https://local.ontology/coast-raid-k#individual/PlatformType/blue_uav",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#blue_uav"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "PlatformType",
+      "id": "host_lo",
+      "iri": "https://local.ontology/coast-raid-k#individual/PlatformType/host_lo",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#host_lo"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "PlatformType",
+      "id": "unk_lo",
+      "iri": "https://local.ontology/coast-raid-k#individual/PlatformType/unk_lo",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#unk_lo"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "PlatformType",
+      "id": "uas-micro",
+      "iri": "https://local.ontology/coast-raid-k#individual/PlatformType/uas-micro",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#uas-micro"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "PlatformType",
+      "id": "uas-mini",
+      "iri": "https://local.ontology/coast-raid-k#individual/PlatformType/uas-mini",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#uas-mini"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "PlatformType",
+      "id": "uas-small",
+      "iri": "https://local.ontology/coast-raid-k#individual/PlatformType/uas-small",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#uas-small"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "PlatformType",
+      "id": "uas-tactical",
+      "iri": "https://local.ontology/coast-raid-k#individual/PlatformType/uas-tactical",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#uas-tactical"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "PlatformType",
+      "id": "uas-male",
+      "iri": "https://local.ontology/coast-raid-k#individual/PlatformType/uas-male",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#uas-male"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "PlatformType",
+      "id": "uas-hale",
+      "iri": "https://local.ontology/coast-raid-k#individual/PlatformType/uas-hale",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#uas-hale"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "PlatformType",
+      "id": "uas-vtol",
+      "iri": "https://local.ontology/coast-raid-k#individual/PlatformType/uas-vtol",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#uas-vtol"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "PlatformType",
+      "id": "uas-ew",
+      "iri": "https://local.ontology/coast-raid-k#individual/PlatformType/uas-ew",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#uas-ew"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "PlatformType",
+      "id": "uas-decoy",
+      "iri": "https://local.ontology/coast-raid-k#individual/PlatformType/uas-decoy",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#uas-decoy"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "PlatformType",
+      "id": "uas-sea-skimming",
+      "iri": "https://local.ontology/coast-raid-k#individual/PlatformType/uas-sea-skimming",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#uas-sea-skimming"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "PlatformType",
+      "id": "uas-cargo",
+      "iri": "https://local.ontology/coast-raid-k#individual/PlatformType/uas-cargo",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#uas-cargo"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "PlatformType",
+      "id": "uas-civilian",
+      "iri": "https://local.ontology/coast-raid-k#individual/PlatformType/uas-civilian",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#uas-civilian"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "PlatformType",
+      "id": "uas-relay",
+      "iri": "https://local.ontology/coast-raid-k#individual/PlatformType/uas-relay",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#uas-relay"
+      ],
+      "file": "theater.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Needline",
+      "id": "G_t",
+      "iri": "https://local.ontology/coast-raid-k#individual/Needline/G_t",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#G_t"
+      ],
+      "file": "graph.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Link",
+      "id": "air_station",
+      "iri": "https://local.ontology/coast-raid-k#individual/Link/air_station",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#air_station"
+      ],
+      "file": "graph.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Link",
+      "id": "mesh",
+      "iri": "https://local.ontology/coast-raid-k#individual/Link/mesh",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#mesh"
+      ],
+      "file": "graph.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Link",
+      "id": "ship_shore",
+      "iri": "https://local.ontology/coast-raid-k#individual/Link/ship_shore",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#ship_shore"
+      ],
+      "file": "graph.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Rule",
+      "id": "N_bound",
+      "iri": "https://local.ontology/coast-raid-k#individual/Rule/N_bound",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#N_bound"
+      ],
+      "file": "rules.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Rule",
+      "id": "lo_in_corridor",
+      "iri": "https://local.ontology/coast-raid-k#individual/Rule/lo_in_corridor",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#lo_in_corridor"
+      ],
+      "file": "rules.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Rule",
+      "id": "gate",
+      "iri": "https://local.ontology/coast-raid-k#individual/Rule/gate",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#gate"
+      ],
+      "file": "rules.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Rule",
+      "id": "unk_no_list",
+      "iri": "https://local.ontology/coast-raid-k#individual/Rule/unk_no_list",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#unk_no_list"
+      ],
+      "file": "rules.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Rule",
+      "id": "saturate_no_open",
+      "iri": "https://local.ontology/coast-raid-k#individual/Rule/saturate_no_open",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#saturate_no_open"
+      ],
+      "file": "rules.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Rule",
+      "id": "ship_no_shoot",
+      "iri": "https://local.ontology/coast-raid-k#individual/Rule/ship_no_shoot",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#ship_no_shoot"
+      ],
+      "file": "rules.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Rule",
+      "id": "envelope_not_occupy",
+      "iri": "https://local.ontology/coast-raid-k#individual/Rule/envelope_not_occupy",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#envelope_not_occupy"
+      ],
+      "file": "rules.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Rule",
+      "id": "no_person_auto",
+      "iri": "https://local.ontology/coast-raid-k#individual/Rule/no_person_auto",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#no_person_auto"
+      ],
+      "file": "rules.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Rule",
+      "id": "no_mean_field",
+      "iri": "https://local.ontology/coast-raid-k#individual/Rule/no_mean_field",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#no_mean_field"
+      ],
+      "file": "rules.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Rule",
+      "id": "no_satellite_sensor",
+      "iri": "https://local.ontology/coast-raid-k#individual/Rule/no_satellite_sensor",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#no_satellite_sensor"
+      ],
+      "file": "rules.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Rule",
+      "id": "fusion_split",
+      "iri": "https://local.ontology/coast-raid-k#individual/Rule/fusion_split",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#fusion_split"
+      ],
+      "file": "rules.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Rule",
+      "id": "type_not_item",
+      "iri": "https://local.ontology/coast-raid-k#individual/Rule/type_not_item",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#type_not_item"
+      ],
+      "file": "rules.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Rule",
+      "id": "hale_not_scene",
+      "iri": "https://local.ontology/coast-raid-k#individual/Rule/hale_not_scene",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#hale_not_scene"
+      ],
+      "file": "rules.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "CloudDef",
+      "id": "inSam",
+      "iri": "https://local.ontology/coast-raid-k#individual/CloudDef/inSam",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#inSam"
+      ],
+      "file": "constraints.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "CloudDef",
+      "id": "nEnv",
+      "iri": "https://local.ontology/coast-raid-k#individual/CloudDef/nEnv",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#nEnv"
+      ],
+      "file": "constraints.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "CloudDef",
+      "id": "threatSam",
+      "iri": "https://local.ontology/coast-raid-k#individual/CloudDef/threatSam",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#threatSam"
+      ],
+      "file": "constraints.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Monitor",
+      "id": "monitor.gate",
+      "iri": "https://local.ontology/coast-raid-k#individual/Monitor/monitor.gate",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#monitor.gate"
+      ],
+      "file": "shells.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "ShellTemplate",
+      "id": "shell-blue-uav",
+      "iri": "https://local.ontology/coast-raid-k#individual/ShellTemplate/shell-blue-uav",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#shell-blue-uav"
+      ],
+      "file": "shells.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Algorithm",
+      "id": "layer_detect",
+      "iri": "https://local.ontology/coast-raid-k#individual/Algorithm/layer_detect",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#layer_detect"
+      ],
+      "file": "algorithms.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Algorithm",
+      "id": "track_filter",
+      "iri": "https://local.ontology/coast-raid-k#individual/Algorithm/track_filter",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#track_filter"
+      ],
+      "file": "algorithms.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Algorithm",
+      "id": "cloud_shadow",
+      "iri": "https://local.ontology/coast-raid-k#individual/Algorithm/cloud_shadow",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#cloud_shadow"
+      ],
+      "file": "algorithms.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Algorithm",
+      "id": "iff_logic",
+      "iri": "https://local.ontology/coast-raid-k#individual/Algorithm/iff_logic",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#iff_logic"
+      ],
+      "file": "algorithms.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Algorithm",
+      "id": "finite_wave_assign",
+      "iri": "https://local.ontology/coast-raid-k#individual/Algorithm/finite_wave_assign",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#finite_wave_assign"
+      ],
+      "file": "algorithms.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Algorithm",
+      "id": "reactBlue_tasks",
+      "iri": "https://local.ontology/coast-raid-k#individual/Algorithm/reactBlue_tasks",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#reactBlue_tasks"
+      ],
+      "file": "algorithms.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Algorithm",
+      "id": "spherical_code",
+      "iri": "https://local.ontology/coast-raid-k#individual/Algorithm/spherical_code",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#spherical_code"
+      ],
+      "file": "algorithms.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Algorithm",
+      "id": "MAPPO",
+      "iri": "https://local.ontology/coast-raid-k#individual/Algorithm/MAPPO",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#MAPPO"
+      ],
+      "file": "algorithms.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Algorithm",
+      "id": "HAPPO",
+      "iri": "https://local.ontology/coast-raid-k#individual/Algorithm/HAPPO",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#HAPPO"
+      ],
+      "file": "algorithms.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Algorithm",
+      "id": "QMIX",
+      "iri": "https://local.ontology/coast-raid-k#individual/Algorithm/QMIX",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#QMIX"
+      ],
+      "file": "algorithms.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Algorithm",
+      "id": "mayGate",
+      "iri": "https://local.ontology/coast-raid-k#individual/Algorithm/mayGate",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#mayGate"
+      ],
+      "file": "algorithms.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Algorithm",
+      "id": "RoE",
+      "iri": "https://local.ontology/coast-raid-k#individual/Algorithm/RoE",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#RoE"
+      ],
+      "file": "algorithms.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "Algorithm",
+      "id": "bounded_inject",
+      "iri": "https://local.ontology/coast-raid-k#individual/Algorithm/bounded_inject",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#bounded_inject"
+      ],
+      "file": "algorithms.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "FunctionBind",
+      "id": "see",
+      "iri": "https://local.ontology/coast-raid-k#individual/FunctionBind/see",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#see"
+      ],
+      "file": "algorithms.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "FunctionBind",
+      "id": "read",
+      "iri": "https://local.ontology/coast-raid-k#individual/FunctionBind/read",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#read"
+      ],
+      "file": "algorithms.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "FunctionBind",
+      "id": "assign",
+      "iri": "https://local.ontology/coast-raid-k#individual/FunctionBind/assign",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#assign"
+      ],
+      "file": "algorithms.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "FunctionBind",
+      "id": "form",
+      "iri": "https://local.ontology/coast-raid-k#individual/FunctionBind/form",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#form"
+      ],
+      "file": "algorithms.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "FunctionBind",
+      "id": "gate",
+      "iri": "https://local.ontology/coast-raid-k#individual/FunctionBind/gate",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#gate"
+      ],
+      "file": "algorithms.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "FunctionBind",
+      "id": "foe",
+      "iri": "https://local.ontology/coast-raid-k#individual/FunctionBind/foe",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#foe"
+      ],
+      "file": "algorithms.json"
+    },
+    {
+      "kind": "Individual",
+      "type": "AgentInstance",
+      "id": "agent.monitor.gate",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#agent-monitor-gate",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#agent.monitor.gate"
+      ],
+      "file": "agent.instances.json",
+      "runId": "run-20260923-001"
+    },
+    {
+      "kind": "Individual",
+      "type": "AgentInstance",
+      "id": "agent.options.planner",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#agent-options-planner",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#agent.options.planner"
+      ],
+      "file": "agent.instances.json",
+      "runId": "run-20260923-001"
+    },
+    {
+      "kind": "Individual",
+      "type": "AgentInstance",
+      "id": "agent.fusion.c2",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#agent-fusion-c2",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#agent.fusion.c2"
+      ],
+      "file": "agent.instances.json",
+      "runId": "run-20260923-001"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Agent",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Agent",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Agent"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "AgentInstance",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentInstance",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#AgentInstance"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "AgentFunction",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentFunction",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#AgentFunction"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "OperationalTimeScale",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#OperationalTimeScale",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#OperationalTimeScale"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "OrganizationModel",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#OrganizationModel",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#OrganizationModel"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "AgentClass",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentClass",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#AgentClass"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "AgentType",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentType",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#AgentType"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "AgentRole",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentRole",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#AgentRole"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Organization",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Organization",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Organization"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "RoleAssignment",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#RoleAssignment",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#RoleAssignment"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "PlatformBinding",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#PlatformBinding",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#PlatformBinding"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Observation",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Observation",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Observation"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "BeliefState",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#BeliefState",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#BeliefState"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "BeliefAssertion",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#BeliefAssertion",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#BeliefAssertion"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Goal",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Goal",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Goal"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Task",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Task",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Task"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Plan",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Plan",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Plan"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Decision",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Decision",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Decision"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "ActionRequest",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#ActionRequest",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#ActionRequest"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Action",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Action",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Action"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Effect",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Effect",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Effect"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Message",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Message",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Message"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "CommunicationAct",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#CommunicationAct",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#CommunicationAct"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Protocol",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Protocol",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Protocol"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "LinkState",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#LinkState",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#LinkState"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Capability",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Capability",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Capability"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Policy",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Policy",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Policy"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Authority",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Authority",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Authority"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Authorization",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Authorization",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Authorization"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Run",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Run",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Run"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "AuditEvent",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#AuditEvent",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#AuditEvent"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "EmbodiedAgent",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#EmbodiedAgent",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#EmbodiedAgent"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "SoftwareAgent",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#SoftwareAgent",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#SoftwareAgent"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Desire",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Desire",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Desire"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Intention",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Intention",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Intention"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "StateTransition",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#StateTransition",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#StateTransition"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Resource",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Resource",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Resource"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Constraint",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Constraint",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Constraint"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "AgentCycle",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentCycle",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#AgentCycle"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "TimeInterval",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#TimeInterval",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#TimeInterval"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "ActionExecution",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#ActionExecution",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#ActionExecution"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "ProcessSpecification",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#ProcessSpecification",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#ProcessSpecification"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "AgentExecution",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentExecution",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#AgentExecution"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "AgentState",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#AgentState",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#AgentState"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "AssistantSession",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#AssistantSession",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#AssistantSession"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "Operator",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#Operator",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#Operator"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "DecisionDraft",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#DecisionDraft",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#DecisionDraft"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "ApprovalRequest",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#ApprovalRequest",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#ApprovalRequest"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "HumanDecision",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#HumanDecision",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#HumanDecision"
+      ],
+      "file": "agent.extension.json"
+    },
+    {
+      "kind": "Class",
+      "type": "Class",
+      "id": "TriggerDefinition",
+      "iri": "https://local.ontology/coast-raid-k/agent/1.0.0#TriggerDefinition",
+      "aliases": [
+        "https://local.ontology/coast-raid-k#TriggerDefinition"
+      ],
+      "file": "agent.extension.json"
+    }
+  ]
+}

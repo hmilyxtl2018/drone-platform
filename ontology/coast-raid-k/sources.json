@@ -1,0 +1,95 @@
+{
+  "package": "coast-raid-k",
+  "type": "OpenSourceRegister",
+  "note": "Provenance of ingested open vocabularies. Not a 40ms payload. Not JC3IEDM.",
+  "items": [
+    {
+      "id": "BFO-2020",
+      "usedAs": "TBox equivalentClass / seeAlso",
+      "iri": "https://github.com/BFO-ontology/BFO-2020",
+      "license": "CC BY 4.0",
+      "what": "ISO/IEC 21838-2 upper ontology class IRIs"
+    },
+    {
+      "id": "CCO-2.0",
+      "usedAs": "rdfs:seeAlso InformationEntity",
+      "iri": "https://github.com/CommonCoreOntology/CommonCoreOntologies",
+      "license": "BSD-3-Clause",
+      "what": "ont00000958 Information Content Entity"
+    },
+    {
+      "id": "milsymbol-2525D",
+      "usedAs": "Scene 符号 SIDC",
+      "iri": "https://github.com/spatialillusions/milsymbol",
+      "license": "MIT",
+      "what": "Numeric 20-digit SIDC for sand-table sites and platform types"
+    },
+    {
+      "id": "QUDT",
+      "usedAs": "CRS unit",
+      "iri": "http://qudt.org/vocab/unit/KiloM",
+      "license": "CC BY 4.0",
+      "what": "Kilometre and km/h"
+    },
+    {
+      "id": "GeoSPARQL",
+      "usedAs": "几何 geo:asWKT",
+      "iri": "http://www.opengis.net/ont/geosparql",
+      "license": "OGC",
+      "what": "WKT footprints derived from theater/gis. Not OSM harbour."
+    },
+    {
+      "id": "PROV-O",
+      "usedAs": "知识 谱系",
+      "iri": "http://www.w3.org/ns/prov#",
+      "license": "W3C",
+      "what": "wasGeneratedBy / used"
+    },
+    {
+      "id": "cloud-model-2009",
+      "usedAs": "CloudDef 数字特征出处",
+      "iri": "https://doi.org/10.1002/int.20340",
+      "license": "citation",
+      "what": "Li Deyi et al. cloud model Ex/En/He. Parameters are local ABox."
+    },
+    {
+      "id": "JP-3-30-UAS-groups",
+      "usedAs": "PlatformType.uasGroup 型谱",
+      "iri": "https://www.congress.gov/crs_external_products/IF/PDF/IF12797/IF12797.2.pdf",
+      "license": "US government work (CRS) citing JP 3-30",
+      "what": "DoD UAS Groups 1–5: MTOW, altitude, speed bands. Category types, not named OOB."
+    },
+    {
+      "id": "NATO-UAS-class",
+      "usedAs": "PlatformType.natoClass 型谱",
+      "iri": "https://doi.org/10.18372/1990-5548.74.17354",
+      "license": "citation of STANAG 4670 class table (public secondary)",
+      "what": "NATO Class I micro/mini/small, II tactical, III MALE/HALE. Not the STANAG text dump."
+    },
+    {
+      "id": "EASA-2019-947",
+      "usedAs": "dictionary.codes EasaClass",
+      "iri": "https://eur-lex.europa.eu/eli/reg_impl/2019/947/oj",
+      "license": "EU official (public)",
+      "what": "Open/Specific/Certified and C0–C6 class marks. Catalog only."
+    }
+  ],
+  "rejected": [
+    {
+      "id": "JC3IEDM",
+      "why": "NATO/MIP restricted; tabs use the TYPE/ITEM/LOCATION face, not the STANAG dump"
+    },
+    {
+      "id": "OSM-harbour",
+      "why": "would recinematize a real coast; shoreline stays harmonic sand-table"
+    },
+    {
+      "id": "satellite",
+      "why": "catalog.excludes satelliteSensor"
+    },
+    {
+      "id": "Janes-OOB",
+      "why": "named platform performance / unit OOB is not open type data"
+    }
+  ]
+}

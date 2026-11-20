@@ -1,0 +1,678 @@
+{
+  "package": "coast-raid-k",
+  "frame": "catalog.frame",
+  "bodies": [
+    {
+      "id": "B_BMD",
+      "type": "Envelope",
+      "layer": "hi",
+      "role": "high-altitude intercept feasible set",
+      "shape": "hemisphere",
+      "c": [
+        2.15,
+        0.05,
+        2.35
+      ],
+      "r": 3.15,
+      "z0": 0.05,
+      "label": "B_BMD 高层拦截",
+      "not": "occupationZone"
+    },
+    {
+      "id": "B_SAM",
+      "type": "Envelope",
+      "layer": "mid",
+      "role": "medium-altitude engagement feasible set",
+      "shape": "hemisphere",
+      "c": [
+        0.35,
+        0.05,
+        0.85
+      ],
+      "r": 2.05,
+      "z0": 0.05,
+      "rim": 0.82,
+      "rim_r": 1.681,
+      "label": "B_SAM 中层交战",
+      "inner_label": "授权内界",
+      "not": "occupationZone"
+    },
+    {
+      "id": "C_low",
+      "type": "Corridor",
+      "layer": "lo",
+      "region": "SEA",
+      "role": "sea-skimming raid box",
+      "shape": "aabb",
+      "x0": -3.35,
+      "x1": 0.95,
+      "z0": -4.15,
+      "z1": -0.55,
+      "y0": 0.06,
+      "y1": 0.42,
+      "y0_m": 60,
+      "y1_m": 420,
+      "label": "低空走廊 60–420 m"
+    },
+    {
+      "id": "B_ship",
+      "type": "DetectionDisk",
+      "layer": "lo",
+      "region": "SEA",
+      "role": "shipborne search, track do not shoot",
+      "shape": "disk",
+      "c": [
+        -2.55,
+        0.12,
+        -3.05
+      ],
+      "r": 1.2,
+      "azimuth": "360",
+      "label": "舰载探测"
+    },
+    {
+      "id": "SEARCH",
+      "type": "SearchSector",
+      "layer": "lo",
+      "role": "2D shore search low slab, not a SAM hemisphere",
+      "shape": "sector_slab",
+      "c": [
+        1.62,
+        0.2,
+        0.18
+      ],
+      "r": 4.4,
+      "az_rad": 3.141592653589793,
+      "az_deg": 180,
+      "half_deg": 58,
+      "h": 0.55,
+      "label": "岸搜低空空域",
+      "floor_label": "地面投影"
+    },
+    {
+      "id": "JAM_BLOOM",
+      "type": "JamBloom",
+      "region": "SEA",
+      "role": "emitter bloom only while on",
+      "shape": "disk",
+      "c": [
+        -1.85,
+        0.22,
+        -2.55
+      ],
+      "r": 1.55,
+      "label": "干扰"
+    }
+  ],
+  "sites": [
+    {
+      "id": "C2",
+      "type": "CommandPost",
+      "region": "LAND",
+      "p": [
+        3.55,
+        0.55,
+        3.15
+      ],
+      "label": "C2",
+      "sidc": {
+        "code": "10061000001100000000",
+        "std": "2525D",
+        "symbolSet": "10",
+        "entity": "110000",
+        "identity": "hostile",
+        "label": "Land unit · Command and Control",
+        "src": "https://github.com/spatialillusions/milsymbol (MIT) · MIL-STD-2525D numeric SIDC"
+      }
+    },
+    {
+      "id": "RADAR_SHORE",
+      "type": "Sensor",
+      "region": "LAND",
+      "kind": "search_2d",
+      "p": [
+        1.62,
+        0.2,
+        0.18
+      ],
+      "covers": "SEARCH",
+      "label": "岸搜",
+      "not": "launcher",
+      "sidc": {
+        "code": "10061500002203000300",
+        "std": "2525D",
+        "symbolSet": "15",
+        "entity": "220300",
+        "identity": "hostile",
+        "label": "Land equipment · Radar · Early warning",
+        "src": "https://github.com/spatialillusions/milsymbol (MIT) · MIL-STD-2525D numeric SIDC"
+      }
+    },
+    {
+      "id": "RADAR_SAM",
+      "type": "Sensor",
+      "region": "LAND",
+      "kind": "fire_control",
+      "p": [
+        0.92,
+        0.18,
+        1.22
+      ],
+      "label": "制导",
+      "beam": "pencil_to_track",
+      "not": "search_fan",
+      "sidc": {
+        "code": "10061500002203000000",
+        "std": "2525D",
+        "symbolSet": "15",
+        "entity": "220300",
+        "identity": "hostile",
+        "label": "Land equipment · Radar (fire control)",
+        "src": "https://github.com/spatialillusions/milsymbol (MIT) · MIL-STD-2525D numeric SIDC"
+      }
+    },
+    {
+      "id": "SAM_TEL",
+      "type": "Shooter",
+      "region": "LAND",
+      "kind": "sam_launcher",
+      "p": [
+        0.35,
+        0.32,
+        0.85
+      ],
+      "envelope": "B_SAM",
+      "channels0": 4,
+      "label": "发射",
+      "sidc": {
+        "code": "10061500001111010000",
+        "std": "2525D",
+        "symbolSet": "15",
+        "entity": "111101",
+        "identity": "hostile",
+        "label": "AD missile launcher SAM · short range",
+        "src": "https://github.com/spatialillusions/milsymbol (MIT) · MIL-STD-2525D numeric SIDC"
+      }
+    },
+    {
+      "id": "BMD_SILO",
+      "type": "Shooter",
+      "region": "LAND",
+      "kind": "bmd_silo",
+      "p": [
+        2.15,
+        0.42,
+        2.35
+      ],
+      "envelope": "B_BMD",
+      "label": "井",
+      "sidc": {
+        "code": "10061500001111070000",
+        "std": "2525D",
+        "symbolSet": "15",
+        "entity": "111107",
+        "identity": "hostile",
+        "label": "AD missile launcher SAM · long range",
+        "src": "https://github.com/spatialillusions/milsymbol (MIT) · MIL-STD-2525D numeric SIDC"
+      }
+    },
+    {
+      "id": "SHIP",
+      "type": "Platform",
+      "region": "SEA",
+      "kind": "surface_combatant",
+      "p": [
+        -2.55,
+        0.12,
+        -3.05
+      ],
+      "heading_deg": 180,
+      "heading": "seaward",
+      "covers": "B_ship",
+      "label": "军舰",
+      "sidc": {
+        "code": "10063000001202000000",
+        "std": "2525D",
+        "symbolSet": "30",
+        "entity": "120200",
+        "identity": "hostile",
+        "label": "Sea surface · Surface combatant, line",
+        "src": "https://github.com/spatialillusions/milsymbol (MIT) · MIL-STD-2525D numeric SIDC"
+      }
+    },
+    {
+      "id": "JAMMER",
+      "type": "Emitter",
+      "region": "SEA",
+      "kind": "corridor_jammer",
+      "p": [
+        -1.85,
+        0.22,
+        -2.55
+      ],
+      "covers": "JAM_BLOOM",
+      "label": "干扰",
+      "sidc": {
+        "code": "10063000001202000500",
+        "std": "2525D",
+        "symbolSet": "30",
+        "entity": "120200",
+        "identity": "hostile",
+        "label": "Surface combatant · Electronic warfare modifier",
+        "src": "https://github.com/spatialillusions/milsymbol (MIT) · MIL-STD-2525D numeric SIDC"
+      }
+    }
+  ],
+  "platformTypes": [
+    {
+      "id": "blue_uav",
+      "side": "blue",
+      "layers": [
+        "hi",
+        "mid",
+        "lo"
+      ],
+      "speed_kmh_byLayer": {
+        "hi": 280,
+        "mid": 320
+      },
+      "tasks": [
+        "巡逻",
+        "警戒",
+        "盯梢",
+        "压沿",
+        "识别"
+      ],
+      "src": "编成",
+      "sidc": {
+        "code": "10030100001103000000",
+        "std": "2525D",
+        "symbolSet": "01",
+        "entity": "110300",
+        "identity": "friend",
+        "label": "Air · Unmanned aerial vehicle",
+        "src": "https://github.com/spatialillusions/milsymbol (MIT) · MIL-STD-2525D numeric SIDC"
+      },
+      "inScene": true,
+      "uasGroup": 3,
+      "natoClass": "II",
+      "airframe": "fixed-wing",
+      "role": "isr",
+      "source": "本幕编成 · 对照 uas-tactical"
+    },
+    {
+      "id": "host_lo",
+      "side": "red",
+      "code": "H-17",
+      "klass": "低空突防无人机",
+      "speed_kmh": 720,
+      "form_lo_lat_kmh": 90,
+      "band_m": [
+        50,
+        400
+      ],
+      "intent": "贴海突防",
+      "payload": "对海/对阵地 · 不开对人",
+      "sidc": {
+        "code": "10060100001103000000",
+        "std": "2525D",
+        "symbolSet": "01",
+        "entity": "110300",
+        "identity": "hostile",
+        "label": "Air · Unmanned aerial vehicle",
+        "src": "https://github.com/spatialillusions/milsymbol (MIT) · MIL-STD-2525D numeric SIDC"
+      },
+      "inScene": true,
+      "uasGroup": 3,
+      "natoClass": "II",
+      "airframe": "sea-skimming",
+      "role": "raid",
+      "source": "本幕敌情 · 对照 uas-sea-skimming"
+    },
+    {
+      "id": "unk_lo",
+      "side": "unk",
+      "code": "U-?",
+      "klass": "小型空中平台",
+      "speed_kmh": 480,
+      "identity": "未判明",
+      "list": "不进交战清单",
+      "sidc": {
+        "code": "10010100001103000000",
+        "std": "2525D",
+        "symbolSet": "01",
+        "entity": "110300",
+        "identity": "unknown",
+        "label": "Air · Unmanned aerial vehicle",
+        "src": "https://github.com/spatialillusions/milsymbol (MIT) · MIL-STD-2525D numeric SIDC"
+      },
+      "inScene": true,
+      "uasGroup": 2,
+      "natoClass": "I-small",
+      "airframe": "fixed-wing",
+      "role": "isr",
+      "source": "本幕不明 · 对照 uas-small / uas-civilian"
+    },
+    {
+      "id": "uas-micro",
+      "inScene": false,
+      "klass": "微型无人机",
+      "uasGroup": 1,
+      "natoClass": "I-micro",
+      "airframe": "fixed-wing",
+      "role": "isr",
+      "mtow_kg_max": 2,
+      "alt_m_max": 61,
+      "alt_ref": "AGL",
+      "speed_kt_max": 100,
+      "speed_kmh": 185,
+      "missionRadius": "5 km LOS",
+      "source": "NATO Class I micro · DoD Group 1",
+      "note": "型谱。本幕不实例化。",
+      "sidc": {
+        "code": "10040100001103000000",
+        "std": "2525D",
+        "symbolSet": "01",
+        "entity": "110300",
+        "identity": "neutral",
+        "label": "UAV micro",
+        "src": "https://github.com/spatialillusions/milsymbol (MIT) · MIL-STD-2525D numeric SIDC"
+      }
+    },
+    {
+      "id": "uas-mini",
+      "inScene": false,
+      "klass": "迷你无人机",
+      "uasGroup": 1,
+      "natoClass": "I-mini",
+      "airframe": "fixed-wing",
+      "role": "isr",
+      "mtow_kg_min": 2,
+      "mtow_kg_max": 20,
+      "alt_m_max": 914,
+      "alt_ref": "AGL",
+      "speed_kt_max": 100,
+      "speed_kmh": 185,
+      "missionRadius": "25 km LOS",
+      "source": "NATO Class I mini · DoD Group 1",
+      "note": "型谱。手抛/单兵。本幕不实例化。",
+      "sidc": {
+        "code": "10040100001103000000",
+        "std": "2525D",
+        "symbolSet": "01",
+        "entity": "110300",
+        "identity": "neutral",
+        "label": "UAV mini",
+        "src": "https://github.com/spatialillusions/milsymbol (MIT) · MIL-STD-2525D numeric SIDC"
+      }
+    },
+    {
+      "id": "uas-small",
+      "inScene": false,
+      "klass": "小型无人机",
+      "uasGroup": 2,
+      "natoClass": "I-small",
+      "airframe": "fixed-wing",
+      "role": "isr",
+      "mtow_kg_min": 20,
+      "mtow_kg_max": 150,
+      "alt_m_max": 1524,
+      "alt_ref": "AGL",
+      "speed_kt_max": 250,
+      "speed_kmh": 463,
+      "missionRadius": "50 km LOS",
+      "source": "NATO Class I small · DoD Group 2 (FAA 55 lb 对齐)",
+      "note": "型谱。本幕 unk_lo 可对照，但不把本型直接进波次。",
+      "sidc": {
+        "code": "10040100001103000000",
+        "std": "2525D",
+        "symbolSet": "01",
+        "entity": "110300",
+        "identity": "neutral",
+        "label": "UAV small",
+        "src": "https://github.com/spatialillusions/milsymbol (MIT) · MIL-STD-2525D numeric SIDC"
+      }
+    },
+    {
+      "id": "uas-tactical",
+      "inScene": false,
+      "klass": "战术无人机",
+      "uasGroup": 3,
+      "natoClass": "II",
+      "airframe": "fixed-wing",
+      "role": "isr",
+      "mtow_kg_min": 150,
+      "mtow_kg_max": 600,
+      "alt_m_max": 3048,
+      "alt_ref": "AGL",
+      "speed_kt_max": 250,
+      "speed_kmh": 463,
+      "missionRadius": "200 km LOS",
+      "source": "NATO Class II · DoD Group 3",
+      "note": "型谱。blue_uav 分层 ISR 可对照。本幕实例仍是 blue_uav。",
+      "sidc": {
+        "code": "10040100001103000000",
+        "std": "2525D",
+        "symbolSet": "01",
+        "entity": "110300",
+        "identity": "neutral",
+        "label": "UAV tactical",
+        "src": "https://github.com/spatialillusions/milsymbol (MIT) · MIL-STD-2525D numeric SIDC"
+      }
+    },
+    {
+      "id": "uas-male",
+      "inScene": false,
+      "klass": "中空长航时",
+      "uasGroup": 4,
+      "natoClass": "III-MALE",
+      "airframe": "fixed-wing",
+      "role": "isr",
+      "mtow_kg_min": 600,
+      "alt_m_max": 13716,
+      "alt_ref": "MSL",
+      "missionRadius": "BLOS unlimited",
+      "source": "NATO Class III MALE · DoD Group 4/5",
+      "note": "型谱。超出本幕包络。不是卫星。不开对人。",
+      "sidc": {
+        "code": "10040100001103000000",
+        "std": "2525D",
+        "symbolSet": "01",
+        "entity": "110300",
+        "identity": "neutral",
+        "label": "UAV MALE",
+        "src": "https://github.com/spatialillusions/milsymbol (MIT) · MIL-STD-2525D numeric SIDC"
+      }
+    },
+    {
+      "id": "uas-hale",
+      "inScene": false,
+      "klass": "高空长航时",
+      "uasGroup": 5,
+      "natoClass": "III-HALE",
+      "airframe": "fixed-wing",
+      "role": "isr",
+      "mtow_kg_min": 600,
+      "alt_m_max": 19812,
+      "alt_ref": "MSL",
+      "missionRadius": "BLOS unlimited",
+      "source": "NATO Class III HALE · DoD Group 5",
+      "note": "型谱。空气动力平台，不是天基传感器。本幕 excludes satelliteSensor，HALE 也不进波次。",
+      "sidc": {
+        "code": "10040100001103000000",
+        "std": "2525D",
+        "symbolSet": "01",
+        "entity": "110300",
+        "identity": "neutral",
+        "label": "UAV HALE",
+        "src": "https://github.com/spatialillusions/milsymbol (MIT) · MIL-STD-2525D numeric SIDC"
+      }
+    },
+    {
+      "id": "uas-vtol",
+      "inScene": false,
+      "klass": "垂直起降无人机",
+      "uasGroup": 2,
+      "natoClass": "I-small",
+      "airframe": "vtol",
+      "role": "isr",
+      "mtow_kg_max": 150,
+      "alt_m_max": 1067,
+      "alt_ref": "AGL",
+      "speed_kt_max": 100,
+      "speed_kmh": 185,
+      "missionRadius": "LOS",
+      "source": "2525D VT-UAV entity 110400",
+      "note": "型谱。本幕岸线砂盘无起降场个体。",
+      "sidc": {
+        "code": "10040100001104000000",
+        "std": "2525D",
+        "symbolSet": "01",
+        "entity": "110400",
+        "identity": "neutral",
+        "label": "VT-UAV",
+        "src": "https://github.com/spatialillusions/milsymbol (MIT) · MIL-STD-2525D numeric SIDC"
+      }
+    },
+    {
+      "id": "uas-ew",
+      "inScene": false,
+      "klass": "电子战无人机",
+      "uasGroup": 3,
+      "natoClass": "II",
+      "airframe": "fixed-wing",
+      "role": "ew",
+      "alt_m_max": 3048,
+      "alt_ref": "AGL",
+      "source": "2525D jammer / ECM entity 110108",
+      "note": "型谱。本幕干扰是海面 Emitter，不是此型。",
+      "sidc": {
+        "code": "10040100001101080000",
+        "std": "2525D",
+        "symbolSet": "01",
+        "entity": "110108",
+        "identity": "neutral",
+        "label": "UAV / ECM",
+        "src": "https://github.com/spatialillusions/milsymbol (MIT) · MIL-STD-2525D numeric SIDC"
+      }
+    },
+    {
+      "id": "uas-decoy",
+      "inScene": false,
+      "klass": "诱饵无人机",
+      "uasGroup": 2,
+      "natoClass": "I-small",
+      "airframe": "fixed-wing",
+      "role": "decoy",
+      "source": "2525D air decoy entity 130200",
+      "note": "型谱。未来饱和/诱饵，不是开门理由（见 saturate_no_open）。",
+      "sidc": {
+        "code": "10040100001302000000",
+        "std": "2525D",
+        "symbolSet": "01",
+        "entity": "130200",
+        "identity": "neutral",
+        "label": "air decoy",
+        "src": "https://github.com/spatialillusions/milsymbol (MIT) · MIL-STD-2525D numeric SIDC"
+      }
+    },
+    {
+      "id": "uas-sea-skimming",
+      "inScene": false,
+      "klass": "贴海突防无人机",
+      "uasGroup": 3,
+      "natoClass": "II",
+      "airframe": "sea-skimming",
+      "role": "raid",
+      "band_m": [
+        50,
+        400
+      ],
+      "speed_kmh": 720,
+      "source": "本包 host_lo 对照型 · 走廊 C_low",
+      "note": "型谱。本幕 ITEM 仍是 host_lo。payload 不开对人。",
+      "payload": "对海/对阵地 · 不开对人",
+      "sidc": {
+        "code": "10040100001103000000",
+        "std": "2525D",
+        "symbolSet": "01",
+        "entity": "110300",
+        "identity": "neutral",
+        "label": "UAV sea-skimming",
+        "src": "https://github.com/spatialillusions/milsymbol (MIT) · MIL-STD-2525D numeric SIDC"
+      }
+    },
+    {
+      "id": "uas-cargo",
+      "inScene": false,
+      "klass": "运补无人机",
+      "uasGroup": 3,
+      "natoClass": "II",
+      "airframe": "fixed-wing",
+      "role": "cargo",
+      "source": "2525D cargo entity 110107",
+      "note": "型谱。本幕无后勤波次。",
+      "sidc": {
+        "code": "10040100001101070000",
+        "std": "2525D",
+        "symbolSet": "01",
+        "entity": "110107",
+        "identity": "neutral",
+        "label": "UAV cargo",
+        "src": "https://github.com/spatialillusions/milsymbol (MIT) · MIL-STD-2525D numeric SIDC"
+      }
+    },
+    {
+      "id": "uas-civilian",
+      "inScene": false,
+      "klass": "民用无人机",
+      "uasGroup": 1,
+      "natoClass": "I-mini",
+      "airframe": "rotary",
+      "role": "civilian",
+      "mtow_kg_max": 25,
+      "list": "不进交战清单",
+      "source": "EASA Open · 2525D civilian UAV 120300",
+      "note": "型谱。不得自动交战。不明/民用不进清单。",
+      "sidc": {
+        "code": "10040100001203000000",
+        "std": "2525D",
+        "symbolSet": "01",
+        "entity": "120300",
+        "identity": "neutral",
+        "label": "Civilian unmanned aerial vehicle",
+        "src": "https://github.com/spatialillusions/milsymbol (MIT) · MIL-STD-2525D numeric SIDC"
+      }
+    },
+    {
+      "id": "uas-relay",
+      "inScene": false,
+      "klass": "中继无人机",
+      "uasGroup": 3,
+      "natoClass": "II",
+      "airframe": "fixed-wing",
+      "role": "relay",
+      "source": "Needline 备份构想 · 本幕 G(t) 仍是岸上星形",
+      "note": "型谱。不替代 G(t)，不引入 Link-16。",
+      "sidc": {
+        "code": "10040100001101190000",
+        "std": "2525D",
+        "symbolSet": "01",
+        "entity": "110119",
+        "identity": "neutral",
+        "label": "UAV communications",
+        "src": "https://github.com/spatialillusions/milsymbol (MIT) · MIL-STD-2525D numeric SIDC"
+      }
+    }
+  ],
+  "intel": {
+    "product": [
+      "iden",
+      "intent",
+      "src"
+    ],
+    "src_team": "岸搜+舰载+制导",
+    "src_denied": "局部航迹",
+    "no_satellite": true
+  }
+}

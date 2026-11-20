@@ -1,0 +1,145 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix crk: <https://local.ontology/coast-raid-k#> .
+@prefix ag: <https://local.ontology/coast-raid-k/agent/1.0.0#> .
+
+# Agent function domains are composable controlled values rather than mutually
+# exclusive subclasses. The required fields mirror schema.agent.extension.json.
+ag:AgentInstanceShape a sh:NodeShape ;
+  sh:targetClass ag:AgentInstance ;
+  sh:property [ sh:path ag:agentId ; sh:minCount 1 ; sh:datatype xsd:string ] ;
+  sh:property [ sh:path ag:realizesType ; sh:minCount 1 ; sh:class ag:AgentType ] ;
+  sh:property [ sh:path ag:lifecycleState ; sh:minCount 1 ; sh:in ( "initialized" "active" "degraded" "suspended" "destroyed" ) ] ;
+  sh:property [ sh:path ag:withinRun ; sh:minCount 1 ; sh:class ag:Run ] ;
+  sh:property [ sh:path ag:modelId ; sh:minCount 1 ; sh:datatype xsd:string ] ;
+  sh:property [ sh:path ag:modelRevision ; sh:minCount 1 ; sh:datatype xsd:string ] ;
+  sh:property [ sh:path ag:functionDomain ; sh:minCount 1 ; sh:nodeKind sh:Literal ; sh:in ( "World" "Self" "Adversary" "Options" "Gate" "Effectors" "Learn" ) ] ;
+  sh:property [ sh:path ag:timeScale ; sh:minCount 1 ; sh:nodeKind sh:Literal ; sh:in ( "Immediate" "Tactical" "Operational" "Strategic" ) ] ;
+  sh:property [ sh:path ag:humanControlMode ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ( "in-the-loop" "on-the-loop" "out-of-the-loop" ) ] ;
+  sh:property [ sh:path ag:connectivityMode ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ( "online" "degraded" "disconnected" ) ] ;
+  sh:property [ sh:path ag:failureContainment ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ( "local-action" "team" "operational" "strategic" ) ] ;
+  sh:property [ sh:path ag:safeFallbackPolicy ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:string ] ;
+  sh:property [ sh:path ag:reversibility ; sh:minCount 1 ; sh:maxCount 1 ; sh:in ( "reversible" "recoverable" "irreversible" ) ] .
+
+# Learning can propose model or policy changes; a graph that asserts a direct
+# write to governing policy/authority is invalid.
+ag:LearnBoundaryShape a sh:NodeShape ;
+  sh:targetClass ag:AgentInstance ;
+  sh:sparql [ a sh:SPARQLConstraint ;
+    sh:message "Learn agents may produce proposals but must not write Policy, Authority or Authorization directly." ;
+    sh:select """
+      PREFIX ag: <https://local.ontology/coast-raid-k/agent/1.0.0#>
+      PREFIX crk: <https://local.ontology/coast-raid-k#>
+      SELECT $this WHERE {
+        $this ag:functionDomain "Learn" ; crk:writes ?target .
+        ?target a ?kind .
+        FILTER (?kind IN (ag:Policy, ag:Authority, ag:Authorization))
+      }
+    """ ] .
+
+ag:ObservationShape a sh:NodeShape ;
+  sh:targetClass ag:Observation ;
+  sh:property [ sh:path ag:assertedBy ; sh:minCount 1 ; sh:class ag:Agent ] ;
+  sh:property [ sh:path ag:observedEntity ; sh:minCount 1 ; sh:class crk:Entity ] ;
+  sh:property [ sh:path ag:observedAt ; sh:minCount 1 ; sh:datatype xsd:dateTime ] ;
+  sh:property [ sh:path ag:confidence ; sh:minCount 1 ; sh:minInclusive 0 ; sh:maxInclusive 1 ; sh:datatype xsd:decimal ] ;
+  sh:property [ sh:path ag:sourceIri ; sh:minCount 1 ; sh:datatype xsd:anyURI ] .
+
+ag:BeliefAssertionShape a sh:NodeShape ;
+  sh:targetClass ag:BeliefAssertion ;
+  sh:property [ sh:path ag:assertedBy ; sh:minCount 1 ; sh:class ag:Agent ] ;
+  sh:property [ sh:path ag:believesAbout ; sh:minCount 1 ; sh:class crk:Entity ] ;
+  sh:property [ sh:path ag:derivedFrom ; sh:minCount 1 ; sh:class crk:InformationEntity ] ;
+  sh:property [ sh:path ag:confidence ; sh:minCount 1 ; sh:minInclusive 0 ; sh:maxInclusive 1 ; sh:datatype xsd:decimal ] ;
+  sh:property [ sh:path ag:validDuring ; sh:minCount 1 ; sh:class ag:TimeInterval ; sh:node ag:NativeTimeIntervalShape ] .
+
+# Numeric simulation values are native-clock coordinates, not UTC dates.
+ag:NativeTimeIntervalShape a sh:NodeShape ;
+  sh:targetClass ag:TimeInterval ;
+  sh:property [ sh:path ag:intervalFrom ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:decimal ] ;
+  sh:property [ sh:path ag:intervalTo ; sh:maxCount 1 ; sh:datatype xsd:decimal ] ;
+  sh:property [ sh:path ag:timeClock ; sh:maxCount 1 ; sh:in ( "sim" "wall" ) ] ;
+  sh:property [ sh:path ag:timeUnit ; sh:maxCount 1 ; sh:datatype xsd:string ] .
+
+# Authorization is a bounded, auditable Gate decision. result is the decision
+# (allow/deny/indeterminate); authorizationStatus tracks its lifecycle.
+ag:AuthorizationShape a sh:NodeShape ;
+  sh:targetClass ag:Authorization ;
+  sh:property [ sh:path ag:requestIri ; sh:minCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path ag:decidedBy ; sh:minCount 1 ; sh:class ag:Agent ] ;
+  sh:property [ sh:path [ sh:inversePath ag:authorizedBy ] ; sh:minCount 1 ; sh:class ag:ActionRequest ] ;
+  sh:property [ sh:path ag:result ; sh:minCount 1 ; sh:in ( "allow" "deny" "indeterminate" ) ] ;
+  sh:property [ sh:path ag:authorizationStatus ; sh:minCount 1 ; sh:in ( "active" "expired" "revoked" ) ] ;
+  sh:property [ sh:path ag:ruleVersion ; sh:minCount 1 ; sh:datatype xsd:string ] ;
+  sh:property [ sh:path ag:evidenceUris ; sh:minCount 1 ; sh:datatype xsd:anyURI ] ;
+  sh:property [ sh:path ag:reasonCode ; sh:minCount 1 ; sh:datatype xsd:string ] ;
+  sh:property [ sh:path ag:issuedAt ; sh:minCount 1 ; sh:datatype xsd:dateTime ] ;
+  sh:property [ sh:path ag:expiresAt ; sh:minCount 1 ; sh:datatype xsd:dateTime ] ;
+  sh:property [ sh:path ag:issuedAt ; sh:lessThan ag:expiresAt ] ;
+  sh:property [ sh:path ag:revocable ; sh:minCount 1 ; sh:maxCount 1 ; sh:datatype xsd:boolean ] ;
+  sh:property [ sh:path ag:abortConditions ; sh:minCount 1 ; sh:nodeKind sh:Literal ; sh:datatype xsd:string ] ;
+  sh:property [ sh:path ag:safeFallbackPolicy ; sh:minCount 1 ; sh:datatype xsd:string ] ;
+  sh:property [ sh:path ag:reversibility ; sh:minCount 1 ; sh:in ( "reversible" "recoverable" "irreversible" ) ] ;
+  sh:property [ sh:path ag:failureContainment ; sh:minCount 1 ; sh:in ( "local-action" "team" "operational" "strategic" ) ] ;
+  sh:property [ sh:path ag:requiredHumanControlMode ; sh:minCount 1 ; sh:in ( "in-the-loop" "on-the-loop" "out-of-the-loop" ) ] ;
+  sh:property [ sh:path ag:scope ; sh:nodeKind sh:IRI ] ;
+  sh:sparql [ a sh:SPARQLConstraint ;
+    sh:message "Only an Agent with the Gate function may issue an Authorization." ;
+    sh:select """
+      PREFIX ag: <https://local.ontology/coast-raid-k/agent/1.0.0#>
+      SELECT $this WHERE {
+        $this ag:decidedBy ?decider .
+        FILTER NOT EXISTS { ?decider ag:functionDomain "Gate" }
+      }
+    """ ] .
+
+# ActionExecution carries the authorization and safety boundary fields required
+# by the JSON interchange schema. Runtime expiry/revocation evaluation belongs
+# to the execution service, not to this static shape.
+ag:ActionExecutionShape a sh:NodeShape ;
+  sh:targetClass ag:ActionExecution ;
+  sh:property [ sh:path ag:requestIri ; sh:minCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path ag:usesAuthorization ; sh:minCount 1 ; sh:class ag:Authorization ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path ag:realizedBy ; sh:minCount 1 ; sh:nodeKind sh:IRI ] ;
+  sh:property [ sh:path ag:executionResult ; sh:minCount 1 ; sh:datatype xsd:string ] ;
+  sh:property [ sh:path ag:executedAt ; sh:minCount 1 ; sh:datatype xsd:dateTime ] ;
+  sh:property [ sh:path ag:expiresAt ; sh:minCount 1 ; sh:datatype xsd:dateTime ] ;
+  sh:property [ sh:path ag:abortCondition ; sh:minCount 1 ; sh:datatype xsd:string ] ;
+  sh:property [ sh:path ag:safeFallbackPolicy ; sh:minCount 1 ; sh:datatype xsd:string ] ;
+  sh:property [ sh:path ag:reversibility ; sh:minCount 1 ; sh:in ( "reversible" "recoverable" "irreversible" ) ] ;
+  sh:property [ sh:path ag:failureContainment ; sh:minCount 1 ; sh:in ( "local-action" "team" "operational" "strategic" ) ] .
+
+# A request may be submitted through AssistantSession, but an executing request
+# must link to a Gate Authorization.
+ag:ActionRequestShape a sh:NodeShape ;
+  sh:targetClass ag:ActionRequest ;
+  sh:property [ sh:path ag:requestedBy ; sh:minCount 1 ; sh:class ag:Agent ] ;
+  sh:property [ sh:path ag:requestedAt ; sh:minCount 1 ; sh:datatype xsd:dateTime ] ;
+  sh:property [ sh:path ag:status ; sh:minCount 1 ; sh:datatype xsd:string ] ;
+  sh:sparql [ a sh:SPARQLConstraint ;
+    sh:message "An executing ActionRequest must reference an Authorization." ;
+    sh:select """
+      PREFIX ag: <https://local.ontology/coast-raid-k/agent/1.0.0#>
+      SELECT $this WHERE {
+        $this ag:status "executing" .
+        FILTER NOT EXISTS { $this ag:authorizedBy ?authorization }
+      }
+    """ ] .
+
+ag:PermitWriterShape a sh:NodeShape ;
+  sh:targetClass crk:ShellTemplate ;
+  sh:property [ sh:path crk:writes ; sh:not [ sh:hasValue crk:Permit ] ] .
+
+ag:MessageShape a sh:NodeShape ;
+  sh:targetClass ag:Message ;
+  sh:property [ sh:path ag:sender ; sh:minCount 1 ; sh:class ag:Agent ] ;
+  sh:property [ sh:path ag:receivers ; sh:minCount 1 ; sh:class ag:Agent ] ;
+  sh:property [ sh:path ag:conversationId ; sh:minCount 1 ; sh:datatype xsd:string ] ;
+  sh:property [ sh:path ag:ontology ; sh:minCount 1 ; sh:datatype xsd:anyURI ] .
+
+ag:AssistantSessionShape a sh:NodeShape ;
+  sh:targetClass ag:AssistantSession ;
+  sh:property [ sh:path ag:initiatedBy ; sh:minCount 1 ; sh:class ag:Operator ] ;
+  sh:property [ sh:path ag:representsAgent ; sh:maxCount 1 ; sh:class ag:Agent ] ;
+  sh:property [ sh:path ag:submitsRequest ; sh:class ag:ActionRequest ] .
+

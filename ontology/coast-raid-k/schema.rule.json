@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.ontology/coast-raid-k/schema.rule.json",
+  "title": "coast-raid-k rule $defs",
+  "description": "SBVR + LegalRuleML。页签：表述 · 模态 · 条件 · 参数 · 裁决 · 禁止 · 执行。",
+  "$defs": {
+    "Rule": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "modality",
+        "text",
+        "states"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "const": "Rule"
+        },
+        "modality": {
+          "title": "模态",
+          "enum": [
+            "hard",
+            "roe",
+            "comm"
+          ]
+        },
+        "text": {
+          "title": "表述",
+          "type": "string"
+        },
+        "params": {
+          "title": "参数",
+          "type": "object"
+        },
+        "evalOn": {
+          "title": "条件",
+          "type": "string"
+        },
+        "states": {
+          "title": "裁决",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "illegal": {
+          "title": "禁止",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "enforce": {
+          "title": "执行",
+          "type": "string"
+        },
+        "sbvr": {
+          "title": "SBVR 句式",
+          "type": "string"
+        }
+      }
+    },
+    "RuleCatalog": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "package",
+        "type",
+        "rules",
+        "stateModel"
+      ],
+      "properties": {
+        "package": {
+          "const": "coast-raid-k"
+        },
+        "type": {
+          "const": "RuleCatalog"
+        },
+        "note": {
+          "type": "string"
+        },
+        "stateModel": {
+          "$ref": "#/$defs/StateModel"
+        },
+        "rules": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/Rule"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,274 @@
+{
+  "package": "coast-raid-k",
+  "type": "ToolCatalog",
+  "note": "封皮模块。算法是职能上的工具，不是整场总求解器，不是权利要求。进包、进库；不把权重写进 40ms 快照。",
+  "stateModel": {
+    "kind": "compile",
+    "structure": "bound",
+    "states": [
+      "bound",
+      "unused"
+    ],
+    "illegal": [
+      "claim true",
+      "MAPPO as recon-strike claim",
+      "weights in 40ms snapshot"
+    ]
+  },
+  "tools": [
+    {
+      "id": "layer_detect",
+      "type": "Algorithm",
+      "bind": "see",
+      "scope": "sense",
+      "claim": false,
+      "title": "层相关检测 / CFAR",
+      "impl": "platform/battle.js zoneOf + detect",
+      "paper": "Finn 1968 CFAR (public literature). Local detector, not a claim.",
+      "license": "implementation local"
+    },
+    {
+      "id": "track_filter",
+      "type": "Algorithm",
+      "bind": "see",
+      "scope": "sense",
+      "claim": false,
+      "title": "航迹滤波 EKF/IMM",
+      "impl": "platform/battle.js track filter",
+      "paper": "Kalman 1960; Bar-Shalom IMM. EKF/IMM as tool.",
+      "license": "implementation local"
+    },
+    {
+      "id": "cloud_shadow",
+      "type": "Algorithm",
+      "bind": "read",
+      "scope": "know",
+      "claim": false,
+      "title": "云影合成",
+      "impl": "platform/knowledge.js CloudKB",
+      "paper": "Li Deyi, Liu Changyu, Gan Wenyan, 2009, Int. J. Intelligent Systems 24:357–375. doi:10.1002/int.20340",
+      "license": "citation only; parameters are package ABox"
+    },
+    {
+      "id": "iff_logic",
+      "type": "Algorithm",
+      "bind": "read",
+      "scope": "know",
+      "claim": false,
+      "title": "敌我/不明逻辑",
+      "impl": "platform/knowledge.js iff",
+      "paper": "Local IFF/unk rule. Not STANAG 4193 text.",
+      "license": "implementation local"
+    },
+    {
+      "id": "finite_wave_assign",
+      "type": "Algorithm",
+      "bind": "assign",
+      "scope": "decide",
+      "claim": false,
+      "title": "有限波次分配",
+      "impl": "platform/battle.js wave assign",
+      "paper": "Finite N assignment. Not mean-field.",
+      "license": "implementation local"
+    },
+    {
+      "id": "reactBlue_tasks",
+      "type": "Algorithm",
+      "bind": "assign",
+      "scope": "decide",
+      "claim": false,
+      "title": "盯梢/压沿任务",
+      "impl": "platform/battle.js reactBlue",
+      "paper": "Local tasking: 巡逻/警戒/盯梢/压沿/识别.",
+      "license": "implementation local"
+    },
+    {
+      "id": "spherical_code",
+      "type": "Algorithm",
+      "bind": "form",
+      "scope": "inner",
+      "claim": false,
+      "title": "分层球面码",
+      "impl": "platform/battle.js sphereSlots",
+      "paper": "Tammes problem / spherical codes; Conway–Sloane Sphere Packings (public math).",
+      "license": "implementation local"
+    },
+    {
+      "id": "MAPPO",
+      "type": "Algorithm",
+      "bind": "form",
+      "scope": "tool",
+      "claim": false,
+      "title": "MAPPO（工具，非主张）",
+      "impl": "unused in 40ms snapshot",
+      "paper": "Yu et al., The Surprising Effectiveness of PPO in Cooperative Multi-Agent Games, arXiv:2103.01955",
+      "license": "tool citation; claim=false; scope=tool"
+    },
+    {
+      "id": "HAPPO",
+      "type": "Algorithm",
+      "bind": "form",
+      "scope": "tool",
+      "claim": false,
+      "title": "HAPPO（工具，非主张）",
+      "impl": "unused in 40ms snapshot",
+      "paper": "Kuba et al., Trust Region Policy Optimisation in Multi-Agent Reinforcement Learning, arXiv:2109.11251",
+      "license": "tool citation; claim=false; scope=tool"
+    },
+    {
+      "id": "QMIX",
+      "type": "Algorithm",
+      "bind": "form",
+      "scope": "tool",
+      "claim": false,
+      "title": "QMIX（工具，非主张）",
+      "impl": "unused in 40ms snapshot",
+      "paper": "Rashid et al., QMIX, ICML 2018, arXiv:1803.11485",
+      "license": "tool citation; claim=false; scope=tool"
+    },
+    {
+      "id": "mayGate",
+      "type": "Algorithm",
+      "bind": "gate",
+      "scope": "roe",
+      "claim": false,
+      "title": "过门判定",
+      "impl": "platform/knowledge.js CloudKB.mayGate",
+      "paper": "Local gate: in ∧ p≥τ ∧ G(t) ∧ m>0 ∧ identity. Human/RoE remains.",
+      "license": "implementation local"
+    },
+    {
+      "id": "RoE",
+      "type": "Algorithm",
+      "bind": "gate",
+      "scope": "roe",
+      "claim": false,
+      "title": "交战规则检查",
+      "impl": "platform/knowledge.js RoE checks",
+      "paper": "Local LegalRuleML-shaped obligations. Not a copied RoE manual.",
+      "license": "implementation local"
+    },
+    {
+      "id": "bounded_inject",
+      "type": "Algorithm",
+      "bind": "foe",
+      "scope": "inject",
+      "claim": false,
+      "title": "有界注入",
+      "impl": "platform/battle.js inject",
+      "paper": "Bounded jam/restore/attrition. Not POSG Nash.",
+      "license": "implementation local"
+    }
+  ],
+  "functions": [
+    {
+      "id": "see",
+      "title": "探测跟踪",
+      "give": "Track",
+      "eats": [
+        "SEARCH",
+        "B_ship",
+        "RADAR_SAM",
+        "C_low tracks"
+      ],
+      "bound": [
+        "layer_detect",
+        "track_filter"
+      ],
+      "runtime": "zoneOf + intel src",
+      "notClaim": "MAPPO-for-recon-strike"
+    },
+    {
+      "id": "read",
+      "title": "识别判断",
+      "give": "Identity",
+      "eats": [
+        "belief p",
+        "iden",
+        "intent",
+        "src"
+      ],
+      "bound": [
+        "cloud_shadow",
+        "iff_logic"
+      ],
+      "runtime": "intelOf + CloudKB"
+    },
+    {
+      "id": "assign",
+      "title": "任务分配",
+      "give": "Pair",
+      "eats": [
+        "wave k",
+        "m_SAM",
+        "pairs"
+      ],
+      "bound": [
+        "finite_wave_assign",
+        "reactBlue_tasks"
+      ],
+      "tasks": [
+        "巡逻",
+        "警戒",
+        "盯梢",
+        "压沿",
+        "识别"
+      ],
+      "runtime": "reactBlue"
+    },
+    {
+      "id": "form",
+      "title": "编队协同",
+      "give": "Slot",
+      "eats": [
+        "sphere slots per layer"
+      ],
+      "bound": [
+        "spherical_code"
+      ],
+      "runtime": "sphereSlots",
+      "toolsNotClaim": [
+        "MAPPO",
+        "HAPPO",
+        "QMIX"
+      ]
+    },
+    {
+      "id": "gate",
+      "title": "交战授权",
+      "give": "Permit",
+      "eats": [
+        "B_SAM inner",
+        "p",
+        "G(t)",
+        "m",
+        "identity"
+      ],
+      "bound": [
+        "mayGate",
+        "RoE"
+      ],
+      "runtime": "CloudKB.mayGate",
+      "human": true
+    },
+    {
+      "id": "foe",
+      "title": "对抗敌情",
+      "give": "Inject",
+      "eats": [
+        "C_low pressure",
+        "jammer on G(t)"
+      ],
+      "bound": [
+        "bounded_inject"
+      ],
+      "runtime": "inject jam|restore|attrition",
+      "not": "POSG_nash"
+    }
+  ],
+  "innerLoop": {
+    "name": "spherical_code",
+    "scope": "autonomy inner only",
+    "perLayer": true
+  }
+}

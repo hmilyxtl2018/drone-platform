@@ -1,0 +1,171 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.ontology/coast-raid-k/intelligence/1.0.0/schema.signal-verification.json",
+  "title": "公开信号情报核验观测",
+  "description": "公开或获授权观测的结构契约。它保存信号特征、来源和核验状态；不把模型判断或来源声明直接变成正式本体事实。",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "observationId",
+    "entityRef",
+    "claimType",
+    "signalType",
+    "collection",
+    "sourceRefs",
+    "features",
+    "verification"
+  ],
+  "properties": {
+    "schemaVersion": {"const": "signal-verification.v1"},
+    "observationId": {"$ref": "#/$defs/Id"},
+    "entityRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entityId"],
+      "properties": {
+        "entityId": {"$ref": "#/$defs/Id"},
+        "entityRevisionId": {"$ref": "#/$defs/Id"},
+        "label": {"type": "string", "minLength": 1, "maxLength": 240},
+        "variant": {"type": ["string", "null"], "maxLength": 240},
+        "configuration": {"type": ["string", "null"], "maxLength": 240},
+        "modelMatch": {"$ref": "#/$defs/ModelMatch"}
+      }
+    },
+    "claimType": {
+      "enum": [
+        "identity",
+        "designation",
+        "manufacturer",
+        "origin-country",
+        "variant",
+        "signal-feature",
+        "capability"
+      ]
+    },
+    "signalType": {
+      "enum": ["comint", "elint", "fisint", "public-imagery", "masint"]
+    },
+    "collection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["observedAt", "accessBasis", "authorizationStatus"],
+      "properties": {
+        "observedAt": {"$ref": "#/$defs/DateTimeOrNull"},
+        "observedAtEnd": {"$ref": "#/$defs/DateTimeOrNull"},
+        "accessBasis": {"enum": ["public", "licensed", "authorized", "unknown"]},
+        "authorizationStatus": {"enum": ["public", "authorized", "unknown", "not-applicable"]},
+        "collector": {"type": "string", "maxLength": 200},
+        "platform": {"type": "string", "maxLength": 200},
+        "locationGranularity": {"enum": ["none", "country", "region", "site", "exact", "unknown"]}
+      }
+    },
+    "sourceRefs": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 40,
+      "items": {"$ref": "#/$defs/SourceRef"}
+    },
+    "features": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 40,
+      "items": {"$ref": "#/$defs/SignalFeature"}
+    },
+    "verification": {"$ref": "#/$defs/Verification"}
+  },
+  "$defs": {
+    "Id": {"type": "string", "minLength": 1, "maxLength": 160, "pattern": "^[A-Za-z0-9._:-]+$"},
+    "DateTimeOrNull": {
+      "oneOf": [
+        {"type": "null"},
+        {"type": "string", "format": "date-time"}
+      ]
+    },
+    "ModelMatch": {
+      "enum": ["exact", "configuration-exact", "family-only", "variant-uncertain", "configuration-uncertain", "mismatch", "unknown"]
+    },
+    "SourceRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceRef", "sourceType", "sourceReliability", "contentHash", "quote"],
+      "properties": {
+        "sourceRef": {"type": "string", "minLength": 1, "maxLength": 2000},
+        "sourceType": {
+          "enum": [
+            "official-publication",
+            "evaluation-report",
+            "test-observation",
+            "telemetry",
+            "manufacturer-disclosure",
+            "procurement-record",
+            "defense-media",
+            "public-imagery",
+            "academic",
+            "social",
+            "unknown"
+          ]
+        },
+        "sourceReliability": {"enum": ["unknown", "primary", "secondary"]},
+        "publisherDomain": {"type": "string", "maxLength": 300},
+        "originalSourceUri": {"type": ["string", "null"], "maxLength": 2000},
+        "sourceVersion": {"type": ["string", "null"], "maxLength": 240},
+        "contentHash": {"type": "string", "pattern": "^[A-Fa-f0-9]{64}$"},
+        "quote": {"type": "string", "minLength": 1, "maxLength": 4000},
+        "locator": {"type": "object"},
+        "publishedAt": {"$ref": "#/$defs/DateTimeOrNull"},
+        "captureDate": {"$ref": "#/$defs/DateTimeOrNull"},
+        "modelMatch": {"$ref": "#/$defs/ModelMatch"},
+        "independenceStatus": {"enum": ["independent", "dependent", "same-origin", "unknown"]}
+      }
+    },
+    "SignalFeature": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "value"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1, "maxLength": 160},
+        "value": {},
+        "unit": {"type": ["string", "null"], "maxLength": 80},
+        "method": {"type": ["string", "null"], "maxLength": 240},
+        "featureConfidence": {"enum": ["low", "medium", "high", "unknown"]},
+        "sourceRef": {"type": ["string", "null"], "maxLength": 2000}
+      }
+    },
+    "Verification": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "evidenceLevel",
+        "independenceStatus",
+        "modelMatch",
+        "timeMatch",
+        "claimState",
+        "verificationStatus",
+        "truthVerified",
+        "deceptionFlags",
+        "autoAdmitEligible"
+      ],
+      "properties": {
+        "evidenceLevel": {"enum": ["E0", "E1", "E2", "E3", "E4", "E5"]},
+        "independenceStatus": {"enum": ["single-source", "independent", "dependent", "unknown"]},
+        "modelMatch": {"$ref": "#/$defs/ModelMatch"},
+        "timeMatch": {"enum": ["exact", "known", "uncertain", "mismatch", "not-applicable"]},
+        "claimState": {"enum": ["unknown", "reported", "observed", "assessed", "derived", "conflict", "rejected"]},
+        "verificationStatus": {"enum": ["unverified", "pending-review", "corroborated", "verified", "conflict", "rejected"]},
+        "truthVerified": {"type": "boolean"},
+        "deceptionFlags": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {"enum": ["reprint", "same-origin", "manufacturer-claim", "planned-vs-performed", "procurement-not-delivery", "demo-not-combat", "variant-mismatch", "time-mismatch", "imagery-context-unverified", "source-date-missing", "source-domain-unknown", "signal-attribution-uncertain", "conflicting-values", "unsupported-inference"]}
+        },
+        "autoAdmitEligible": {"type": "boolean"},
+        "humanReviewRequired": {"type": "boolean"},
+        "reviewDecision": {"enum": ["pending", "accepted", "rejected", "request-more-evidence", "conflict"]},
+        "reviewer": {"type": ["string", "null"], "maxLength": 200},
+        "reviewedAt": {"$ref": "#/$defs/DateTimeOrNull"},
+        "notes": {"type": "array", "items": {"type": "string", "maxLength": 1000}, "maxItems": 30}
+      }
+    }
+  }
+}

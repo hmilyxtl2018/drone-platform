@@ -1,0 +1,156 @@
+{
+  "type": "object",
+  "properties": {
+    "hypotheses": {
+      "type": "array",
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "statement": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "id",
+          "statement"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "assessments": {
+      "type": "array",
+      "maxItems": 16,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "hypothesisId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "evidenceId": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "relation": {
+            "enum": [
+              "consistent",
+              "inconsistent",
+              "neutral",
+              "unknown"
+            ]
+          },
+          "rationale": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "id",
+          "hypothesisId",
+          "evidenceId",
+          "relation",
+          "rationale"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "scenarios": {
+      "type": "array",
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "assignments": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000
+            }
+          }
+        },
+        "required": [
+          "id",
+          "assignments"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "constraints": {
+      "type": "array",
+      "maxItems": 16,
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          },
+          "when": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000
+            }
+          },
+          "forbidden": {
+            "type": "boolean"
+          },
+          "evidenceIds": {
+            "type": "array",
+            "maxItems": 16,
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000
+            },
+            "minItems": 1
+          },
+          "rationale": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000
+          }
+        },
+        "required": [
+          "id",
+          "when",
+          "forbidden",
+          "evidenceIds",
+          "rationale"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "hypotheses",
+    "assessments",
+    "scenarios",
+    "constraints"
+  ],
+  "additionalProperties": false
+}

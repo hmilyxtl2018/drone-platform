@@ -1,0 +1,114 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://local.ontology/coast-raid-k/schema.algorithm.json",
+  "title": "coast-raid-k algorithm $defs",
+  "description": "IEEE 1872 + CCO Design Specification。页签：职能 · 范围 · 输入 · 输出 · 绑定 · 主张 · 实现。claim 恒为 false。",
+  "$defs": {
+    "Algorithm": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "type",
+        "bind",
+        "claim"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "type": {
+          "const": "Algorithm"
+        },
+        "bind": {
+          "title": "职能",
+          "$ref": "#/$defs/FunctionId"
+        },
+        "scope": {
+          "title": "范围",
+          "enum": [
+            "sense",
+            "know",
+            "decide",
+            "inner",
+            "roe",
+            "inject",
+            "tool"
+          ]
+        },
+        "claim": {
+          "title": "主张",
+          "const": false
+        },
+        "title": {
+          "type": "string"
+        },
+        "impl": {
+          "title": "实现",
+          "type": "string"
+        },
+        "paper": {
+          "title": "出处",
+          "type": "string"
+        },
+        "license": {
+          "type": "string"
+        }
+      }
+    },
+    "ToolCatalog": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Envelope module: algorithms bound to functions. Tools, not claims. Not a 40ms snapshot payload.",
+      "required": [
+        "package",
+        "functions",
+        "tools"
+      ],
+      "properties": {
+        "package": {
+          "const": "coast-raid-k"
+        },
+        "type": {
+          "const": "ToolCatalog"
+        },
+        "note": {
+          "type": "string"
+        },
+        "stateModel": {
+          "$ref": "#/$defs/StateModel"
+        },
+        "functions": {
+          "type": "array",
+          "minItems": 6,
+          "maxItems": 6,
+          "items": {
+            "$ref": "#/$defs/FunctionBind"
+          }
+        },
+        "tools": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/Algorithm"
+          }
+        },
+        "innerLoop": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "scope": {
+              "type": "string"
+            },
+            "perLayer": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    }
+  }
+}

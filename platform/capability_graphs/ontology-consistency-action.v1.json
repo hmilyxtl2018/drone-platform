@@ -1,0 +1,47 @@
+{
+  "graphId": "ontology-consistency-action-capabilities",
+  "version": "1.0.0",
+  "agentKey": "ontology-consistency-action",
+  "capabilities": [
+    {
+      "key": "deterministic-consistency",
+      "name": "deterministic consistency",
+      "requiredActions": [
+        "ontology.shape_validate",
+        "analysis.temporal_validate",
+        "ontology.relation_validate"
+      ],
+      "requiredEvidence": [
+        "checks",
+        "coverage",
+        "overallResult"
+      ],
+      "acceptance": [
+        "Only executed deterministic checks can pass."
+      ]
+    },
+    {
+      "key": "conflict-explanation",
+      "name": "conflict explanation",
+      "requiredActions": [
+        "ontology.relation_validate"
+      ],
+      "requiredEvidence": [
+        "conflicts",
+        "gaps",
+        "factualVerification"
+      ],
+      "acceptance": [
+        "LLM explanations cannot waive blocking errors."
+      ]
+    }
+  ],
+  "forbiddenCapabilities": [
+    "operational-tasking",
+    "target-assignment",
+    "weapon-control",
+    "engagement-authorization",
+    "formal-ontology-write",
+    "self-expand-authority"
+  ]
+}
